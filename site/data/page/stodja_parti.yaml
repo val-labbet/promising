@@ -1,0 +1,13 @@
+- p:
+  - text: Det finns många partier som på olika sätt vill ha ditt stöd för att kunna gå vidare i valet.
+- button:
+  - text: Skriv under
+  - to: stöd.skickad
+  - value: ja
+- span:
+  - if:
+    - stöd.skickad:
+      - p:
+        - text: Din underskrift är mottagen.
+    - else:
+      - text: ''

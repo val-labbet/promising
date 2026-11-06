@@ -1,0 +1,27 @@
+- p:
+  - text: Som partiadministratör kan du administrera ett parti.
+- ul:
+  - li:
+    - text: Se mina kandidater.
+  - li:
+    - text: Se mina valsedlar.
+  - li:
+    - text: Beställa valsedlar.
+  - li:
+    - text: Anmäla deltagande.
+  - li:
+    - text: Starta namninsamling.
+    - ul:
+      - li:
+        - text: Få tillgång till url/QR för att sprida.
+  - li:
+    - text: Tilldela behörighet till annan partiadministratör, se vilka de är.
+    - ul:
+      - li:
+        - text: Ansök om att få bli partiadministratör?
+  - li:
+    - text: Påbörja avvecklingsanmälan.
+  - li:
+    - text: Ansöka om namnbyte på parti.
+  - li:
+    - text: Hantera mina kontaktuppgifter, när det gäller min roll som partiadministratör.

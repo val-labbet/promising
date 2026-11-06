@@ -1,0 +1,14 @@
+- p:
+  - text: Information och tjänster för dig som företräder ett parti i valet.
+- block-link:
+  - href: page:kandidat
+  - title: Jag som kandidat
+  - text: För dig som är eller vill bli kandidat.
+- block-link:
+  - href: page:vald
+  - title: Jag som vald
+  - text: För dig som är eller står på tur att bli vald.
+- block-link:
+  - href: page:partiombud
+  - title: Jag som partiadministratör
+  - text: För dig som jobbar för ett parti.

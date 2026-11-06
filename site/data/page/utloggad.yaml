@@ -1,0 +1,12 @@
+- div:
+  - class: logged-out
+  - div:
+    - class: logo-circle logo-circle--large
+  - h1:
+    - text: Du är utloggad
+  - p:
+    - text: Tack för den här gången. Välkommen åter!
+  - a:
+    - href: page:login
+    - class: logged-out-button
+    - text: Logga in

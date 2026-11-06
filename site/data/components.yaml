@@ -1,0 +1,170 @@
+- component:
+  - id: layout
+  - header:
+    - class: head
+    - a:
+      - href: page:{start_page}
+      - class: logo
+      - span:
+        - class: logo-circle
+      - span:
+        - text: '{site_name}'
+    - if:
+      - user:
+        - a:
+          - href: page:om_mig
+          - class: user-link
+          - span:
+            - class: user-label
+            - text: 'Inloggad som:'
+          - span:
+            - class: user-name
+            - text: '{user.namn.fnamn} {user.namn.enamn}'
+      - else:
+        - a:
+          - href: page:login
+          - class: login-link
+          - text: Logga in
+    - button:
+      - class: hamburger
+      - aria-label: Meny
+      - text: ☰
+      - toggle: menu_open
+  - if:
+    - menu_open:
+      - nav:
+        - class: menu-panel
+        - button:
+          - class: menu-close
+          - aria-label: Stäng menyn
+          - text: ⨯
+          - toggle: menu_open
+        - search:
+          - placeholder: Sök…
+          - empty: Inga träffar
+        - menu: []
+        - if:
+          - user:
+            - button:
+              - class: logout-button
+              - text: Logga ut
+              - to: user_id
+              - value: null
+              - go: utloggad
+  - main:
+    - class: page
+    - breadcrumb:
+      - text: Upp
+    - page: []
+  - footer:
+    - class: foot
+    - div:
+      - class: foot-election
+      - span:
+        - class: foot-date
+        - text: '{datum_text}'
+      - if:
+        - val_dagar_text:
+          - span:
+            - class: foot-countdown
+            - span:
+              - text: '{val_dagar_text} '
+            - a:
+              - href: page:rostratt
+              - class: foot-link
+              - text: nästa val
+    - button:
+      - class: panel-button
+      - aria-label: Utvecklarpanelen
+      - text: ⚙
+      - toggle: panel_open
+- component:
+  - id: block-link
+  - vars-defaults:
+    - title: page-title
+    - icon: page-icon
+    - color: page-color
+  - a:
+    - class: block-link
+    - href: '{vars.href}'
+    - if:
+      - vars.icon:
+        - span:
+          - class: block-link-icon
+          - style: 'background: {vars.color}'
+          - text: '{vars.icon}'
+      - else:
+        - span:
+          - class: block-link-icon block-link-icon--generic
+          - style: 'background: {vars.color}'
+    - if:
+      - vars.image:
+        - img:
+          - class: block-link-image
+          - src: '{vars.image}'
+          - alt: ''
+    - div:
+      - class: block-link-body
+      - h2:
+        - class: block-link-title
+        - text: '{vars.title}'
+      - if:
+        - vars.text:
+          - p:
+            - class: block-link-text
+            - text: '{vars.text}'
+- component:
+  - id: block-checkbox
+  - label:
+    - class: block-checkbox
+    - span:
+      - class: block-checkbox-icon
+      - input:
+        - type: checkbox
+        - class: block-checkbox-input
+        - to: '{vars.to}'
+        - disabled: '{vars.disabled}'
+    - div:
+      - class: block-checkbox-body
+      - h2:
+        - class: block-checkbox-title
+        - text: '{vars.title}'
+      - if:
+        - vars.text:
+          - p:
+            - class: block-checkbox-text
+            - text: '{vars.text}'
+- component:
+  - id: val-chips
+  - div:
+    - class: val-chips
+    - if:
+      - user.rostratt.rd:
+        - span:
+          - class: val-chip val-rd
+          - text: Riksdag
+    - if:
+      - user.rostratt.rf:
+        - span:
+          - class: val-chip val-rf
+          - text: Region
+    - if:
+      - user.rostratt.kf:
+        - span:
+          - class: val-chip val-kf
+          - text: Kommun
+    - if:
+      - user.rostratt.fo:
+        - span:
+          - class: val-chip val-fo
+          - text: Folkomröstning
+    - if:
+      - user.rostratt.eu:
+        - span:
+          - class: val-chip val-eu
+          - text: EU
+    - if:
+      - user.rostratt.st:
+        - span:
+          - class: val-chip val-st
+          - text: Sameting

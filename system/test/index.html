@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>promising – tests</title>
+  <style>
+    body { font: 14px/1.5 system-ui, sans-serif; margin: 2rem auto; max-width: 52rem; padding: 0 1rem; color: #1f1f1f; }
+    h2 { margin: 2rem 0 0.25rem; font-size: 1.15rem; }
+    .intro { margin: 0 0 0.75rem; color: #555; }
+    ul { list-style: none; padding: 0; margin: 0; }
+    li { padding: 0.5rem 0.75rem; border-left: 4px solid #ccc; margin-bottom: 0.4rem; background: #f7f7f7; }
+    li.pass { border-color: #137333; }
+    li.fail { border-color: #b3261e; background: #fdeceb; }
+    .name { font-weight: 600; }
+    .pass .name::before { content: '✓ '; color: #137333; }
+    .fail .name::before { content: '✗ '; color: #b3261e; }
+    .description { margin: 0.2rem 0 0; color: #444; }
+    .error { margin: 0.3rem 0 0; color: #b3261e; font-family: ui-monospace, monospace; font-size: 12px; white-space: pre-wrap; }
+    #summary { font-size: 1.1rem; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <h1>promising – tests</h1>
+  <p>Runs the tests for the system in <code>../</code>. Open the page through a web server, e.g. <code>http://localhost:8888/promising/system/test/</code>.</p>
+  <p id="summary">Running…</p>
+  <div id="results"></div>
+
+  <script src="../lib/js-yaml.min.js"></script>
+  <script src="../lib/hetmule.js"></script>
+  <script src="../yaml.js"></script>
+  <script src="../records.js"></script>
+  <script src="../render.js"></script>
+  <script src="../axioms.js"></script>
+  <script src="../dimensions.js"></script>
+  <script src="tests.js"></script>
+  <script>
+    let passed = 0, failed = 0;
+    H.mount('#results', groups.map(g => [
+      H.el('h2', g.title),
+      H.el('p', { class: 'intro' }, g.intro),
+      H.el('ul', g.tests.map(t => {
+        let error = null;
+        try { t.fn(); passed++; } catch (e) { error = e; failed++; }
+        return H.el('li', { class: error ? 'fail' : 'pass' },
+          H.el('div', { class: 'name' }, t.name),
+          H.el('p', { class: 'description' }, t.description),
+          error && H.el('p', { class: 'error' }, error.message));
+      })),
+    ]));
+    H.mount('#summary', `${passed} passed, ${failed} failed`);
+  </script>
+</body>
+</html>

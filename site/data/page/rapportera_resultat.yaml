@@ -1,0 +1,28 @@
+- p:
+  - text: Fyll i det preliminära antalet röster per val efter röstsammanräkning.
+- label:
+  - text: Riksdagsval — antal röster
+- input:
+  - to: resultat.rd
+  - type: text
+- label:
+  - text: Regionfullmäktige — antal röster
+- input:
+  - to: resultat.rf
+  - type: text
+- label:
+  - text: Kommunfullmäktige — antal röster
+- input:
+  - to: resultat.kf
+  - type: text
+- button:
+  - text: Skicka rapport
+  - to: resultat.skickad
+  - value: ja
+- span:
+  - if:
+    - resultat.skickad:
+      - p:
+        - text: Rapport skickad. Tack!
+    - else:
+      - text: ''

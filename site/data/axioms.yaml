@@ -1,0 +1,70 @@
+- axiom:
+  - id: fortidsrostning_aktivt
+  - type: time-window
+  - anchor: fokus_val_datum
+  - start: -18
+  - end: '0, 20:00'
+  - starting_soon:
+    - before: 1
+    - text: Snart kan du förtidsrösta.
+  - started:
+    - for: 2
+    - text: Förtidsröstningen har börjat!
+  - ending_soon:
+    - from: '0, 18:00'
+    - text: Snart stänger förtidsröstningen.
+  - ended:
+    - for: 3
+    - text: Förtidsröstningen är stängd.
+- axiom:
+  - id: utlandsrostning_aktivt
+  - type: time-window
+  - anchor: fokus_val_datum
+  - start: -24
+  - end: -3
+  - starting_soon:
+    - before: 3
+    - text: Snart öppnar möjligheten att rösta från utlandet.
+  - started:
+    - for: 2
+    - text: Nu är det möjligt att rösta från utlandet.
+  - ending_soon:
+    - before: 4
+    - text: Nu krymper möjligheterna att rösta från utlandet, på vissa håll är det redan för sent.
+  - ended:
+    - for: 4
+    - text: Det går inte längre att rösta från utlandet.
+- axiom:
+  - id: brevrostning_aktivt
+  - type: time-window
+  - anchor: fokus_val_datum
+  - start: -45
+  - end: 0
+  - starting_soon:
+    - before: 5
+    - text: Snart kan du brevrösta.
+  - started:
+    - text: Nu kan du brevrösta.
+  - ending_soon:
+    - before: 3
+    - text: Snart är sista dag att brevrösta.
+  - ended:
+    - for: 14
+    - text: Det går inte längre att brevrösta.
+- axiom:
+  - id: best_brevrost_aktivt
+  - type: time-window
+  - anchor: fokus_val_datum
+  - start: -60
+  - end: '-5, 20:00'
+  - starting_soon:
+    - before: 5
+    - text: Snart öppnar beställning av brevröstningsmaterial.
+  - started:
+    - text: Nu kan du beställa brevröstningsmaterial.
+  - ending_soon:
+    - before: 3
+    - text: Snart stänger beställningen av brevröstningsmaterial.
+  - ended:
+    - for: 7
+    - text: Det går inte längre att beställa brevröstningsmaterial.

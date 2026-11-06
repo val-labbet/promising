@@ -1,0 +1,14 @@
+- p:
+  - text: Du måste vara utomlands för att få brevrösta.
+- if:
+  - axiom.best_brevrost_aktivt:
+    - p:
+      - text: Du kan beställa brevröstningsmaterial
+- block-link:
+  - href: page:bestall_brevrostningsmaterial
+  - title: Beställ brevröstningsmaterial
+  - text: Du måste ha särskilt material för att brevrösta
+- block-link:
+  - href: page:registrera_brevrost
+  - title: Registrera brevröst
+  - text: Jag har redan brevröstningsmaterial, nu vill jag registrera min brevröst

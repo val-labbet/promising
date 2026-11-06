@@ -1,0 +1,13 @@
+- p:
+  - text: Hantera förtidsröstning.
+- if:
+  - '!user.funk.rm':
+    - p:
+      - text: Du är inte behörig.
+  - else:
+    - block-link:
+      - href: page:starta_fortidsrostning
+      - text: Börja ta emot förtidsröster
+    - block-link:
+      - href: page:snabbfraga
+      - text: Kontrollera kuvert

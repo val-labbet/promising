@@ -1,0 +1,18 @@
+- p:
+  - text: Ange personnummer för att kontrollera om en förtidsröst finns registrerad.
+- label:
+  - text: Personnummer
+- input:
+  - to: snabbfraga.personnummer
+  - type: text
+- button:
+  - text: Sök
+  - to: snabbfraga.sokts
+  - value: ja
+- span:
+  - if:
+    - snabbfraga.sokts:
+      - p:
+        - text: Ingen registrerad förtidsröst hittad för angivet personnummer.
+    - else:
+      - text: ''

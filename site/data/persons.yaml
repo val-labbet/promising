@@ -1,0 +1,763 @@
+- person:
+  - id: '1'
+  - personnummer: '190811019801'
+  - syfte: Ettan är "vanlig"
+  - namn:
+    - komplett: Ettan Ettansson
+    - fnamn: Ettan
+    - enamn: Ettansson
+  - rostlangdsnr:
+    - komplett: '0191010111'
+    - lan: '01'
+    - kommun: '0191'
+    - valdistrikt: '0101'
+    - nr: '11'
+  - rostratt:
+    - rd: Riksdagen, Stockholms län
+    - rf: Regionfullmäktige i Region Stockholm, Nordväst
+    - kf: Kommunfullmäktige i Sigtuna
+    - fo: null
+    - eu: Europaparlamentet
+    - st: null
+  - inte: null
+  - funk:
+    - rm: true
+    - vd: true
+    - rp: true
+- person:
+  - id: '2'
+  - personnummer: '190207029802'
+  - syfte: null
+  - namn:
+    - komplett: Tvåan Tvåansson
+    - fnamn: Tvåan
+    - enamn: Tvåansson
+  - rostlangdsnr:
+    - komplett: '226002025'
+    - lan: '22'
+    - kommun: '2260'
+    - valdistrikt: '0202'
+    - nr: '5'
+  - rostratt:
+    - rd: Riksdagen, Västernorrlands län
+    - rf: Regionfullmäktige i Region Västernorrland
+    - kf: Kommunfullmäktige i Ånge
+    - fo: null
+    - eu: Europaparlamentet
+    - st: null
+  - inte: null
+  - funk:
+    - rm: true
+- person:
+  - id: '3'
+  - personnummer: '193409037003'
+  - syfte: Tysk medborgare
+  - namn:
+    - komplett: Trean Treansson
+    - fnamn: Trean
+    - enamn: Treansson
+  - rostlangdsnr:
+    - komplett: '0330336325'
+    - lan: '03'
+    - kommun: '0330'
+    - valdistrikt: '3363'
+    - nr: '25'
+  - rostratt:
+    - rd: null
+    - rf: Regionfullmäktige i Region Uppsala, Uppsala läns mellersta
+    - kf: Kommunfullmäktige i Knivsta
+    - fo: null
+    - eu: Europaparlamentet
+    - eu-anm: '2012-01-02'
+    - st: null
+  - inte: null
+  - funk:
+    - vd: true
+    - rp: true
+- person:
+  - id: '4'
+  - personnummer: '190104049804'
+  - syfte: Indisk medborgare
+  - namn:
+    - komplett: Fyran Fyransson
+    - fnamn: Fyran
+    - enamn: Fyransson
+  - rostlangdsnr:
+    - komplett: '048401043'
+    - lan: '04'
+    - kommun: '0484'
+    - valdistrikt: '0104'
+    - nr: '3'
+  - rostratt:
+    - rd: null
+    - rf: Regionfullmäktige i Region Sörmland
+    - kf: Kommunfullmäktige i Eskilstuna
+    - fo: null
+    - eu: null
+    - st: null
+  - inte: null
+  - funk:
+    - tr: true
+- person:
+  - id: '5'
+  - personnummer: '190508059805'
+  - syfte: Utlandssvensk
+  - namn:
+    - komplett: Femman Femmansson
+    - fnamn: Femman
+    - enamn: Femmansson
+  - rostlangdsnr:
+    - komplett: '058035058'
+    - lan: '05'
+    - kommun: '0580'
+    - valdistrikt: '3505'
+    - nr: '8'
+  - rostratt:
+    - rd: Riksdagen, Östergötlands län
+    - rf: null
+    - kf: null
+    - fo: null
+    - eu: Europaparlamentet
+    - st: null
+  - inte: null
+  - funk: null
+- person:
+  - id: '6'
+  - personnummer: '190605069806'
+  - syfte: Vanlig
+  - namn:
+    - komplett: Sexan Sexansson
+    - fnamn: Sexan
+    - enamn: Sexansson
+  - rostlangdsnr:
+    - komplett: '0662010610'
+    - lan: '06'
+    - kommun: '0662'
+    - valdistrikt: '0106'
+    - nr: '10'
+  - rostratt:
+    - rd: Riksdagen, Jönköpings län
+    - rf: Regionfullmäktige i Jönköpings län, Tredje valkretsen
+    - kf: Kommunfullmäktige i Gislaved
+    - fo: null
+    - eu: Europaparlamentet
+    - st: null
+  - inte: null
+  - funk: null
+- person:
+  - id: '7'
+  - personnummer: '195008072307'
+  - syfte: Utlandssvensk
+  - namn:
+    - komplett: Sjuan Sjuansson
+    - fnamn: Sjuan
+    - enamn: Sjuansson
+  - rostlangdsnr:
+    - komplett: '1480070750'
+    - lan: '14'
+    - kommun: '1480'
+    - valdistrikt: '0707'
+    - nr: '50'
+  - rostratt:
+    - rd: Riksdagen, Kronobergs län
+    - rf: null
+    - kf: null
+    - fo: null
+    - eu: null
+    - st: null
+  - inte: null
+  - funk: null
+- person:
+  - id: '8'
+  - personnummer: '195401080808'
+  - syfte: Kommunal folkomröstning
+  - namn:
+    - komplett: Åttan Åttansson
+    - fnamn: Åttan
+    - enamn: Åttansson
+  - rostlangdsnr:
+    - komplett: '0885080860'
+    - lan: '08'
+    - kommun: '0885'
+    - valdistrikt: '0808'
+    - nr: '60'
+  - rostratt:
+    - rd: Riksdagen, Kalmar län
+    - rf: Regionfullmäktige i Region Kalmar län, Kalmar 6 Borgholm Mörbylånga
+    - kf: Kommunfullmäktige i Borgholm
+    - fo: Borgholm
+    - eu: Europaparlamentet
+    - st: null
+  - inte: null
+  - funk: null
+- person:
+  - id: '9'
+  - personnummer: '190906099809'
+  - syfte: Gotland
+  - namn:
+    - komplett: Nian Niansson
+    - fnamn: Nian
+    - enamn: Niansson
+  - rostlangdsnr:
+    - komplett: '0980010912'
+    - lan: '09'
+    - kommun: '0980'
+    - valdistrikt: '0109'
+    - nr: '12'
+  - rostratt:
+    - rd: Riksdagen, Gotlands län
+    - rf: null
+    - kf: Kommunfullmäktige i Gotland
+    - fo: null
+    - eu: Europaparlamentet
+    - st: null
+  - inte: null
+  - funk: null
+- person:
+  - id: '10'
+  - personnummer: '199011102010'
+  - syfte: Kommunvalkrets
+  - namn:
+    - komplett: Tian Tiansson
+    - fnamn: Tian
+    - enamn: Tiansson
+  - rostlangdsnr:
+    - komplett: '10801002181'
+    - lan: '10'
+    - kommun: '1080'
+    - valdistrikt: '1002'
+    - nr: '181'
+  - rostratt:
+    - rd: Riksdagen, Blekinge län
+    - rf: Region Blekinge, Karlskronakretsen
+    - kf: Kommunfullmäktige i Karlskrona, Karlskrona Ö
+    - fo: null
+    - eu: Europaparlamentet
+    - st: null
+  - inte: null
+  - funk: null
+  - parti:
+    - kand: true
+    - vald: true
+    - padm: true
+- person:
+  - id: '11'
+  - personnummer: '190411119811'
+  - syfte: null
+  - namn:
+    - komplett: Elvan Elvansson
+    - fnamn: Elvan
+    - enamn: Elvansson
+  - rostlangdsnr:
+    - komplett: '019101017'
+    - lan: '01'
+    - kommun: '0191'
+    - valdistrikt: '0101'
+    - nr: '7'
+  - rostratt:
+    - rd: Riksdagen, Stockholms län
+    - rf: Regionfullmäktige i Region Stockholm, Nordväst
+    - kf: Kommunfullmäktige i Sigtuna
+    - fo: null
+    - eu: Europaparlamentet
+    - st: null
+  - inte: null
+  - funk: null
+  - parti:
+    - kand: true
+    - padm: true
+- person:
+  - id: '12'
+  - personnummer: '191212121212'
+  - syfte: Allt på, inklusive sameting
+  - namn:
+    - komplett: Tolvan Tolvansson
+    - fnamn: Tolvan
+    - enamn: Tolvansson
+  - rostlangdsnr:
+    - komplett: '1284001218'
+    - lan: '12'
+    - kommun: '1284'
+    - valdistrikt: '0012'
+    - nr: '18'
+  - rostratt:
+    - rd: Riksdagen, Skåne läns västra valkrets
+    - rf: Regionfullmäktige i Region Skåne, Nordvästkretsen
+    - kf: Kommunfullmäktige i Höganäs
+    - fo: Höganäs
+    - eu: Europaparlamentet
+    - st: Sametinget
+  - inte: null
+  - funk: null
+- person:
+  - id: '13'
+  - personnummer: '190003139813'
+  - syfte: Tysk medborgare, men inte anmäld till svenska röstlängden
+  - namn:
+    - komplett: Tretton Trettonsson
+    - fnamn: Tretton
+    - enamn: Trettonsson
+  - rostlangdsnr:
+    - komplett: '033033631'
+    - lan: '03'
+    - kommun: '0330'
+    - valdistrikt: '3363'
+    - nr: '1'
+  - rostratt:
+    - rd: null
+    - rf: Regionfullmäktige i Region Uppsala, Uppsala läns mellersta
+    - kf: Kommunfullmäktige i Knivsta
+    - fo: null
+    - eu: null
+    - eu-anm: null
+    - st: null
+  - inte: null
+  - funk: null
+- person:
+  - id: '14'
+  - personnummer: '199909142383'
+  - syfte: Indisk medborgare
+  - namn:
+    - komplett: Fjorton Fjortonsson
+    - fnamn: Fjorton
+    - enamn: Fjortonsson
+  - rostlangdsnr:
+    - komplett: '04840104209'
+    - lan: '04'
+    - kommun: '0484'
+    - valdistrikt: '0104'
+    - nr: '209'
+  - rostratt:
+    - rd: null
+    - rf: Regionfullmäktige i Region Sörmland
+    - kf: Kommunfullmäktige i Eskilstuna
+    - fo: null
+    - eu: null
+    - st: null
+  - inte: null
+  - funk: null
+- person:
+  - id: '15'
+  - personnummer: '190405159815'
+  - syfte: Utlandssvensk
+  - namn:
+    - komplett: Femton Femtonsson
+    - fnamn: Femton
+    - enamn: Femtonsson
+  - rostlangdsnr:
+    - komplett: '058035056'
+    - lan: '05'
+    - kommun: '0580'
+    - valdistrikt: '3505'
+    - nr: '6'
+  - rostratt:
+    - rd: Riksdagen, Östergötlands län
+    - rf: null
+    - kf: null
+    - fo: null
+    - eu: Europaparlamentet
+    - st: null
+  - inte: null
+  - funk: null
+- person:
+  - id: '16'
+  - personnummer: '190106169816'
+  - syfte: null
+  - namn:
+    - komplett: Sexton Sextonsson
+    - fnamn: Sexton
+    - enamn: Sextonsson
+  - rostlangdsnr:
+    - komplett: '066201064'
+    - lan: '06'
+    - kommun: '0662'
+    - valdistrikt: '0106'
+    - nr: '4'
+  - rostratt:
+    - rd: Riksdagen, Jönköpings län
+    - rf: Regionfullmäktige i Jönköpings län, Tredje valkretsen
+    - kf: Kommunfullmäktige i Gislaved
+    - fo: null
+    - eu: Europaparlamentet
+    - st: null
+  - inte: null
+  - funk: null
+- person:
+  - id: '17'
+  - personnummer: '193211179217'
+  - syfte: Utlandssvensk
+  - namn:
+    - komplett: Sjutton Sjuttonsson
+    - fnamn: Sjutton
+    - enamn: Sjuttonsson
+  - rostlangdsnr:
+    - komplett: '0180171723'
+    - lan: '01'
+    - kommun: '0180'
+    - valdistrikt: '1717'
+    - nr: '23'
+  - rostratt:
+    - rd: Riksdagen, Kronobergs län
+    - rf: null
+    - kf: null
+    - fo: null
+    - eu: null
+    - st: null
+  - inte: null
+  - funk: null
+- person:
+  - id: '18'
+  - personnummer: '195211182018'
+  - syfte: Kommunal folkomröstning
+  - namn:
+    - komplett: Arton Artonsson
+    - fnamn: Arton
+    - enamn: Artonsson
+  - rostlangdsnr:
+    - komplett: '0885080857'
+    - lan: '08'
+    - kommun: '0885'
+    - valdistrikt: '0808'
+    - nr: '57'
+  - rostratt:
+    - rd: Riksdagen, Kalmar län
+    - rf: Regionfullmäktige i Region Kalmar län, Kalmar 6 Borgholm Mörbylånga
+    - kf: Kommunfullmäktige i Borgholm
+    - fo: null
+    - eu: Europaparlamentet
+    - st: null
+  - inte: null
+  - funk: null
+- person:
+  - id: '19'
+  - personnummer: '195609192819'
+  - syfte: Gotland
+  - namn:
+    - komplett: Nitton Nittonsson
+    - fnamn: Nitton
+    - enamn: Nittonsson
+  - rostlangdsnr:
+    - komplett: '0980010966'
+    - lan: '09'
+    - kommun: '0980'
+    - valdistrikt: '0109'
+    - nr: '66'
+  - rostratt:
+    - rd: Riksdagen, Gotlands län
+    - rf: null
+    - kf: Kommunfullmäktige i Gotland
+    - fo: null
+    - eu: Europaparlamentet
+    - st: null
+  - inte: null
+  - funk: null
+- person:
+  - id: '20'
+  - personnummer: '193407207020'
+  - syfte: Kommunvalkrets
+  - namn:
+    - komplett: Tjugo Tjugosson
+    - fnamn: Tjugo
+    - enamn: Tjugosson
+  - rostlangdsnr:
+    - komplett: '1080100224'
+    - lan: '10'
+    - kommun: '1080'
+    - valdistrikt: '1002'
+    - nr: '24'
+  - rostratt:
+    - rd: Riksdagen, Blekinge län
+    - rf: Region Blekinge, Karlskronakretsen
+    - kf: Kommunfullmäktige i Karlskrona, Karlskrona Ö
+    - fo: null
+    - eu: Europaparlamentet
+    - st: null
+  - inte: null
+  - funk: null
+- person:
+  - id: '21'
+  - personnummer: '196007212613'
+  - syfte: null
+  - namn:
+    - komplett: Tjugoett Tjugoettsson
+    - fnamn: Tjugoett
+    - enamn: Tjugoettsson
+  - rostlangdsnr:
+    - komplett: '0191010168'
+    - lan: '01'
+    - kommun: '0191'
+    - valdistrikt: '0101'
+    - nr: '68'
+  - rostratt:
+    - rd: Riksdagen, Stockholms län
+    - rf: Regionfullmäktige i Region Stockholm, Nordväst
+    - kf: Kommunfullmäktige i Sigtuna
+    - fo: null
+    - eu: Europaparlamentet
+    - st: null
+  - inte: null
+  - funk: null
+- person:
+  - id: '22'
+  - personnummer: '192706229222'
+  - syfte: Allt på
+  - namn:
+    - komplett: Tjugotvå Tjugotvåsson
+    - fnamn: Tjugotvå
+    - enamn: Tjugotvåsson
+  - rostlangdsnr:
+    - komplett: '1284001222'
+    - lan: '12'
+    - kommun: '1284'
+    - valdistrikt: '0012'
+    - nr: '22'
+  - rostratt:
+    - rd: Riksdagen, Skåne läns västra valkrets
+    - rf: Regionfullmäktige i Region Skåne, Nordvästkretsen
+    - kf: Kommunfullmäktige i Höganäs
+    - fo: null
+    - eu: Europaparlamentet
+    - st: Sametinget
+  - inte: null
+  - funk: null
+- person:
+  - id: '23'
+  - personnummer: '190512239823'
+  - syfte: Tysk medborgare
+  - namn:
+    - komplett: Tjugotre Tjugotresson
+    - fnamn: Tjugotre
+    - enamn: Tjugotresson
+  - rostlangdsnr:
+    - komplett: '033033639'
+    - lan: '03'
+    - kommun: '0330'
+    - valdistrikt: '3363'
+    - nr: '9'
+  - rostratt:
+    - rd: null
+    - rf: Regionfullmäktige i Region Uppsala, Uppsala läns mellersta
+    - kf: Kommunfullmäktige i Knivsta
+    - fo: null
+    - eu: Europaparlamentet
+    - st: null
+  - inte: null
+  - funk: null
+- person:
+  - id: '24'
+  - personnummer: '198003242396'
+  - syfte: Indisk medborgare
+  - namn:
+    - komplett: Tjugofyra Tjugofyrasson
+    - fnamn: Tjugofyra
+    - enamn: Tjugofyrasson
+  - rostlangdsnr:
+    - komplett: '04840104103'
+    - lan: '04'
+    - kommun: '0484'
+    - valdistrikt: '0104'
+    - nr: '103'
+  - rostratt:
+    - rd: null
+    - rf: Regionfullmäktige i Region Sörmland
+    - kf: Kommunfullmäktige i Eskilstuna
+    - fo: null
+    - eu: null
+    - st: null
+  - inte: null
+  - funk: null
+- person:
+  - id: '25'
+  - personnummer: '199601259725'
+  - syfte: Utlandssvensk
+  - namn:
+    - komplett: Tjugofem Tjugofemsson
+    - fnamn: Tjugofem
+    - enamn: Tjugofemsson
+  - rostlangdsnr:
+    - komplett: '05803505202'
+    - lan: '05'
+    - kommun: '0580'
+    - valdistrikt: '3505'
+    - nr: '202'
+  - rostratt:
+    - rd: Riksdagen, Östergötlands län
+    - rf: null
+    - kf: null
+    - fo: null
+    - eu: Europaparlamentet
+    - st: null
+  - inte: null
+  - funk: null
+- person:
+  - id: '26'
+  - personnummer: '195401263826'
+  - syfte: null
+  - namn:
+    - komplett: Tjugosex Tjugosexsson
+    - fnamn: Tjugosex
+    - enamn: Tjugosexsson
+  - rostlangdsnr:
+    - komplett: '0662010661'
+    - lan: '06'
+    - kommun: '0662'
+    - valdistrikt: '0106'
+    - nr: '61'
+  - rostratt:
+    - rd: Riksdagen, Jönköpings län
+    - rf: Regionfullmäktige i Jönköpings län, Tredje valkretsen
+    - kf: Kommunfullmäktige i Gislaved
+    - fo: null
+    - eu: Europaparlamentet
+    - st: null
+  - inte: null
+  - funk: null
+- person:
+  - id: '27'
+  - personnummer: '195401277024'
+  - syfte: Utlandssvensk
+  - namn:
+    - komplett: Tjugosju Tjugosjusson
+    - fnamn: Tjugosju
+    - enamn: Tjugosjusson
+  - rostlangdsnr:
+    - komplett: '0180272762'
+    - lan: '01'
+    - kommun: '0180'
+    - valdistrikt: '2727'
+    - nr: '62'
+  - rostratt:
+    - rd: Riksdagen, Stockholms stad
+    - rf: null
+    - kf: null
+    - fo: null
+    - eu: null
+    - st: null
+  - inte: null
+  - funk: null
+- person:
+  - id: '28'
+  - personnummer: '198106282380'
+  - syfte: Kommunal folkomröstning
+  - namn:
+    - komplett: Tjugoåtta Tjugoåttasson
+    - fnamn: Tjugoåtta
+    - enamn: Tjugoåttasson
+  - rostlangdsnr:
+    - komplett: '08850808107'
+    - lan: '08'
+    - kommun: '0885'
+    - valdistrikt: '0808'
+    - nr: '107'
+  - rostratt:
+    - rd: Riksdagen, Kalmar län
+    - rf: Regionfullmäktige i Region Kalmar län, Kalmar 6 Borgholm Mörbylånga
+    - kf: Kommunfullmäktige i Borgholm
+    - fo: null
+    - eu: Europaparlamentet
+    - st: null
+  - inte: null
+  - funk: null
+- person:
+  - id: '29'
+  - personnummer: '199501292388'
+  - syfte: Gotland
+  - namn:
+    - komplett: Tjugonio Tjugoniosson
+    - fnamn: Tjugonio
+    - enamn: Tjugoniosson
+  - rostlangdsnr:
+    - komplett: '0980010999'
+    - lan: '09'
+    - kommun: '0980'
+    - valdistrikt: '0109'
+    - nr: '99'
+  - rostratt:
+    - rd: Riksdagen, Gotlands län
+    - rf: null
+    - kf: Kommunfullmäktige i Gotland
+    - fo: null
+    - eu: Europaparlamentet
+    - st: null
+  - inte: null
+  - funk: null
+- person:
+  - id: '30'
+  - personnummer: '197903309230'
+  - syfte: Utlandssvensk som trillat ur
+  - namn:
+    - komplett: Trettio Trettiosson
+    - fnamn: Trettio
+    - enamn: Trettiosson
+  - rostlangdsnr:
+    - komplett: null
+    - lan: null
+    - kommun: null
+    - valdistrikt: null
+    - nr: null
+  - rostratt:
+    - rd: Riksdagen, Blekinge län
+    - rf: null
+    - kf: null
+    - fo: null
+    - eu: null
+    - st: null
+  - inte: null
+  - funk: null
+- person:
+  - id: '31'
+  - personnummer: '199801312381'
+  - syfte: Skyddade uppgifter
+  - namn:
+    - komplett: Trettioett Trettioettsson
+    - fnamn: Trettioett
+    - enamn: Trettioettsson
+  - rostlangdsnr:
+    - komplett: '10801002207'
+    - lan: '10'
+    - kommun: '1080'
+    - valdistrikt: '1002'
+    - nr: '207'
+  - rostratt:
+    - rd: Riksdagen, Blekinge län
+    - rf: Region Blekinge, Karlskronakretsen
+    - kf: Kommunfullmäktige i Karlskrona, Karlskrona Ö
+    - fo: null
+    - eu: Europaparlamentet
+    - st: null
+  - inte: inte
+  - funk: null
+- person:
+  - id: A
+  - personnummer: '190008059800'
+  - syfte: Alfa har ingen rösträtt
+  - namn:
+    - komplett: Alfa Alfasson
+    - fnamn: Alfa
+    - enamn: Alfasson
+  - rostlangdsnr:
+    - komplett: null
+    - lan: null
+    - kommun: null
+    - valdistrikt: null
+    - nr: null
+  - rostratt: null
+  - inte: null
+  - funk: null
+- person:
+  - id: B
+  - personnummer: null
+  - syfte: Beta är inte inloggad - ska man ändå kunna surfa runt på mina sidor?
+  - namn:
+    - komplett: null
+    - fnamn: null
+    - enamn: null
+  - rostlangdsnr:
+    - komplett: null
+    - lan: null
+    - kommun: null
+    - valdistrikt: null
+    - nr: null
+  - rostratt: null
+  - inte: null
+  - funk: null

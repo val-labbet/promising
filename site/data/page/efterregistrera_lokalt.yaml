@@ -1,0 +1,22 @@
+- p:
+  - text: Lokal efterregistrering för röster som kräver komplettering på kommunal nivå.
+- label:
+  - text: Personnummer
+- input:
+  - to: efterreg_l.personnummer
+  - type: text
+- label:
+  - text: Kommentar
+- textarea:
+  - to: efterreg_l.kommentar
+- button:
+  - text: Registrera
+  - to: efterreg_l.registrerad
+  - value: ja
+- span:
+  - if:
+    - efterreg_l.registrerad:
+      - p:
+        - text: Efterregistrering genomförd lokalt.
+    - else:
+      - text: ''

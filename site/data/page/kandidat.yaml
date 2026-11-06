@@ -1,0 +1,18 @@
+- p:
+  - text: Information om din kandidatur i valet.
+- if:
+  - user.parti.kand:
+    - p:
+      - text: Jag är kandidat
+  - else:
+    - p:
+      - text: Du verkar inte ha någon kandidatur, varken tidigare eller nuvarande.
+- ul:
+  - li:
+    - text: Lämna samtycke
+  - li:
+    - text: Båbörja ärende om att ta tillbaka samtycke
+  - li:
+    - text: Svara på kandidaturförfrågan. Ett parti har satt upp dig på en lista - är det ok?
+  - li:
+    - text: Se vilka valsedlar jag står på.

@@ -1,0 +1,151 @@
+- structure:
+  - id: default
+  - structure:
+    - href: start
+    - title: Start
+    - structure:
+      - href: valjare
+      - title: Jag som väljare
+      - icon: 🗳️
+      - color: '#1a6e3c'
+      - structure:
+        - href: rostratt
+        - title: Min rösträtt
+        - structure:
+          - href: rostlangd
+          - title: Min plats i röstlängden
+      - structure:
+        - href: rosta
+        - title: Jag vill rösta
+        - structure:
+          - href: fortidsrosta
+          - title: Förtidsrösta
+        - structure:
+          - href: rosta_i_vallokal
+          - title: Rösta i vallokal
+        - structure:
+          - href: rosta_fran_utlandet
+          - title: Rösta från utlandet
+          - structure:
+            - href: ambassadrosta
+            - title: Rösta på ambassad eller konsulat
+          - structure:
+            - href: brevrosta
+            - title: Brevrösta
+            - structure:
+              - href: bestall_brevrostningsmaterial
+              - title: Beställ brevröstningsmaterial
+            - structure:
+              - href: registrera_brevrost
+              - title: Registrera brevröst
+        - structure:
+          - href: hjalp_att_rosta
+          - title: Hjälp att rösta
+      - structure:
+        - href: anmal_rostlangd
+        - title: Anmälan till röstlängd
+      - structure:
+        - href: hur_gick_det
+        - title: Hur gick det i valet?
+      - structure:
+        - href: namninsamling
+        - title: Namninsamling
+    - structure:
+      - href: parti
+      - title: Jag som partiföreträdare
+      - icon: 🏛️
+      - color: '#7b3fa0'
+      - structure:
+        - href: kandidat
+        - title: Kandidat
+      - structure:
+        - href: vald
+        - title: Vald
+      - structure:
+        - href: partiombud
+        - title: Partiadministratör
+    - structure:
+      - href: valfunktionar
+      - title: Jag som valfunktionär
+      - icon: 🦺
+      - color: '#b05000'
+      - structure:
+        - href: vallokal
+        - title: Röstmottagning i vallokal
+        - structure:
+          - href: ta_emot_rost
+          - title: Ta emot röst
+        - structure:
+          - href: granska_fortidsrost
+          - title: Granska förtidsröster
+      - structure:
+        - href: rapportera_resultat
+        - title: Rapportera preliminärt valresultat
+      - structure:
+        - href: fortidsrostning
+        - title: Förtidsröstning
+        - structure:
+          - href: starta_fortidsrostning
+          - title: Ta emot förtidsröster
+        - structure:
+          - href: ta_emot_fortidsrost
+          - title: Registrera förtidsröst
+        - structure:
+          - href: snabbfraga
+          - title: Identifiera förtidsröst
+      - structure:
+        - href: incidentrapport
+        - title: Incidentrapport
+      - structure:
+        - href: tryckeri
+        - title: Tryckeri
+    - structure:
+      - href: om_mig
+      - title: Om mig/inställningar
+      - icon: 👤
+      - structure:
+        - href: mina_data
+        - title: Mina data
+    - structure:
+      - href: finis_start
+      - title: Start (efter val)
+      - structure:
+        - href: efterregistrera_centralt
+        - title: Efterregistrera centralt
+      - structure:
+        - href: efterregistrera_lokalt
+        - title: Efterregistrera lokalt
+- structure:
+  - id: snal
+  - structure:
+    - href: rostratt
+    - title: Min rösträtt
+    - structure:
+      - href: rostlangd
+      - title: Röstlängd
+- structure:
+  - id: meta
+  - structure:
+    - href: meta/pages
+    - title: Metanivån
+    - icon: 🧭
+    - color: '#6b3fa0'
+    - open: true
+    - structure:
+      - href: meta/structures
+      - title: Strukturer
+    - structure:
+      - href: meta/axioms
+      - title: Axiom
+    - structure:
+      - href: meta/persons
+      - title: Testpersoner
+    - structure:
+      - href: meta/components
+      - title: Komponenter
+    - structure:
+      - href: meta/dimensions
+      - title: Dimensioner
+    - structure:
+      - href: meta/model
+      - title: Modellen

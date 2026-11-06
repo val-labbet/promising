@@ -1,0 +1,20 @@
+- h1:
+  - text: Välj testperson
+- ul:
+  - class: person-list
+  - per:
+    - persons[p]:
+      - li:
+        - button:
+          - class: person-button
+          - to: user_id
+          - value: '{p.id}'
+          - go: '{return_page}'
+          - span:
+            - class: person-name
+            - text: '{p.id}. {p.namn.fnamn} {p.namn.enamn}'
+          - if:
+            - p.syfte:
+              - span:
+                - class: person-purpose
+                - text: '{p.syfte}'

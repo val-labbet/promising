@@ -1,0 +1,29 @@
+- dimension:
+  - id: logged_in
+  - title: Inloggad
+  - group: role
+  - when: user
+- dimension:
+  - id: dev-text
+  - title: Ändra text
+- dimension:
+  - id: dev-code
+  - title: Redigera yaml
+- dimension:
+  - id: dev-variables
+  - title: Visa variabler
+- dimension:
+  - id: dev-model
+  - title: Modellen
+- dimension:
+  - id: dev-persons
+  - title: Testpersoner
+- dimension:
+  - id: dev-time
+  - title: Tidpunkt
+- dimension:
+  - id: dev-menu
+  - title: Menysynlighet
+- dimension:
+  - id: dev-files
+  - title: Filer

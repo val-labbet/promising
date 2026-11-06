@@ -1,0 +1,22 @@
+- p:
+  - text: Saknar du din rösträtt? Fyll i en anmälan nedan.
+- label:
+  - text: Personnummer
+- input:
+  - to: anmalan.personnummer
+  - type: text
+- label:
+  - text: Anledning till anmälan
+- textarea:
+  - to: anmalan.anledning
+- button:
+  - text: Skicka anmälan
+  - to: anmalan.skickad
+  - value: ja
+- span:
+  - if:
+    - anmalan.skickad:
+      - p:
+        - text: Anmälan registrerad. Du kommer att kontaktas.
+    - else:
+      - text: ''

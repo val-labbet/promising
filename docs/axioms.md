@@ -1,0 +1,105 @@
+# Axioms
+
+An axiom is a statement about the model that is true or false: *you may vote*, *postal voting is open*. They live in `data/axioms.yaml` and are worked out again on every change: a new user, another point in time, a field typed into.
+
+Pages read them like any other value:
+
+```yaml
+- if:
+  - axiom.brevrostning_aktivt:
+    - p:
+      - text: '{axiom.brevrostning_aktivt_news}'
+```
+
+| In the model | |
+|---|---|
+| `axiom.<id>` | `true` or `false` |
+| `axiom.<id>_news` | what is new about it right now, or `null` |
+
+Axioms are worked out in file order, so an axiom can use the ones above it.
+
+## condition
+
+The default type. `when`, `all` and `any` take conditions written as in `if`.
+
+```yaml
+- axiom:
+  - id: myndig
+  - when: user.alder >= 18
+- axiom:
+  - id: kan_rosta_eu
+  - all:
+    - axiom.myndig
+    - user.medborgare_eu
+  - text: Du får rösta i Europaparlamentsvalet.
+- axiom:
+  - id: rostratt_nagot
+  - any:
+    - user.rostratt.rd
+    - user.rostratt.kf
+```
+
+All of `when` and `all` must hold, and at least one of `any`. `text` becomes the news while the axiom is true.
+
+A condition is a path (true unless empty, `false` or `null`), `!` in front negates, and a comparison compares with a number, a text, `true`/`false`/`null` or a `{path}`:
+
+```
+user                      user.alder >= 18          time >= 2026-09-01
+!user                     user.id == 2              user.alder < {grans}
+```
+
+Numbers compare as numbers, everything else as text, so dates work as long as they are written the same way. The same conditions work in `if` on pages.
+
+## time-window
+
+True between `start` and `end`. With an `anchor`, they are days relative to the date at that model path; without, they are dates.
+
+```yaml
+- axiom:
+  - id: brevrostning_aktivt
+  - type: time-window
+  - anchor: fokus_val_datum     # 0 is election day
+  - start: -45                  # 45 days before
+  - end: '-5, 20:00'            # 20:00 five days before
+- axiom:
+  - id: hostterminen
+  - type: time-window
+  - start: '2026-08-17'
+  - end: '2026-12-18'
+```
+
+If the anchor is empty (no election ahead, say) the axiom is false.
+
+The news follows four phases. The latest one that has happened wins.
+
+```yaml
+  - starting_soon:              # before start
+    - before: 5                 # from 5 days before (default 1)
+    - text: Snart kan du brevrösta.
+  - started:                    # after start
+    - for: 2                    # for 2 days (default: until something else happens)
+    - text: Nu kan du brevrösta.
+  - ending_soon:                # before end
+    - from: '0, 18:00'          # from a point, instead of a number of days before
+    - text: Snart stänger brevröstningen.
+  - ended:                      # after end
+    - for: 14
+    - text: Det går inte längre att brevrösta.
+```
+
+## Types of your own
+
+A site can add types in its `site.js`. The function gets the axiom as an object and the model, and returns `{ value, news }`.
+
+```js
+Promising.axioms.type('weekday', (axiom, model) => {
+  const day = new Date(model.time).getDay();
+  return { value: day > 0 && day < 6 };
+});
+```
+
+```yaml
+- axiom:
+  - id: vardag
+  - type: weekday
+```

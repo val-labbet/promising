@@ -1,0 +1,12 @@
+- p:
+  - text: Börja med att säkerställa identiteten på personen framför dig.
+- label:
+  - text: Personnummer
+- input:
+  - to: fortidsrost.personnummer
+  - type: text
+  - autofocus: autofocus
+- button:
+  - text: Sök
+  - to: fortidsrost.registrerad
+  - value: ja

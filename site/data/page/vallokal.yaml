@@ -1,0 +1,14 @@
+- p:
+  - text: Vallokalen är öppen valdagen 08:00–20:00. Här hanteras röstmottagning, förtidsröster och preliminär rapportering.
+- dl:
+  - dt:
+    - text: Vallokal
+  - dd:
+    - text: '{user.rostratt.kf}'
+  - dt:
+    - text: Ansvarig röstmottagare
+  - dd:
+    - text: '{user.namn.fnamn} {user.namn.enamn}'
+- ul:
+  - li:
+    - text: Beskriv 'vår' lokal, lägg in tillfälliga meddelanden, t.ex. 'Just nu är det köer', eller 'Vi kommer att stänga tillfälligt 1 timme mellan kl. 13-14 idag.'

@@ -1,0 +1,6 @@
+- p:
+  - text: Om du är utomlands kan du rösta på svenska ambassader och konsulat.
+- if:
+  - axiom.utlandsrostning_aktivt:
+    - p:
+      - text: Röstmottagningen är öppen.

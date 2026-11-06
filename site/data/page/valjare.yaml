@@ -1,0 +1,37 @@
+- p:
+  - text: Här finns information om din rösträtt och hur du röstar.
+- a:
+  - class: block-link
+  - href: page:rostratt
+  - div:
+    - class: block-link-body
+    - h2:
+      - class: block-link-title
+      - text: Min rösträtt
+    - if:
+      - '!user.personnummer':
+        - p:
+          - text: Du måste vara inloggad för att se din rösträtt
+          - class: block-link-text
+      - user.rostratt:
+        - val-chips: []
+      - else:
+        - p:
+          - text: Jag har ingen rösträtt
+          - class: block-link-text
+- block-link:
+  - href: page:rosta
+  - title: Jag vill rösta
+  - text: Olika sätt att rösta
+- block-link:
+  - href: page:hur_gick_det
+  - text: Valresultatet hos mig
+- block-link:
+  - href: page:namninsamling
+  - title: Namninsamling
+  - text: Skriv under namninsamling
+- ul:
+  - li:
+    - text: Klaga, incident, överklaga
+  - li:
+    - text: Följ min röst

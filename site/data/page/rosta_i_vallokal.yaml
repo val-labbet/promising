@@ -1,0 +1,34 @@
+- p:
+  - text: Gå till din vallokal på valdagen (öppen 08:00–20:00).
+- ul:
+  - li:
+    - text: '''Logga in'' i min vallokal'
+    - ul:
+      - li:
+        - text: Se hur det kommer att se ut när jag kommer dit, planlösning?
+  - li:
+    - text: Avisera när jag kommer och om jag behöver särskild hjälp
+- h2:
+  - text: Hitta din vallokal
+- search:
+  - in: vallokaler.json
+  - fields:
+    - LOKAL
+    - ADRESS2
+    - VALDISTRIKT
+    - KOMMUN
+  - placeholder: Sök på ort, adress eller lokal…
+  - max: 20
+  - to: vallokal_traffar
+- if:
+  - vallokal_traffar:
+    - ul:
+      - class: search-hits
+      - per:
+        - vallokal_traffar[v]:
+          - li:
+            - strong:
+              - text: '{v.LOKAL}'
+            - br: []
+            - small:
+              - text: '{v.ADRESS2}, {v.KOMMUN} ({v.VALDISTRIKT})'

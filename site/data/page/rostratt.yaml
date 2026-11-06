@@ -1,0 +1,78 @@
+- if:
+  - user.personnummer:
+    - p:
+      - text: 'Du har rösträtt i följande val:'
+    - dl:
+      - dt:
+        - text: Riksdagsval
+      - dd:
+        - text: '{user.rostratt.rd}'
+      - dt:
+        - text: Regionfullmäktige
+      - dd:
+        - text: '{user.rostratt.rf}'
+      - dt:
+        - text: Kommunfullmäktige
+      - dd:
+        - text: '{user.rostratt.kf}'
+      - dt:
+        - text: Folkomröstning
+      - dd:
+        - text: '{user.rostratt.fo}'
+      - dt:
+        - text: Europaparlamentet
+      - dd:
+        - text: '{user.rostratt.eu}'
+      - dt:
+        - text: Sametinget
+      - dd:
+        - text: '{user.rostratt.st}'
+    - block-link:
+      - href: page:rostlangd
+      - title: Min plats i röstlängden
+    - ul:
+      - li:
+        - text: Röstkort, indikation på om det skickats
+      - li:
+        - text: Anmälan/avanmälan till Europaröstlängden
+      - li:
+        - text: Utlandssvensk - anmälan till röstlängd
+      - li:
+        - text: Historik, så många val har jag haft rösträtt
+      - li:
+        - text: Rösträttsintyg
+      - li:
+        - text: Gränserna för mitt valdistrikt
+  - else:
+    - p:
+      - text: Du måste vara inloggad för att se din rösträtt.
+- if:
+  - user.rostratt.rd:
+    - p:
+      - text: rd
+      - class: val-rd
+- if:
+  - user.rostratt.rf:
+    - p:
+      - text: rf
+      - class: val-rf
+- if:
+  - user.rostratt.kf:
+    - p:
+      - text: kf
+      - class: val-kf
+- if:
+  - user.rostratt.fo:
+    - p:
+      - text: fo
+      - class: val-fo
+- if:
+  - user.rostratt.eu:
+    - p:
+      - text: eu
+      - class: val-eu
+- if:
+  - user.rostratt.st:
+    - p:
+      - text: st
+      - class: val-st

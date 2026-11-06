@@ -1,0 +1,22 @@
+- p:
+  - text: Registrera röster som inte hann behandlas i vallokalen under valdagen.
+- label:
+  - text: Personnummer
+- input:
+  - to: efterreg_c.personnummer
+  - type: text
+- label:
+  - text: Kommentar
+- textarea:
+  - to: efterreg_c.kommentar
+- button:
+  - text: Registrera
+  - to: efterreg_c.registrerad
+  - value: ja
+- span:
+  - if:
+    - efterreg_c.registrerad:
+      - p:
+        - text: Efterregistrering genomförd centralt.
+    - else:
+      - text: ''

@@ -1,0 +1,21 @@
+- p:
+  - text: Du måste vara utomlands för att få brevrösta.
+- if:
+  - axiom.best_brevrost_aktivt:
+    - p:
+      - text: Nu kan du beställa brevröstningsmaterial
+- block-checkbox:
+  - title: Folkbokföringsadress
+  - text: Skicka materialet till min folkbokföringsadress
+- label:
+  - text: Namn
+- input:
+  - to: beställning_brevröst
+  - type: text
+- ul:
+  - li:
+    - text: Beställ till familjemedlemmar på samma adress
+  - li:
+    - text: Beställ till annan adress
+  - li:
+    - text: '...'

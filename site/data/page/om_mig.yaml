@@ -1,0 +1,56 @@
+- if:
+  - user.personnummer:
+    - button:
+      - text: Logga ut
+      - to: user_id
+      - value: null
+      - go: utloggad
+    - dl:
+      - dt:
+        - text: Namn
+      - dd:
+        - text: '{user.namn.fnamn} {user.namn.enamn}'
+      - dt:
+        - text: Personnummer
+      - dd:
+        - text: '{user.personnummer}'
+      - dt:
+        - text: Röstlängdsnummer
+      - dd:
+        - text: '{user.rostlangdsnr.komplett}'
+      - dt:
+        - text: Riksdag
+      - dd:
+        - text: '{user.rostratt.rd}'
+      - dt:
+        - text: Regionfullmäktige
+      - dd:
+        - text: '{user.rostratt.rf}'
+      - dt:
+        - text: Kommunfullmäktige
+      - dd:
+        - text: '{user.rostratt.kf}'
+      - dt:
+        - text: Folkomröstning
+      - dd:
+        - text: '{user.rostratt.fo}'
+      - dt:
+        - text: Europaparlamentet
+      - dd:
+        - text: '{user.rostratt.eu}'
+      - dt:
+        - text: Sametinget
+      - dd:
+        - text: '{user.rostratt.st}'
+      - dt:
+        - text: Syfte (testperson)
+      - dd:
+        - text: '{user.syfte}'
+    - block-link:
+      - href: page:mina_data
+      - title: Mina data
+      - text: Allt mitt data i råformat
+  - else:
+    - a:
+      - href: page:login
+      - text: Logga in

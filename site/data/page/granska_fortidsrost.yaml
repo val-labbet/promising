@@ -1,0 +1,17 @@
+- p:
+  - text: Nedan listas inkomna förtidsröster att granska inför läggning i valurnan.
+- dl:
+  - dt:
+    - text: Antal inkomna förtidsröster
+  - dd:
+    - text: '0'
+  - dt:
+    - text: Godkända
+  - dd:
+    - text: '0'
+  - dt:
+    - text: Underkända
+  - dd:
+    - text: '0'
+- p:
+  - text: Inga förtidsröster att granska just nu.

@@ -1,0 +1,15 @@
+- p:
+  - text: 'Du är registrerad i röstlängden med följande uppgifter:'
+- dl:
+  - dt:
+    - text: Namn
+  - dd:
+    - text: '{user.namn.fnamn} {user.namn.enamn}'
+  - dt:
+    - text: Personnummer
+  - dd:
+    - text: '{user.personnummer}'
+  - dt:
+    - text: Röstlängdsnummer
+  - dd:
+    - text: '{user.rostlangdsnr.komplett}'

@@ -1,0 +1,11 @@
+{
+    "keys": [
+        {
+            "name": "henrik",
+            "key": "at least 16 characters, e.g. from: php -r 'echo bin2hex(random_bytes(16));'"
+        }
+    ],
+    "max_bytes": 200000,
+    "data_root": "../site/data",
+    "log": "log.txt"
+}

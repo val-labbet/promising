@@ -1,0 +1,23 @@
+- h1:
+  - span:
+    - text: Hej
+  - if:
+    - user.personnummer:
+      - span:
+        - text: ' {user.namn.fnamn}'
+  - span:
+    - text: '!'
+- p:
+  - text: Välkommen till Promisi.
+- block-link:
+  - href: page:valjare
+  - title: Jag som väljare
+  - text: För dig som vill/får rösta.
+- block-link:
+  - href: page:parti
+  - title: Jag som partiföreträdare
+  - text: För dig som på något sätt representerar ett parti.
+- block-link:
+  - href: page:valfunktionar
+  - title: Jag som valfunktionär
+  - text: För dig som jobbar med valet.

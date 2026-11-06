@@ -1,0 +1,19 @@
+- label:
+  - text: Ditt meddelande
+- textarea:
+  - to: kontakt.meddelande
+- button:
+  - text: Skicka
+  - to: kontakt.skickad
+  - value: ja
+- span:
+  - if:
+    - kontakt.skickad:
+      - p:
+        - text: Tack! Meddelandet är sparat.
+    - else:
+      - text: ''
+- p:
+  - a:
+    - href: page:start
+    - text: ← Tillbaka

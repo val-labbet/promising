@@ -1,0 +1,61 @@
+- p:
+  - text: Rapportera en incident som inträffat i eller i anslutning till vallokalen.
+- form:
+  - class: form
+  - to: incident
+  - store: incidenter
+  - label:
+    - for: incident-typ
+    - text: Typ av incident
+  - input:
+    - id: incident-typ
+    - name: typ
+    - type: text
+    - required: null
+  - label:
+    - for: incident-tid
+    - text: Tid
+  - input:
+    - id: incident-tid
+    - name: tid
+    - type: datetime-local
+  - label:
+    - for: incident-beskrivning
+    - text: Beskrivning
+  - textarea:
+    - id: incident-beskrivning
+    - name: beskrivning
+    - rows: '4'
+  - button:
+    - type: submit
+    - text: Skicka rapport
+- if:
+  - incident:
+    - div:
+      - class: form-sent
+      - p:
+        - strong:
+          - text: 'Incidentrapport skickad:'
+        - text: ' {incident.typ}, {incident.tid}'
+      - p:
+        - text: '{incident.beskrivning}'
+- h2:
+  - text: Rapporterade incidenter
+- if:
+  - shared.incidenter:
+    - ul:
+      - class: incident-list
+      - per:
+        - shared.incidenter[i]:
+          - li:
+            - strong:
+              - text: '{i.typ}'
+            - text: ' {i.tid}'
+            - if:
+              - i.beskrivning:
+                - br: []
+                - span:
+                  - text: '{i.beskrivning}'
+  - else:
+    - p:
+      - text: Inga incidenter rapporterade.

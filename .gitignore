@@ -1,0 +1,5 @@
+.DS_Store
+private/config.json
+private/log.txt
+private/write.lock
+*.tmp

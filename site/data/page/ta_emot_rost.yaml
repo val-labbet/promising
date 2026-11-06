@@ -1,0 +1,47 @@
+- p:
+  - text: Kontrollera väljarens identitet och markera i röstlängden.
+- label:
+  - text: Väljarens personnummer
+- input:
+  - to: rostmottagning.personnummer
+  - type: text
+- label:
+  - text: Röstlängdsnummer
+- input:
+  - to: rostmottagning.rostlangdsnr
+  - type: text
+- p:
+  - text: 'Val att ta emot:'
+- div:
+  - label:
+    - style: display:flex;align-items:center;gap:0.5rem;font-weight:normal;cursor:pointer;margin-bottom:0.4rem
+    - input:
+      - type: checkbox
+      - to: rostmottagning.riksdag
+    - span:
+      - text: Riksdagsval
+  - label:
+    - style: display:flex;align-items:center;gap:0.5rem;font-weight:normal;cursor:pointer;margin-bottom:0.4rem
+    - input:
+      - type: checkbox
+      - to: rostmottagning.region
+    - span:
+      - text: Regionfullmäktige
+  - label:
+    - style: display:flex;align-items:center;gap:0.5rem;font-weight:normal;cursor:pointer;margin-bottom:0.75rem
+    - input:
+      - type: checkbox
+      - to: rostmottagning.kommun
+    - span:
+      - text: Kommunfullmäktige
+- button:
+  - text: Bekräfta röstmottagning
+  - to: rostmottagning.bekraftad
+  - value: ja
+- span:
+  - if:
+    - rostmottagning.bekraftad:
+      - p:
+        - text: Röst mottagen och registrerad.
+    - else:
+      - text: ''

@@ -1,0 +1,379 @@
+/*
+  promising.css – only what the system itself draws.
+  The look of a site belongs in its own css.
+*/
+
+/* A {path} that is missing from the model */
+.promising-missing {
+  color: #c00;
+  font-weight: bold;
+}
+
+/* An object or list shown with {path} */
+.promising-dump {
+  white-space: pre-wrap;
+  font-family: monospace;
+}
+
+/* Hide the menu while a search next to it has hits */
+.search:has(.search-results:not(:empty)) ~ .menu {
+  display: none;
+}
+
+.menu,
+.search-results {
+  list-style: none;
+  padding-left: 0;
+}
+
+
+/* ── The panel ─────────────────────────────────────────────────────────────── */
+
+.promising-panel {
+  --dev: #6b3fa0;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+  width: min(380px, 100vw);
+  overflow-y: auto;
+  padding: 0 1rem 2rem;
+  background: #fbfaff;
+  border-left: 3px solid var(--dev);
+  box-shadow: -4px 0 16px rgb(0 0 0 / 0.12);
+  font: 14px/1.4 system-ui, sans-serif;
+  color: #222;
+}
+
+.promising-panel[hidden] {
+  display: none;
+}
+
+.promising-panel-head {
+  position: sticky;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 -1rem;
+  padding: 0.6rem 1rem;
+  background: var(--dev);
+  color: #fff;
+}
+
+.promising-panel-head button {
+  background: none;
+  border: 0;
+  color: inherit;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+.promising-panel h2 {
+  margin: 1.2rem 0 0.4rem;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--dev);
+}
+
+.promising-panel button {
+  margin: 0.2rem 0.3rem 0.2rem 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+.promising-dimensions {
+  margin: 0.8rem 0 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.promising-dimensions legend {
+  font-weight: bold;
+  color: var(--dev);
+}
+
+.promising-dimensions label {
+  display: block;
+}
+
+.promising-dimensions .disabled {
+  opacity: 0.5;
+}
+
+/* dev-persons */
+.promising-persons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.promising-person {
+  min-width: 2.2rem;
+  padding: 0.3rem;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.promising-person.active {
+  background: var(--dev);
+  border-color: var(--dev);
+  color: #fff;
+}
+
+.differs-more { border-color: #2a8a3e; box-shadow: inset 0 -4px 0 #2a8a3e; }
+.differs-less { border-color: #c0392b; box-shadow: inset 0 -4px 0 #c0392b; }
+.differs-structure { border-color: #d68910; box-shadow: inset 0 -4px 0 #d68910; }
+.differs-text { border-color: #2e86c1; box-shadow: inset 0 -4px 0 #2e86c1; }
+
+.promising-legend span {
+  display: inline-block;
+  margin-right: 0.4rem;
+  padding: 0 0.3rem;
+  border: 2px solid;
+  border-radius: 3px;
+  font-size: 0.8rem;
+}
+
+/* dev-time */
+.promising-time-slider {
+  width: 100%;
+}
+
+.promising-time-years {
+  position: relative;
+  height: 1.2rem;
+  font-size: 0.7rem;
+  color: #777;
+}
+
+.promising-time-years span {
+  position: absolute;
+  transform: translateX(-50%);
+}
+
+.promising-time-exact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.promising-time-date {
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+/* dev-model */
+.promising-tree details > :not(summary) {
+  margin-left: 1rem;
+}
+
+.promising-row {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  margin: 2px 0;
+}
+
+.promising-row input[type=text],
+.promising-row input[type=number] {
+  flex: 1;
+  min-width: 0;
+  font: inherit;
+}
+
+.promising-key {
+  font-family: monospace;
+}
+
+.promising-hint {
+  color: #888;
+  font-size: 0.8rem;
+}
+
+.promising-add input {
+  opacity: 0.7;
+}
+
+/* dev-files */
+.promising-files {
+  padding-left: 1rem;
+}
+
+.promising-status:empty {
+  display: none;
+}
+
+
+/* ── dev-code ──────────────────────────────────────────────────────────────── */
+
+.promising-code {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  font: 14px/1.4 system-ui, sans-serif;
+}
+
+.promising-code[hidden] {
+  display: none;
+}
+
+.promising-code-head {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.promising-code-text {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 24rem;
+  padding: 0.6rem;
+  border: 2px solid #6b3fa0;
+  border-radius: 4px;
+  font: 13px/1.45 ui-monospace, Menlo, monospace;
+  tab-size: 2;
+}
+
+.promising-code-message {
+  min-height: 1.2em;
+  color: #c00;
+  font-family: monospace;
+}
+
+
+/* ── dev-text, dev-variables, dev-menu ─────────────────────────────────────── */
+
+body.dim-dev-text [data-page],
+body.dim-dev-text main :is(h1, h2, h3, h4, p, li, dt, dd) {
+  cursor: text;
+}
+
+[contenteditable] {
+  outline: 2px solid #6b3fa0;
+  outline-offset: 2px;
+}
+
+body.dim-dev-variables [data-if] {
+  position: relative;
+  outline: 1px dashed #b0306b;
+}
+
+body.dim-dev-variables [data-if]::before {
+  content: 'if ' attr(data-if);
+  position: absolute;
+  top: -0.7rem;
+  left: 0;
+  z-index: 5;
+  padding: 0 3px;
+  background: #b0306b;
+  color: #fff;
+  font: 10px/1.2 monospace;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+body.dim-dev-variables .promising-variable {
+  outline: 1px dotted #2e60b0;
+}
+
+body.dim-dev-variables .promising-variable::after {
+  content: attr(data-variable);
+  margin-left: 2px;
+  padding: 0 2px;
+  background: #2e60b0;
+  color: #fff;
+  font: 10px/1.2 monospace;
+  vertical-align: super;
+}
+
+.menu-hidden > a {
+  opacity: 0.4;
+  text-decoration: line-through;
+}
+
+.menu-visible {
+  margin-right: 0.4rem;
+}
+
+
+/* ── The meta level ────────────────────────────────────────────────────────── */
+
+.meta-card {
+  margin: 1rem 0;
+  padding: 0.8rem 1rem;
+  border: 1px solid #ddd;
+  border-left: 4px solid #6b3fa0;
+  border-radius: 4px;
+}
+
+.meta-card-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: baseline;
+}
+
+.meta-card-head h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.meta-id {
+  color: #6b3fa0;
+  font-size: 0.8rem;
+}
+
+.meta-fields {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.2rem 0.8rem;
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+}
+
+.meta-fields dt {
+  font-family: monospace;
+  color: #555;
+}
+
+.meta-fields dd {
+  margin: 0;
+}
+
+.meta-value {
+  padding: 0 0.4rem;
+  border-radius: 3px;
+  color: #fff;
+  font-weight: bold;
+}
+
+.meta-true { background: #2a8a3e; }
+.meta-false { background: #999; }
+
+.meta-tree {
+  padding-left: 1.2rem;
+}
+
+.meta-swatch {
+  display: inline-block;
+  width: 0.8em;
+  height: 0.8em;
+  margin-right: 0.3em;
+  border-radius: 50%;
+}
+
+.meta-preview {
+  margin: 0.6rem 0;
+  padding: 0.6rem;
+  border: 1px dashed #ccc;
+}
+
+.meta-code {
+  overflow-x: auto;
+  font-size: 0.8rem;
+}

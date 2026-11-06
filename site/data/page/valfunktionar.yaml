@@ -1,0 +1,35 @@
+- p:
+  - text: Här finns tjänster och instruktioner för dig som arbetar med valet.
+- if:
+  - user.funk.tr:
+    - block-link:
+      - href: page:tryckeri
+  - else:
+    - if:
+      - user.funk:
+        - p:
+          - text: 'Du är behörig till:'
+        - if:
+          - user.funk.rm:
+            - block-link:
+              - href: page:fortidsrostning
+              - title: Förtidsröstning
+        - if:
+          - user.funk.vd:
+            - block-link:
+              - href: page:vallokal
+              - title: Röstmottagning i vallokal på valdagen
+        - if:
+          - user.funk.rp:
+            - block-link:
+              - href: page:rapportera_resultat
+              - title: Rapportera preliminärt resultat
+        - if:
+          - user.funk:
+            - block-link:
+              - href: page:incidentrapport
+        - p:
+          - text: Om något verkar vara fel - kontakta valnämnden i den kommun där du tänkt arbeta.
+      - else:
+        - p:
+          - text: Men du finns inte registrerad för att arbeta med valet.

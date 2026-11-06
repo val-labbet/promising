@@ -1,0 +1,17 @@
+- p:
+  - text: Information om mitt uppdrag som vald representant.
+- if:
+  - user.parti.vald:
+    - p:
+      - text: Jag är vald
+    - ul:
+      - li:
+        - text: Se var mina personröster finns.
+  - else:
+    - if:
+      - user.parti.kand:
+        - p:
+          - text: Jag är inte vald, men jag har kandiderat
+      - else:
+        - p:
+          - text: Jag är inte vald, det finns ingen kandidatur.
