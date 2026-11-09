@@ -38,12 +38,12 @@ Keys that belong to the system:
 |---|---|
 | `page` | the current page |
 | `previous_page` | the page before; links to it and its parents get the class `related` |
-| `user_id` | the logged in test person's id, `null` when logged out |
+| `user_id` | the test person's id; a site can have a person who is not logged in, e.g. `O` |
 | `user` | that person, looked up in `persons` |
 | `persons` | every test person |
 | `structure` | the active structure, `default` unless told otherwise |
 | `start_page` | the first page of the active structure |
-| `return_page` | where the login page goes afterwards |
+| `return_page` | where the login page goes afterwards: the page you came from |
 | `time` | the point in time the site is shown at, now unless told otherwise |
 | `menu_open` | closed again on every page change |
 | `panel_open` | the panel with the dimensions |
@@ -53,8 +53,7 @@ Keys that belong to the system:
 | `shared_files` | files with entries everyone adds to, see backend.md |
 | `shared` | their entries: `shared.<name>` |
 | `backend` | `available`, `name` (of the key), `message`, `conflicts` |
-| `login_page` | shown instead of pages that need a user |
-| `open_pages` | pages that do not need a user |
+| `login_page` | shown instead of pages whose `requires` does not hold |
 | `site_name` | after the page title in the browser tab |
 
 Change the model only with `Promising.set(path, value)`.
@@ -67,12 +66,11 @@ They use the same one-key entries as pages, so the system can both read them and
 # model.yaml
 - model:
   - site_name: Promisi
-  - open_pages:
-    - utloggad
+  - user_id: O
 ```
 
 ```yaml
-# structures.yaml – a page's icon, colour and open are inherited by the pages below it
+# structures.yaml – a page's icon, colour and requires are inherited by the pages below it
 - structure:
   - id: default
   - structure:
@@ -105,7 +103,23 @@ A key that occurs more than once becomes a list (`structure` is always a list). 
 
 ## Logging in
 
-Without a user, every page that isn't open shows the login page instead. The login page is an ordinary page:
+Every page can be seen without logging in. A page that needs something, e.g. a logged in user, says so in the structure with `requires` (a condition, inherited by the pages below it); while it does not hold, the login page is shown instead:
+
+```yaml
+- structure:
+  - href: om_mig
+  - requires: dimension.logged_in
+```
+
+What logged in means is up to the site. Here it is a dimension, on while the person has a personnummer, and the person `O` is not logged in:
+
+```yaml
+- dimension:
+  - id: logged_in
+  - when: user.personnummer
+```
+
+The login page is an ordinary page:
 
 ```yaml
 - per:
@@ -117,7 +131,19 @@ Without a user, every page that isn't open shows the login page instead. The log
       - text: '{p.namn.komplett}'
 ```
 
-Log out with `to: user_id`, `value: null`.
+Log out by switching to the person who is not logged in: `to: user_id`, `value: O`.
+
+## Sharing the screen with the panel
+
+Where there is room, the open panel takes its part of the screen and the site moves over: `<html>` gets the class `promising-split` and `--promising-split`, the panel's width. Something fixed that should keep to the site, like a menu, can use it:
+
+```css
+.menu-panel {
+  position: fixed;
+  left: max(0px, (100% - var(--promising-split, 0px) - var(--site-width)) / 2);
+  width: min(var(--site-width), 100% - var(--promising-split, 0px));
+}
+```
 
 ## Colours
 

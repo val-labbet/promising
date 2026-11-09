@@ -3,8 +3,7 @@
     - button:
       - text: Logga ut
       - to: user_id
-      - value: null
-      - go: utloggad
+      - value: O
     - dl:
       - dt:
         - text: Namn

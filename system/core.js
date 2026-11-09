@@ -22,7 +22,7 @@ Core: loads a site, keeps the model and draws it.
 The model is a plain object. These keys belong to the system:
 
   page, previous_page, return_page, user_id, user, persons, structure, start_page,
-  time, menu_open, panel_open, menu_hidden, login_page, open_pages, site_name, axiom, dimension,
+  time, menu_open, panel_open, menu_hidden, login_page, site_name, axiom, dimension,
   shared_files, shared, backend
 
 Everything else is up to the site. See docs/site.md.
@@ -133,7 +133,6 @@ window.Promising ||= {};
       menu_open: false,
       panel_open: false,
       login_page: 'login',
-      open_pages: [],
       site_name: 'promising',
       ...modelFile(),
     };
@@ -145,7 +144,7 @@ window.Promising ||= {};
     P.model.time ||= new Date().toISOString();
 
     // Load every page in the structure now, so search has something to search
-    await Promise.all(P.pages_in(P.structure()).concat(P.model.login_page, P.model.open_pages).map(loadPage));
+    await Promise.all(P.pages_in(P.structure()).concat(P.model.login_page).map(loadPage));
 
     P.router = H.router({
       param: 'page',
@@ -262,8 +261,8 @@ window.Promising ||= {};
   {
     m.user = P.persons.find(p => String(p.id) === String(m.user_id)) || null;
     m.start_page = P.structure()[0]?.href ?? null;
-    // Where the login page should go afterwards: the page that asked for it, or the start page
-    m.return_page = m.page && m.page !== m.login_page && !m.open_pages.includes(m.page) ? m.page : m.start_page;
+    // Where the login page should go afterwards: the page that asked for it, the page it was opened from, or the start page
+    m.return_page = [m.page, m.previous_page].find(p => p && p !== m.login_page) ?? m.start_page;
     // shared.<name>: the entries in a shared file, as objects
     m.shared = Object.fromEntries((m.shared_files || []).map(name => [name, P.records.all(P.files[name + '.yaml'], 'entry')]));
     for (const fn of derivers) fn(m);
@@ -280,9 +279,10 @@ window.Promising ||= {};
     return m;
   };
 
-  // Without a user, pages that are not open show the login page instead
+  // A page whose requires (in the structure, inherited) does not hold shows the login page instead
   P.visible = (page, m = P.model) => {
-    if (m.user || page === m.login_page || m.open_pages.includes(page) || P.inherit(page, 'open')) return page;
+    const requires = P.inherit(page, 'requires');
+    if (requires === null || page === m.login_page || [].concat(requires).every(c => P.render.test(String(c), m))) return page;
     return P.page(m.login_page) ? m.login_page : page;
   };
 

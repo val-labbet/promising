@@ -33,19 +33,82 @@ window.Promising ||= {};
   const META = ['model', 'structures', 'components', 'persons', 'axioms', 'dimensions'].map(n => n + '.yaml');
 
   let panel = null;
+  let inside = null;
   let code = null;
 
   P.drawn(m => {
     const root = document.querySelector(P.root);
     if (!panel) {
-      panel = H.el('aside', { class: 'promising-panel', 'aria-label': 'Promising' });
+      inside = H.el('div', { class: 'promising-panel-inside' });
+      panel = H.el('aside', { class: 'promising-panel', 'aria-label': 'Promising' }, resizer(), inside);
       code = editor();
       root.after(code.section, panel);
+      addEventListener('resize', () => fit());
     }
     panel.hidden = !m.panel_open;
-    if (m.panel_open) H.mount(panel, panelContent(m));
+    if (m.panel_open) H.mount(inside, panelContent(m));
+    fit();
     code.update(m);
   });
+
+
+  // ── The panel's width ───────────────────────────────────────────────────────
+
+  // As wide as the free space to one side of the site, at least 380px, unless dragged
+  // to a width of its own (kept in this browser). A double click on the edge forgets it.
+  // Where there is room the screen is shared: the site moves over (html.promising-split),
+  // otherwise the panel lies on top.
+  const WIDTH = 'promising-panel-width';
+  const MIN = 280;
+  const ROOM = 480;
+
+  function chosen ()
+  {
+    try { return Number(localStorage.getItem(WIDTH)) || null; } catch { return null; }
+  }
+
+  function choose (width)
+  {
+    try { width ? localStorage.setItem(WIDTH, String(Math.round(width))) : localStorage.removeItem(WIDTH); } catch {}
+  }
+
+  function fit (width = chosen())
+  {
+    const html = document.documentElement;
+    const site = document.querySelector(P.root)?.getBoundingClientRect().width ?? innerWidth;
+    const wanted = width ?? Math.max(380, (innerWidth - site) / 2);
+    const px = Math.round(Math.max(Math.min(MIN, innerWidth), Math.min(wanted, innerWidth)));
+    panel.style.setProperty('width', px + 'px');
+    html.style.setProperty('--promising-panel-width', px + 'px');
+    html.classList.toggle('promising-split', !panel.hidden && innerWidth - px >= ROOM);
+  }
+
+  function resizer ()
+  {
+    const edge = H.el('div', {
+      class: 'promising-panel-edge',
+      role: 'separator',
+      'aria-orientation': 'vertical',
+      'aria-label': 'Panel width',
+      title: 'Drag to change the width, double click for the default',
+      ondblclick: () => { choose(null); fit(); },
+    });
+    edge.addEventListener('pointerdown', event => {
+      event.preventDefault();
+      edge.setPointerCapture(event.pointerId);
+      const move = e => fit(Math.max(MIN, innerWidth - e.clientX));
+      const stop = e => {
+        edge.removeEventListener('pointermove', move);
+        edge.removeEventListener('pointerup', stop);
+        choose(Math.max(MIN, innerWidth - e.clientX));
+        panel.classList.remove('resizing');
+      };
+      panel.classList.add('resizing');
+      edge.addEventListener('pointermove', move);
+      edge.addEventListener('pointerup', stop);
+    });
+    return edge;
+  }
 
 
   // ── The panel ───────────────────────────────────────────────────────────────
@@ -73,7 +136,7 @@ window.Promising ||= {};
   function dimensions (m)
   {
     const groups = {};
-    for (const d of P.dimensions.states(m)) (groups[d.group || 'other'] ||= []).push(d);
+    for (const d of P.dimensions.states(m)) (groups[d.group || 'dimension'] ||= []).push(d);
     return Object.entries(groups).map(([group, list]) => H.el('fieldset', { class: 'promising-dimensions' },
       H.el('legend', group),
       list.map(d => H.el('label', { class: !d.allowed && 'disabled' },

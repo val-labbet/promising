@@ -26,7 +26,6 @@ The panel lists the meta pages. A site can give them titles and a menu with a st
   - structure:
     - href: meta/pages
     - title: Metanivån
-    - open: true          # no login needed
     - structure:
       - href: meta/axioms
       - title: Axiom

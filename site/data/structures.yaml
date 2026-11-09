@@ -130,7 +130,6 @@
     - title: Metanivån
     - icon: 🧭
     - color: '#6b3fa0'
-    - open: true
     - structure:
       - href: meta/structures
       - title: Strukturer

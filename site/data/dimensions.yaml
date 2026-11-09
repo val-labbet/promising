@@ -1,44 +1,37 @@
 - dimension:
   - id: logged_in
   - title: Inloggad
-  - group: Information
-  - when: user
+  - when: user.personnummer
 - dimension:
   - id: V
   - title: V - Väljare
-  - group: Roll
+- dimension:
+  - id: LL
+  - title: LL - Lättläst (för väljare)
+- dimension:
+  - id: E
+  - title: E - Engelska (för väljare)
 - dimension:
   - id: P
   - title: P - Parti
-  - group: Roll
 - dimension:
   - id: F
   - title: F - Valfunktionär
-  - group: Roll
 - dimension:
   - id: L
   - title: L - Lokal valadministratör
-  - group: Roll
 - dimension:
   - id: R
   - title: R - Regional valadministratör
-  - group: Roll
 - dimension:
   - id: C
   - title: C - Central valadministratör
-  - group: Roll
 - dimension:
   - id: X
   - title: X - Metaadmin
-  - group: Roll
 - dimension:
   - id: S
   - title: S - Sök skyddade uppgifter
-  - group: Behörighet
-- dimension:
-  - id: U
-  - title: U - Sök uppgifter om person
-  - group: Behörighet
 - dimension:
   - id: dev-text
   - title: Ändra text

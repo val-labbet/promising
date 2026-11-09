@@ -1,12 +1,13 @@
 - model:
   - site_name: Promisi
   - structure: default
+  - user_id: O
+  - dimension:
+    - V: Väljare
   - time: null
   - time_min: '2024-01-01T00:00:00'
   - time_max: '2030-12-31T23:59:59'
   - login_page: login
-  - open_pages:
-    - utloggad
   - shared_files:
     - incidenter
   - val:

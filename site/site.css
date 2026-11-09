@@ -9,6 +9,7 @@
   --menu-background: #f5f5f5;
   --font: system-ui, -apple-system, sans-serif;
   --radius: 6px;
+  --site-width: 680px;
 
   --val-rd-background: #fff9c4;  --val-rd-border: transparent;  --val-rd-text: #333333;
   --val-rf-background: #e3f2fd;  --val-rf-border: transparent;  --val-rf-text: #333333;
@@ -34,7 +35,7 @@ body {
   line-height: 1.5;
   color: var(--text);
   background: var(--background);
-  max-width: 680px;
+  max-width: var(--site-width);
   margin: 0 auto;
 }
 
@@ -118,9 +119,13 @@ pre {
 
 /* ── Menu ── */
 
+/* Covers the site's column only, also when the screen is shared with the promising panel */
 .menu-panel {
   position: fixed;
-  inset: 0;
+  top: 0;
+  bottom: 0;
+  left: max(0px, (100% - var(--promising-split, 0px) - var(--site-width)) / 2);
+  width: min(var(--site-width), 100% - var(--promising-split, 0px));
   background: var(--menu-background);
   z-index: 20;
   overflow-y: auto;

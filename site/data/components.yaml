@@ -10,7 +10,7 @@
       - span:
         - text: '{site_name}'
     - if:
-      - user:
+      - user.personnummer:
         - a:
           - href: page:om_mig
           - class: user-link
@@ -44,13 +44,13 @@
           - empty: Inga träffar
         - menu: []
         - if:
-          - user:
+          - dimension.logged_in:
             - button:
               - class: logout-button
               - text: Logga ut
               - to: user_id
-              - value: null
-              - go: utloggad
+              - value: O
+              - toggle: menu_open
   - main:
     - class: page
     - breadcrumb:
