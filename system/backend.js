@@ -80,8 +80,10 @@ Promising.backend = (() => {
     try {
       Object.assign(hashes, (await api('stat')).files);
       s.available = true;
-    } catch {
+    } catch (error) {
+      // Shown in dev-files, e.g. a copy without private/config.json
       s.available = false;
+      s.message = error.message;
       return P.draw();
     }
     if (key) {

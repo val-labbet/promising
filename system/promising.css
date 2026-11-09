@@ -51,23 +51,44 @@
 }
 
 .promising-panel-head {
+  --pad: 1rem;
   position: sticky;
   top: 0;
+  z-index: 1;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 0 -1rem;
-  padding: 0.6rem 1rem;
+  padding: var(--pad);
   background: var(--dev);
   color: #fff;
 }
 
+/* Title and close button share size and line height, so both sit --pad from their edges */
+.promising-panel-head strong,
 .promising-panel-head button {
-  background: none;
+  font-size: 1.15rem;
+  line-height: 1.5rem;
+}
+
+.promising-panel .promising-panel-head button {
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: 0;
+  padding: 0;
   border: 0;
+  border-radius: 4px;
+  background: none;
   color: inherit;
-  font-size: 1.3rem;
   cursor: pointer;
+}
+
+.promising-panel .promising-panel-head button:hover,
+.promising-panel .promising-panel-head button:focus-visible {
+  background: rgb(255 255 255 / 0.18);
+  outline: none;
 }
 
 .promising-panel h2 {
@@ -85,22 +106,46 @@
 }
 
 .promising-dimensions {
-  margin: 0.8rem 0 0;
+  --inset: 0.75rem;
+  margin: 1rem 0 0;
+  padding: 0.35rem var(--inset) var(--inset);
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 6px;
+  background: #fff;
 }
 
+/* The legend's text lines up with the checkboxes */
 .promising-dimensions legend {
+  margin-left: -0.35rem;
+  padding: 0 0.35rem;
+  font-size: 0.8rem;
   font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   color: var(--dev);
 }
 
 .promising-dimensions label {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.2rem 0;
+  cursor: pointer;
+}
+
+.promising-dimensions input {
+  flex: none;
+  margin: 0;
+  accent-color: var(--dev);
+}
+
+.promising-dimensions .promising-hint {
+  margin-left: auto;
 }
 
 .promising-dimensions .disabled {
   opacity: 0.5;
+  cursor: default;
 }
 
 /* dev-persons */

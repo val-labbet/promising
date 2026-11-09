@@ -55,7 +55,7 @@ window.Promising ||= {};
     return [
       H.el('div', { class: 'promising-panel-head' },
         H.el('strong', 'Promising'),
-        H.el('button', { type: 'button', 'aria-label': 'Close', onclick: () => P.set('panel_open', false) }, '⨯')),
+        H.el('button', { type: 'button', 'aria-label': 'Close', onclick: () => P.set('panel_open', false) }, '✕')),
       dimensions(m),
       section('Meta level', P.structures.meta
         ? P.builtins.menu({ structure: 'meta' }, m)

@@ -22,6 +22,8 @@ ln -s ~/val-labbet/promising /Applications/MAMP/htdocs/promising
 - the site: http://localhost:8888/promising/site/
 - the tests: http://localhost:8888/promising/system/test/
 
+The backend needs `private/config.json`, which is not in git: copy `private/config.example.json` and make a key (see [docs/backend.md](docs/backend.md)). Without it the site still works, but the console shows a 500 from `api.php`.
+
 To save changes, add a key from `private/config.json` once: `site/?key=…` (see [docs/backend.md](docs/backend.md)).
 
 ## A page
