@@ -154,6 +154,9 @@ test('components with variables and defaults',
     Promising.defaults = { 'test-default': () => 'alla' };
     eq(render([{ greeting: [{ who: 'Bo' }] }]), '<p>Hej Bo</p>');
     eq(render([{ greeting: [] }]), '<p>Hej alla</p>');
+    // A value that is not a known default is used as it is
+    Promising.components.greeting[0]['vars-defaults'] = [{ who: 'du' }];
+    eq(render([{ greeting: [] }]), '<p>Hej du</p>');
     Promising.components = {};
   });
 

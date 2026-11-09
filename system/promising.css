@@ -48,6 +48,19 @@
   display: none;
 }
 
+/* The site's own look for buttons and fields is not wanted here. The reset is strong enough
+   for the site's rules like input[type=text] (0,1,1); the panel's own rules for fields come
+   after it and are at least as strong. */
+.promising-panel.promising-panel :is(button, input, select, textarea) {
+  all: revert;
+  font: inherit;
+}
+
+/* What a dev dimension shows, under its switch */
+.promising-under {
+  margin: 0.3rem 0 0.7rem 1.4rem;
+}
+
 /* Shared screen: the site keeps to the left of the panel */
 html.promising-split {
   --promising-split: var(--promising-panel-width);
@@ -102,7 +115,7 @@ html.promising-split {
   line-height: 1.5rem;
 }
 
-.promising-panel .promising-panel-head button {
+.promising-panel.promising-panel .promising-panel-head button {
   display: grid;
   place-items: center;
   width: 1.5rem;
@@ -116,21 +129,17 @@ html.promising-split {
   cursor: pointer;
 }
 
-.promising-panel .promising-panel-head button:hover,
-.promising-panel .promising-panel-head button:focus-visible {
+.promising-panel.promising-panel .promising-panel-head button:hover,
+.promising-panel.promising-panel .promising-panel-head button:focus-visible {
   background: rgb(255 255 255 / 0.18);
   outline: none;
 }
 
-.promising-panel h2 {
-  margin: 1.2rem 0 0.4rem;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--dev);
+.promising-meta {
+  margin-top: 1rem;
 }
 
-.promising-panel button {
+.promising-panel.promising-panel button {
   margin: 0.2rem 0.3rem 0.2rem 0;
   font: inherit;
   cursor: pointer;
@@ -164,7 +173,7 @@ html.promising-split {
   cursor: pointer;
 }
 
-.promising-dimensions input {
+.promising-panel .promising-dimensions input {
   flex: none;
   margin: 0;
   accent-color: var(--dev);
@@ -186,7 +195,7 @@ html.promising-split {
   gap: 4px;
 }
 
-.promising-person {
+.promising-panel button.promising-person {
   min-width: 2.2rem;
   padding: 0.3rem;
   border: 2px solid #ccc;
@@ -194,16 +203,16 @@ html.promising-split {
   background: #fff;
 }
 
-.promising-person.active {
+.promising-panel button.promising-person.active {
   background: var(--dev);
   border-color: var(--dev);
   color: #fff;
 }
 
-.differs-more { border-color: #2a8a3e; box-shadow: inset 0 -4px 0 #2a8a3e; }
-.differs-less { border-color: #c0392b; box-shadow: inset 0 -4px 0 #c0392b; }
-.differs-structure { border-color: #d68910; box-shadow: inset 0 -4px 0 #d68910; }
-.differs-text { border-color: #2e86c1; box-shadow: inset 0 -4px 0 #2e86c1; }
+.differs-more, .promising-panel button.differs-more { border-color: #2a8a3e; box-shadow: inset 0 -4px 0 #2a8a3e; }
+.differs-less, .promising-panel button.differs-less { border-color: #c0392b; box-shadow: inset 0 -4px 0 #c0392b; }
+.differs-structure, .promising-panel button.differs-structure { border-color: #d68910; box-shadow: inset 0 -4px 0 #d68910; }
+.differs-text, .promising-panel button.differs-text { border-color: #2e86c1; box-shadow: inset 0 -4px 0 #2e86c1; }
 
 .promising-legend span {
   display: inline-block;
@@ -215,7 +224,7 @@ html.promising-split {
 }
 
 /* dev-time */
-.promising-time-slider {
+.promising-panel input.promising-time-slider {
   width: 100%;
 }
 
@@ -238,14 +247,32 @@ html.promising-split {
   align-items: center;
 }
 
-.promising-time-date {
-  font-size: 1.3rem;
-  font-weight: bold;
+/* As wide as its text: field-sizing where the browser has it, otherwise wide enough */
+.promising-panel input.promising-time-input {
+  flex: none;
+  min-width: 14em;
+  field-sizing: content;
 }
 
-/* dev-model */
+/* dev-model: one line per entry, key = value, opened to change it */
+.promising-tree {
+  font-size: 0.85rem;
+}
+
+.promising-tree summary {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
 .promising-tree details > :not(summary) {
   margin-left: 1rem;
+}
+
+.promising-value {
+  font-family: monospace;
+  color: #555;
 }
 
 .promising-row {
@@ -271,7 +298,7 @@ html.promising-split {
   font-size: 0.8rem;
 }
 
-.promising-add input {
+.promising-panel .promising-add input {
   opacity: 0.7;
 }
 
@@ -288,10 +315,7 @@ html.promising-split {
 /* ── dev-code ──────────────────────────────────────────────────────────────── */
 
 .promising-code {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 0 1rem;
-  font: 14px/1.4 system-ui, sans-serif;
+  margin: 0;
 }
 
 .promising-code[hidden] {
@@ -300,11 +324,18 @@ html.promising-split {
 
 .promising-code-head {
   display: flex;
-  gap: 0.5rem;
-  margin-bottom: 0.4rem;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem;
+  margin-bottom: 0.3rem;
 }
 
-.promising-code-text {
+.promising-code-head code {
+  flex: 1;
+  overflow-wrap: anywhere;
+}
+
+.promising-panel textarea.promising-code-text {
   box-sizing: border-box;
   width: 100%;
   min-height: 24rem;
@@ -324,13 +355,23 @@ html.promising-split {
 
 /* ── dev-text, dev-variables, dev-menu ─────────────────────────────────────── */
 
-body.dim-dev-text [data-page],
-body.dim-dev-text main :is(h1, h2, h3, h4, p, li, dt, dd) {
+/* Every text that can be edited has a faint dashed frame, a firmer one under the pointer */
+body.dim-dev-text .promising-editable {
+  outline: 1px dashed rgb(107 63 160 / 0.45);
+  outline-offset: 2px;
+  border-radius: 2px;
   cursor: text;
 }
 
-[contenteditable] {
+body.dim-dev-text .promising-editable:hover {
+  outline: 1px solid #6b3fa0;
+  background: rgb(107 63 160 / 0.07);
+}
+
+[contenteditable],
+body.dim-dev-text .promising-editable[contenteditable] {
   outline: 2px solid #6b3fa0;
+  background: none;
   outline-offset: 2px;
 }
 
@@ -372,8 +413,21 @@ body.dim-dev-variables .promising-variable::after {
   text-decoration: line-through;
 }
 
+/* The switch on the same line as its menu item; the items below go under both */
+body.dim-dev-menu .menu li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: 0.4rem;
+}
+
+body.dim-dev-menu .menu li > :not(.menu-visible, a) {
+  grid-column: 1 / -1;
+}
+
 .menu-visible {
-  margin-right: 0.4rem;
+  margin: 0;
+  accent-color: #6b3fa0;
 }
 
 
@@ -404,21 +458,31 @@ body.dim-dev-variables .promising-variable::after {
   font-size: 0.8rem;
 }
 
+/* Name and value on the same line, whatever the site does with dl, dt and dd */
 .meta-fields {
   display: grid;
   grid-template-columns: max-content 1fr;
+  align-items: baseline;
   gap: 0.2rem 0.8rem;
   margin: 0.5rem 0;
   font-size: 0.9rem;
 }
 
+.meta-fields .meta-fields {
+  margin: 0;
+}
+
 .meta-fields dt {
-  font-family: monospace;
+  margin: 0;
+  font: 0.9em/1.5 monospace;
+  letter-spacing: normal;
+  text-transform: none;
   color: #555;
 }
 
 .meta-fields dd {
   margin: 0;
+  line-height: 1.5;
 }
 
 .meta-value {

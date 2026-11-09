@@ -68,11 +68,15 @@ Promising.render = (() => {
 
   function nodes (items, model)
   {
-    return list(items).map(n => {
-      const result = node(n, model);
-      if (result instanceof Element && !origins.has(result)) origins.set(result, { node: n, siblings: items, model, caller: callers.get(model.vars) || null });
-      return result;
-    });
+    return list(items).map(n => drawn(n, items, model));
+  }
+
+  // A node drawn, remembering where it came from (dev-text edits it there)
+  function drawn (n, siblings, model)
+  {
+    const result = node(n, model);
+    if (result instanceof Element && !origins.has(result)) origins.set(result, { node: n, siblings, model, caller: callers.get(model.vars) || null });
+    return result;
   }
 
   function node (n, model)
@@ -186,13 +190,16 @@ Promising.render = (() => {
     const vars = variables(entries, model);
     callers.set(vars, list(entries));
 
-    // - vars-defaults: [ - title: page-title ] fills variables the caller left out
+    // - vars-defaults: [ - title: page-title, - text: Hej ] fills variables the caller left out,
+    // from Promising.defaults when it knows the name, otherwise with the value itself
     for (const n of definition) {
       const [key, defaults] = entry(n);
       if (key !== 'vars-defaults') continue;
       for (const d of list(defaults)) {
-        const [name, kind] = entry(d);
-        if (name && vars[name] == null) vars[name] = Promising.defaults?.[kind]?.(vars) ?? null;
+        const [name, value] = entry(d);
+        if (!name || vars[name] != null) continue;
+        const fill = Promising.defaults?.[value];
+        vars[name] = (typeof fill === 'function' ? fill(vars) : resolve(value, model)) ?? null;
       }
     }
 
@@ -215,7 +222,7 @@ Promising.render = (() => {
     for (const e of list(entries)) {
       const [key, value] = entry(e);
       if (!key) continue;
-      if (key === 'if' || key === 'per' || Array.isArray(value)) append(el, node(e, model));
+      if (key === 'if' || key === 'per' || Array.isArray(value)) append(el, drawn(e, entries, model));
       else if (ACTIONS.includes(key) && (key !== 'store' || el.tagName === 'FORM')) action[key] = value;
       else if (!FORM_ATTRIBUTES.has(key.toLowerCase())) attribute(el, key, value, model);
     }

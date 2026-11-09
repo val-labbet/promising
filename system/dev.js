@@ -4,7 +4,7 @@ Dev dimensions: the tools for building a site, each one a dimension that is
 switched on in the panel. They replace promisi's experiment layer.
 
   dev-text        click a text on the page to edit it; Enter adds a paragraph after
-  dev-code        the yaml of the page (or a meta file) under the page, applied as you type
+  dev-code        the yaml of the page, in the panel under its switch, applied as you type
   dev-variables   marks what if and {path} the page is drawn from (css in promising.css)
   dev-model       the model as a tree you can change
   dev-persons     log in as any test person; marks those who would see the page differently
@@ -42,13 +42,14 @@ window.Promising ||= {};
       inside = H.el('div', { class: 'promising-panel-inside' });
       panel = H.el('aside', { class: 'promising-panel', 'aria-label': 'Promising' }, resizer(), inside);
       code = editor();
-      root.after(code.section, panel);
+      root.after(panel);
       addEventListener('resize', () => fit());
     }
     panel.hidden = !m.panel_open;
-    if (m.panel_open) H.mount(inside, panelContent(m));
-    fit();
     code.update(m);
+    // Not drawn again while the yaml is being typed, so it keeps focus; it catches up on blur
+    if (m.panel_open && !code.typing()) code.keep(() => H.mount(inside, panelContent(m)));
+    fit();
   });
 
 
@@ -120,18 +121,20 @@ window.Promising ||= {};
         H.el('strong', 'Promising'),
         H.el('button', { type: 'button', 'aria-label': 'Close', onclick: () => P.set('panel_open', false) }, '✕')),
       dimensions(m),
-      section('Meta level', P.structures.meta
+      H.el('section', { class: 'promising-meta' }, P.structures.meta
         ? P.builtins.menu({ structure: 'meta' }, m)
         : H.el('ul', ['pages', ...META.map(f => f.replace('.yaml', ''))].map(n => H.el('li', H.el('a', { href: P.router.url('meta/' + n), 'data-page': 'meta/' + n }, n))))),
-      on('dev-persons') && section('Test persons', persons(m)),
-      on('dev-time') && section('Point in time', timeline(m)),
-      on('dev-menu') && section('Menu', menuExport(m)),
-      on('dev-files') && section('Files', files()),
-      on('dev-model') && section('The model', H.el('div', { class: 'promising-tree' }, tree(m, ''))),
     ];
   }
 
-  const section = (title, ...content) => H.el('section', H.el('h2', title), content);
+  const under = {
+    'dev-code': () => code.section,
+    'dev-model': m => H.el('div', { class: 'promising-tree' }, tree(m, '')),
+    'dev-persons': m => persons(m),
+    'dev-time': m => timeline(m),
+    'dev-menu': m => menuExport(m),
+    'dev-files': () => files(),
+  };
 
   function dimensions (m)
   {
@@ -139,14 +142,20 @@ window.Promising ||= {};
     for (const d of P.dimensions.states(m)) (groups[d.group || 'dimension'] ||= []).push(d);
     return Object.entries(groups).map(([group, list]) => H.el('fieldset', { class: 'promising-dimensions' },
       H.el('legend', group),
-      list.map(d => H.el('label', { class: !d.allowed && 'disabled' },
+      list.map(d => [H.el('label', { class: !d.allowed && 'disabled' },
         H.el('input', {
           type: 'checkbox',
           checked: d.on,
           disabled: !d.allowed,
-          onchange: event => P.set(`dimension.${d.id}`, event.target.checked),
+          onchange: event => {
+            P.set(`dimension.${d.id}`, event.target.checked);
+            // Menu visibility is set in the main menu, so open it
+            if (d.id === 'dev-menu' && event.target.checked) P.set('menu_open', true);
+          },
         }),
-        ' ', d.title || d.id, d.when !== undefined && H.el('span', { class: 'promising-hint' }, ` when ${[].concat(d.when).join(', ')}`)))));
+        ' ', d.title || d.id, d.when !== undefined && H.el('span', { class: 'promising-hint' }, ` when ${[].concat(d.when).join(', ')}`)),
+        // What a dev dimension shows sits right under its switch
+        d.on && under[d.id] && H.el('div', { class: 'promising-under' }, under[d.id](m))])));
   }
 
 
@@ -169,7 +178,6 @@ window.Promising ||= {};
       })),
       H.el('p', { class: 'promising-legend' },
         ['more', 'less', 'structure', 'text'].map(k => H.el('span', { class: 'differs-' + k }, k)), ' than now'),
-      m.user_id !== null && H.el('button', { type: 'button', onclick: () => P.set('user_id', null) }, 'Log out'),
     ];
   }
 
@@ -210,9 +218,8 @@ window.Promising ||= {};
     const min = m.time_min ? new Date(m.time_min).getTime() : now - 5 * year;
     const max = m.time_max ? new Date(m.time_max).getTime() : now + 5 * year;
 
-    const label = H.el('span', { class: 'promising-time-date' }, local(now).slice(0, 10));
     const exact = H.el('input', {
-      type: 'datetime-local', min: local(min), max: local(max), value: local(now),
+      type: 'datetime-local', class: 'promising-time-input', min: local(min), max: local(max), value: local(now),
       onchange: () => exact.value && P.set('time', exact.value + ':00'),
     });
     const slider = H.el('input', {
@@ -220,7 +227,6 @@ window.Promising ||= {};
       // Move without drawing, draw when let go
       oninput: () => {
         const t = local(Number(slider.value));
-        label.textContent = t.slice(0, 10);
         exact.value = t;
         P.set('time', t + ':00', { render: false });
       },
@@ -236,7 +242,7 @@ window.Promising ||= {};
     return [
       slider,
       H.el('div', { class: 'promising-time-years' }, years),
-      H.el('div', { class: 'promising-time-exact' }, label, exact,
+      H.el('div', { class: 'promising-time-exact' }, exact,
         H.el('button', { type: 'button', onclick: () => P.set('time', local(Date.now()) + ':00') }, 'Now')),
     ];
   }
@@ -340,30 +346,46 @@ window.Promising ||= {};
   const parse = text => text === 'null' ? null : text === 'true' ? true : text === 'false' ? false
     : text.trim() !== '' && !isNaN(text) ? Number(text) : text;
 
+  // Every entry is a details: closed it shows key = value (or the size of an object or
+  // list), open it shows the field to change it, or the entries inside
   function tree (obj, prefix)
   {
     const rows = Object.entries(obj).map(([key, value]) => {
       const path = prefix ? `${prefix}.${key}` : key;
-      if (value !== null && typeof value === 'object') {
-        const size = Object.keys(value).length;
-        const details = H.el('details', {
-          ontoggle: () => details.open ? open.add(path) : open.delete(path),
-        }, H.el('summary', H.el('span', { class: 'promising-key' }, key), ' ', H.el('span', { class: 'promising-hint' }, Array.isArray(value) ? `[${size}]` : `{${size}}`)));
-        // Only build what is open
-        details.open = open.has(path);
-        if (details.open) details.append(tree(value, path));
-        else details.addEventListener('toggle', () => details.open && !details.lastChild.matches('.promising-tree-level') && details.append(tree(value, path)), { once: true });
-        return details;
-      }
-      return H.el('label', { class: 'promising-row' }, H.el('span', { class: 'promising-key' }, key), field(path, value));
+      const nested = value !== null && typeof value === 'object';
+      const size = nested && Object.keys(value).length;
+      return fold(path,
+        [H.el('span', { class: 'promising-key' }, key), nested
+          ? [' ', H.el('span', { class: 'promising-hint' }, Array.isArray(value) ? `[${size}]` : `{${size}}`)]
+          : [' = ', H.el('span', { class: 'promising-value' }, shown(value))]],
+        () => nested ? tree(value, path) : H.el('div', { class: 'promising-row' }, field(path, value)));
     });
-    return H.el('div', { class: 'promising-tree-level' }, rows, adder(obj, prefix));
+    return H.el('div', { class: 'promising-tree-level' }, rows,
+      fold(`${prefix}.+`, H.el('span', { class: 'promising-hint' }, '+ add'), () => adder(obj, prefix)));
   }
+
+  // A details that remembers being open, and only builds its content when it is
+  function fold (path, summary, content)
+  {
+    const details = H.el('details', {
+      ontoggle: () => {
+        details.open ? open.add(path) : open.delete(path);
+        if (details.open && details.childNodes.length === 1) details.append(content());
+      },
+    }, H.el('summary', summary));
+    if (open.has(path)) {
+      details.open = true;
+      details.append(content());
+    }
+    return details;
+  }
+
+  const shown = value => value === null ? 'null' : typeof value === 'string' ? `'${value}'` : String(value);
 
   function field (path, value)
   {
     if (typeof value === 'boolean') {
-      return H.el('input', { type: 'checkbox', checked: value, onchange: e => P.set(path, e.target.checked) });
+      return H.el('label', H.el('input', { type: 'checkbox', checked: value, onchange: e => P.set(path, e.target.checked) }), ' ', String(value));
     }
     if (typeof value === 'number') {
       return H.el('input', { type: 'number', value, onchange: e => e.target.value !== '' && P.set(path, Number(e.target.value)) });
@@ -395,22 +417,21 @@ window.Promising ||= {};
   // The editor is not drawn again with the page, so typing in it is never interrupted
   function editor ()
   {
-    let path = null;          // the file shown; null follows the current page
     let shown = null;
     let broken = false;
 
-    const choose = H.el('select', { 'aria-label': 'File', onchange: () => { path = choose.value || null; show(); } });
-    const area = H.el('textarea', { class: 'promising-code-text', spellcheck: 'false', 'aria-label': 'Yaml' });
+    const area = H.el('textarea', { class: 'promising-code-text', spellcheck: 'false', 'aria-label': 'Yaml', onblur: () => P.draw() });
     const message = H.el('p', { class: 'promising-code-message' });
+    const name = H.el('code');
     const save = H.el('button', { type: 'button', hidden: true, onclick: () => P.backend.save(current()) }, 'Save');
     const section = H.el('section', { class: 'promising-code', hidden: true },
-      H.el('div', { class: 'promising-code-head' }, choose,
+      H.el('div', { class: 'promising-code-head' }, name,
         save,
         H.el('button', { type: 'button', onclick: () => download(current()) }, 'Download'),
         H.el('button', { type: 'button', onclick: () => revert([current()]).then(show) }, 'Undo')),
       area, message);
 
-    const current = () => path || P.file(P.model.page);
+    const current = () => P.file(P.model.page);
 
     function show ()
     {
@@ -438,23 +459,36 @@ window.Promising ||= {};
       section.hidden = !on('dev-code');
       if (section.hidden) return;
       save.hidden = !canSave() || !P.changed().includes(current());
-      const options = [P.file(m.page), ...META];
-      H.mount(choose,
-        H.el('option', { value: '' }, P.file(m.page)),
-        META.filter(p => p !== P.file(m.page)).map(p => H.el('option', { value: p }, p)));
-      choose.value = path && options.includes(path) ? path : '';
+      name.textContent = current();
       // Follow changes made elsewhere (another page, dev-text), but never while typing
       const text = P.files[current()] ? P.yaml.dump(P.files[current()]) : '';
       if (shown !== current() || (document.activeElement !== area && !broken && area.value !== text)) show();
     }
 
-    return { section, update };
+    const typing = () => section.contains(document.activeElement);
+
+    // Moving the editor (the panel is drawn again) loses its scroll position: keep it
+    function keep (fn)
+    {
+      const top = area.scrollTop;
+      fn();
+      area.scrollTop = top;
+    }
+
+    return { section, update, typing, keep };
   }
 
 
   // ── dev-text ────────────────────────────────────────────────────────────────
 
   const TEXT = 'h1, h2, h3, h4, h5, h6, p, li, dt, dd, a, span, label, td, th, summary, figcaption, blockquote, strong, em, b, i';
+
+  // The texts that can be edited are marked, so css can show them
+  P.drawn(() => {
+    if (!on('dev-text')) return;
+    const root = document.querySelector(P.root);
+    for (const el of root?.querySelectorAll(TEXT) || []) if (textSource(el)?.el === el) el.classList.add('promising-editable');
+  });
 
   // Clicks on text in the page edit the text instead, while dev-text is on
   document.addEventListener('click', event => {
@@ -482,6 +516,8 @@ window.Promising ||= {};
       let key = 'text';
       const variable = typeof own?.text === 'string' && own.text.match(/^\{vars\.([\w-]+)\}$/);
       if (variable && origin.caller) { list = origin.caller; key = variable[1]; }
+      // A text made only of values from the model, like '{site_name}', is not edited here
+      else if (typeof own.text === 'string' && own.text.includes('{') && !/[\p{L}\p{N}]/u.test(own.text.replace(/\{[^{}]*\}/g, ''))) return null;
       return { el: e, tag, list, key, origin };
     }
     return null;

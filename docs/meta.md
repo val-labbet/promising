@@ -35,7 +35,7 @@ The panel lists the meta pages. A site can give them titles and a menu with a st
 
 ## Editing
 
-Switch on `dev-code` on a meta page and the editor under it holds that file. Changes are applied as you type: edit an axiom and the pages that use it follow. Download the file, or (later) save it through the backend.
+Switch on `dev-code` on a meta page and the editor in the panel holds that file. Changes are applied as you type: edit an axiom and the pages that use it follow. Download the file, or (later) save it through the backend.
 
 ## Drawing records your own way
 

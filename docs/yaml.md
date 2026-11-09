@@ -124,6 +124,7 @@ Defined in `components.yaml`, called like an element. Entries become `{vars.x}`.
   - id: greeting
   - vars-defaults:
     - title: page-title       # filled from the structure when the caller leaves it out
+    - who: du                 # or just a value
   - p:
     - text: Hej {vars.who}, välkommen till {vars.title}.
 ```
@@ -134,7 +135,7 @@ Defined in `components.yaml`, called like an element. Entries become `{vars.x}`.
   - href: page:rostratt
 ```
 
-`vars-defaults` knows `page-title`, `page-icon` and `page-color`, all read from the page `vars.href` points to.
+`vars-defaults` knows `page-title`, `page-icon` and `page-color`, all read from the page `vars.href` points to. Any other value is used as it is, so `- text: Hej` gives `{vars.text}` the text Hej when the caller leaves it out.
 
 Nested entries become an object, as in the meta files: `- namn: [ - fnamn: Bo ]` is `{vars.namn.fnamn}`.
 

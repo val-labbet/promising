@@ -58,7 +58,7 @@ They are always there, also without `dimensions.yaml`. List them in it to give t
 | id | |
 |---|---|
 | `dev-text` | Click a text on the page to edit it. You edit the yaml text, `{path}` and all. Enter starts a new paragraph after it, Escape cancels. Text that comes from a component's variable is changed where the component is called. |
-| `dev-code` | The yaml of the page under the page, applied as you type. The menu above it switches to the meta files (`axioms.yaml`, `components.yaml` …). Text that is not canonical is still applied, with a note; downloads are always canonical. |
+| `dev-code` | The yaml of the page, in the panel right under the switch, applied as you type. For a meta file, go to its page: `meta/axioms` is `axioms.yaml`. Text that is not canonical is still applied, with a note; downloads are always canonical. |
 | `dev-variables` | Marks what the page is drawn from: `if` conditions on the elements they let through and every `{path}` in the text. |
 | `dev-model` | The model as a tree. Change values, add new ones. |
 | `dev-persons` | Log in as any test person. Persons who would see the current page differently are marked: more, less, other structure, other text. |
