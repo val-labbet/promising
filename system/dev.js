@@ -161,45 +161,43 @@ window.Promising ||= {};
 
   // ── dev-persons ─────────────────────────────────────────────────────────────
 
-  // Each button is a person. Those who would see this page differently are marked:
-  // more, less, structure (other elements) or text (same elements, other text)
+  // Each button is a person, in the order of persons.yaml. A person's path is the if branches
+  // taken while drawing this page: the same frame colour means the same path, no colour the
+  // same path as yours, dotted the same path as yours with other text (e.g. their own name).
+  // The hover text tells how a path differs: + true for them only, − true for you only.
   function persons (m)
   {
-    const mine = signature(m);
+    const mine = look(m);
+    const looks = P.persons.map(p => String(p.id) === String(m.user_id) ? mine : look(P.derived({ user_id: p.id })));
+    const paths = [...new Set(looks.map(l => l.path).filter(path => path !== mine.path))];
     return [
-      H.el('div', { class: 'promising-persons' }, P.persons.map(p => {
-        const differs = String(p.id) !== String(m.user_id) && compare(mine, signature(P.derived({ user_id: p.id })));
+      H.el('div', { class: 'promising-persons' }, P.persons.map((p, i) => {
+        const theirs = looks[i];
+        const other = paths.indexOf(theirs.path);
+        const plus = [...theirs.taken].filter(c => !mine.taken.has(c)).map(c => '+ ' + c);
+        const minus = [...mine.taken].filter(c => !theirs.taken.has(c)).map(c => '− ' + c);
         return H.el('button', {
           type: 'button',
-          class: ['promising-person', String(p.id) === String(m.user_id) && 'active', differs && 'differs-' + differs],
-          title: [name(p), p.syfte].filter(Boolean).join(' – '),
+          class: ['promising-person', theirs === mine && 'active',
+            other >= 0 ? 'promising-path-' + (other % 8 + 1) : theirs.text !== mine.text && 'promising-path-text'],
+          title: [[name(p), p.syfte].filter(Boolean).join(' – '), ...plus, ...minus].join('\n'),
           onclick: () => P.set('user_id', p.id),
         }, String(p.id));
       })),
       H.el('p', { class: 'promising-legend' },
-        ['more', 'less', 'structure', 'text'].map(k => H.el('span', { class: 'differs-' + k }, k)), ' than now'),
+        H.el('span', { class: 'promising-path-1' }, 'colour'), ' other path, ',
+        H.el('span', { class: 'promising-path-text' }, 'dotted'), ' same path, other text'),
     ];
   }
 
   const name = p => p.namn ? [p.namn.fnamn, p.namn.enamn].filter(Boolean).join(' ') : p.name ?? '';
 
-  // The page as this model would draw it, as tags and as text
-  function signature (m)
+  // The page as this model would draw it: the if branches taken, and the text
+  function look (m)
   {
     const page = P.page(P.visible(m.page, m));
-    const box = H.el('div', P.render.nodes(page || [], m));
-    const elements = [...box.querySelectorAll('*')];
-    return {
-      count: elements.length,
-      tags: elements.map(e => e.tagName + '.' + e.className).join('|'),
-      text: box.textContent,
-    };
-  }
-
-  function compare (a, b)
-  {
-    if (a.tags === b.tags) return a.text !== b.text && 'text';
-    return b.count > a.count ? 'more' : b.count < a.count ? 'less' : 'structure';
+    const { result, taken } = P.render.watch(() => P.render.nodes(page || [], m));
+    return { path: [...taken].sort().join('\n'), taken, text: H.el('div', result).textContent };
   }
 
 

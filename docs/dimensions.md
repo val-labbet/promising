@@ -61,7 +61,7 @@ They are always there, also without `dimensions.yaml`. List them in it to give t
 | `dev-code` | The yaml of the page, in the panel right under the switch, applied as you type. For a meta file, go to its page: `meta/axioms` is `axioms.yaml`. Text that is not canonical is still applied, with a note; downloads are always canonical. |
 | `dev-variables` | Marks what the page is drawn from: `if` conditions on the elements they let through and every `{path}` in the text. |
 | `dev-model` | The model as a tree. Change values, add new ones. |
-| `dev-persons` | Log in as any test person. Persons who would see the current page differently are marked: more, less, other structure, other text. |
+| `dev-persons` | Log in as any test person. Each person's path through the current page is the `if` branches taken: persons with the same colour (frame and background) take the same path, persons without colour the same path as you, and a dotted frame means your path with other text (e.g. their own name). The hover text shows how a path differs: `+` true for them only, `−` true for you only. |
 | `dev-time` | A timeline for the point in time the site is shown at. Axioms follow. |
 | `dev-menu` | Checkboxes in the menus to hide pages, and a download of the structure without them. Hidden pages are left out of menus and search. |
 | `dev-files` | The files that have changed here, to download or undo, and upload of a file. |

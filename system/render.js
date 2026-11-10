@@ -19,6 +19,7 @@ See docs/yaml.md for the whole format.
   Promising.render.nodes(list, model)   → array of dom nodes
   Promising.render.test(condition, model)
   Promising.render.origin(element)      → { node, siblings, model, caller } it was drawn from
+  Promising.render.watch(fn)            → { result, taken } the if branches taken while fn draws
 
 */
 
@@ -98,12 +99,31 @@ Promising.render = (() => {
   //   - else: [ …nodes ]
   function branch (branches, model)
   {
+    const tried = [];
     for (const b of list(branches)) {
       const [condition, content] = entry(b);
       if (!condition) continue;
-      if (condition === 'else' || test(condition, model)) return mark(nodes(content, model), condition);
+      if (condition === 'else' || test(condition, model)) {
+        // else is written as what it means: none of the others, e.g. !user.rostratt
+        watching?.add(condition === 'else' ? tried.map(c => c.startsWith('!') ? c.slice(1) : '!' + c).join(' & ') : condition);
+        return mark(nodes(content, model), condition);
+      }
+      tried.push(condition);
     }
     return null;
+  }
+
+  // The branches taken while fn draws, e.g. to see why two models draw a page differently
+  let watching = null;
+  function watch (fn)
+  {
+    const outer = watching;
+    watching = new Set();
+    try {
+      return { result: fn(), taken: watching };
+    } finally {
+      watching = outer;
+    }
   }
 
   // user.rostratt.rd    true if the value is true
@@ -341,6 +361,6 @@ Promising.render = (() => {
     });
   }
 
-  return { nodes, node, resolve, truthy, test, entry, list, origin };
+  return { nodes, node, resolve, truthy, test, entry, list, origin, watch };
 
 })();

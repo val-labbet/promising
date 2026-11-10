@@ -65,7 +65,7 @@ They use the same one-key entries as pages, so the system can both read them and
 ```yaml
 # model.yaml
 - model:
-  - site_name: Promisi
+  - site_name: Promising
   - user_id: O
 ```
 

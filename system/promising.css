@@ -198,7 +198,7 @@ html.promising-split {
 .promising-panel button.promising-person {
   min-width: 2.2rem;
   padding: 0.3rem;
-  border: 2px solid #ccc;
+  border: 3px solid #ccc;
   border-radius: 4px;
   background: #fff;
 }
@@ -207,20 +207,45 @@ html.promising-split {
   background: var(--dev);
   border-color: var(--dev);
   color: #fff;
+  outline: 3px solid white;
+  filter: drop-shadow(0px 0px 2px #000000);
 }
 
-.differs-more, .promising-panel button.differs-more { border-color: #2a8a3e; box-shadow: inset 0 -4px 0 #2a8a3e; }
-.differs-less, .promising-panel button.differs-less { border-color: #c0392b; box-shadow: inset 0 -4px 0 #c0392b; }
-.differs-structure, .promising-panel button.differs-structure { border-color: #d68910; box-shadow: inset 0 -4px 0 #d68910; }
-.differs-text, .promising-panel button.differs-text { border-color: #2e86c1; box-shadow: inset 0 -4px 0 #2e86c1; }
+/* The path through the page's if branches: one colour per path, in frame and background,
+   dotted for your own path with other text */
+.promising-path-1 { --path: #e67e00; }
+.promising-path-2 { --path: #1f6fd1; }
+.promising-path-3 { --path: #d62828; }
+.promising-path-4 { --path: #1e9e3a; }
+.promising-path-5 { --path: #a020a0; }
+.promising-path-6 { --path: #00a5b5; }
+.promising-path-7 { --path: #8a5a2b; }
+.promising-path-8 { --path: #222; }
+
+[class*=promising-path-],
+.promising-panel button[class*=promising-path-] {
+  border-color: var(--path);
+  background: color-mix(in srgb, var(--path) 30%, #fff);
+}
+
+.promising-path-text,
+.promising-panel button.promising-path-text {
+  --path: #444;
+  border-style: dotted;
+  background: #fff;
+}
 
 .promising-legend span {
   display: inline-block;
   margin-right: 0.4rem;
   padding: 0 0.3rem;
-  border: 2px solid;
+  border: 3px solid var(--path, currentColor);
   border-radius: 3px;
   font-size: 0.8rem;
+}
+
+.promising-legend .promising-path-text {
+  border-style: dotted;
 }
 
 /* dev-time */
