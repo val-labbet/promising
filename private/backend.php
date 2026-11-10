@@ -11,6 +11,8 @@ json as PHP pretty prints it. Nothing else.
   GET  api.php?action=stat                  { files: { path: hash } }      for polling
   GET  api.php?action=read&file=persons.yaml { file, hash, text }
   GET  api.php?action=whoami                { name }                       needs a key
+  GET  api.php?action=log                   { log: [{ time, name, file, bytes }] }   the latest
+                                            saves, newest first; needs a key
   POST api.php?action=write                 { file, text, base_hash } → { file, hash }
 
 The key goes in the header X-Promising-Key (or ?key=). Keys are named in
@@ -48,6 +50,10 @@ switch ($action) {
 
     case 'whoami':
         respond(['name' => who($config)]);
+
+    case 'log':
+        who($config);
+        respond(['log' => latest($config, 30)]);
 
     case 'write':
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') fail(400, 'write needs POST');
@@ -117,6 +123,19 @@ function hashes(string $root): array
     }
     ksort($files);
     return $files;
+}
+
+// The latest lines of the log, newest first, without the hashes
+function latest(array $config, int $count): array
+{
+    $lines = @file(__DIR__ . '/' . ($config['log'] ?? 'log.txt'), FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: [];
+    $entries = [];
+    foreach (array_reverse(array_slice($lines, -$count)) as $line) {
+        $parts = explode("\t", $line);
+        if (count($parts) < 4) continue;
+        $entries[] = ['time' => $parts[0], 'name' => $parts[1], 'file' => $parts[2], 'bytes' => (int) $parts[3]];
+    }
+    return $entries;
 }
 
 function write(string $root, array $config, string $name, string $file, string $text, string $base): never

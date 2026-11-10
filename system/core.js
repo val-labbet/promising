@@ -10,6 +10,8 @@ Core: loads a site, keeps the model and draws it.
   Promising.draw()                  draw the model into root
   Promising.act({ to, value, toggle, go })
   Promising.go(page)
+  Promising.state()                 where the site is now: { page, user, structure, time, dim }
+  Promising.visit(state)            go there, as a saved link does
   Promising.submit({ to, go, store, data })   what a form does when sent
 
   Promising.files                   every loaded file, by path: 'axioms.yaml', 'page/start.yaml'
@@ -36,7 +38,7 @@ window.Promising ||= {};
   'use strict';
 
   const P = Promising;
-  const META = ['model', 'structures', 'components', 'persons', 'axioms', 'dimensions'];
+  const META = ['model', 'structures', 'components', 'persons', 'axioms', 'dimensions', 'links'];
   const derivers = [];
   const drawers = [];
   const loaded = {};
@@ -149,12 +151,7 @@ window.Promising ||= {};
     P.router = H.router({
       param: 'page',
       start: P.structure()[0]?.href || 'start',
-      params: () => ({
-        user: P.model.user_id,
-        structure: P.model.structure !== 'default' && P.model.structure,
-        time: timeChanged && P.model.time,
-        dim: P.dimensions.chosen().join(',') || null,
-      }),
+      params: () => address(),
       render: async page => {
         await loadPage(page);
         if (page !== P.model.page) P.model.previous_page = P.model.page;
@@ -168,10 +165,18 @@ window.Promising ||= {};
     if (backend && P.backend) P.backend.connect(backend, { every });
   };
 
+  // What the address keeps besides the page
+  const address = () => ({
+    user: P.model.user_id,
+    structure: P.model.structure !== 'default' && P.model.structure,
+    time: timeChanged && P.model.time,
+    dim: P.dimensions.chosen().join(',') || null,
+  });
+
   // ?user=2&structure=snal&time=2026-09-01&dim=dev-code,dev-time and any other model path, e.g. ?anmalan.namn=Bo
-  function readAddress ()
+  function readAddress (params = H.params())
   {
-    for (const [key, value] of Object.entries(H.params())) {
+    for (const [key, value] of Object.entries(params)) {
       if (key === 'page' || key === 'key') continue;
       if (key === 'user') P.model.user_id = value;
       else if (key === 'dim') for (const id of String(value).split(',')) H.set(P.model, `dimension.${id}`, true);
@@ -203,6 +208,19 @@ window.Promising ||= {};
   };
 
   P.go = page => P.router.go(page);
+
+  // Where the site is now, with the time also when it has not been moved, so a saved link keeps it
+  P.state = () => Object.fromEntries(Object.entries({ page: P.model.page, ...address(), time: P.model.time })
+    .filter(([, v]) => v !== null && v !== undefined && v !== false && v !== ''));
+
+  // Go to a state: the dimensions switched on by hand are those it names, and nothing else
+  P.visit = ({ page, ...state }) => {
+    for (const id of P.dimensions.chosen()) P.model.dimension[id] = false;
+    if (Array.isArray(state.dim)) state.dim = state.dim.join(',');
+    readAddress(state);
+    derive();
+    return P.go(page || P.model.page);
+  };
 
   // What a form sends: written to the model at to, stored through the backend at store
   P.submit = ({ to, go, store, data }) => {
@@ -266,7 +284,7 @@ window.Promising ||= {};
     // shared.<name>: the entries in a shared file, as objects
     m.shared = Object.fromEntries((m.shared_files || []).map(name => [name, P.records.all(P.files[name + '.yaml'], 'entry')]));
     for (const fn of derivers) fn(m);
-    // Dimensions twice: axioms may read dimensions, and a dimension's when may read axioms
+    // Dimensions twice: axioms may read dimensions, and a dimension's requires may read axioms
     P.dimensions.evaluate(m);
     P.axioms.evaluate(m);
     P.dimensions.evaluate(m);

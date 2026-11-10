@@ -10,7 +10,10 @@ the model, so there is one source with two uses.
   ?page=meta/components   - component:   the code and what it looks like
   ?page=meta/dimensions   - dimension:   with a switch where it can be switched
   ?page=meta/model        - model:       the start values
-  ?page=meta/pages        every page in every structure
+  ?page=meta/links        - link:        a saved state, with a link that goes there
+  ?page=meta/pages        the overview: now, changes, saved states and every page
+
+  Promising.keep(title)   save where the site is now as a link in links.yaml
 
 Every record has an id, shown on it and used as its html id (axiom-<id>).
 A component in components.yaml with the same name is used instead.
@@ -50,7 +53,7 @@ Promising.builtins ||= {};
   // Ids must be unique within their file
   function duplicate (kind, id)
   {
-    const file = { person: 'persons', axiom: 'axioms', dimension: 'dimensions', component: 'components', structure: 'structures' }[kind];
+    const file = { person: 'persons', axiom: 'axioms', dimension: 'dimensions', component: 'components', structure: 'structures', link: 'links' }[kind];
     const all = P.records.all(P.files[file + '.yaml'], kind).map(r => String(r.id));
     return all.filter(x => x === String(id)).length > 1;
   }
@@ -174,14 +177,107 @@ Promising.builtins ||= {};
   B.model = (vars, model, raw) => card('model', 'model', 'Start values', fields(record(raw)));
 
 
-  // ── meta/pages ──────────────────────────────────────────────────────────────
+  // ── link ────────────────────────────────────────────────────────────────────
 
-  P.system_pages['meta/pages'] = [{ pages: [] }];
+  // - link:
+  //   - id: trean-valnatt
+  //   - title: Trean på valnatten
+  //   - page: rapportera_resultat
+  //   - user: '3'
+  //   - time: '2026-09-13T21:00:00'
+  //   - dim: dev-variables
+  //
+  // Any other entry is a model path, as in the address: - anmalan.namn: Bo
+  B.link = (vars, model, raw) => {
+    const { id, title, ...state } = record(raw);
+    return card('link', id, title ?? id, H.el('p', go(state, 'Go there')), fields(state));
+  };
+
+  // The address of a state, so it can also be opened in a new tab or copied
+  const address = state => '?' + new URLSearchParams(Object.entries(state).map(([k, v]) => [k, [].concat(v).join(',')]));
+
+  const go = (state, text) => H.el('a', {
+    href: address(state),
+    onclick: event => {
+      if (event.button || event.metaKey || event.ctrlKey || event.shiftKey) return;
+      event.preventDefault();
+      P.visit(state);
+    },
+  }, text);
+
+  const links = () => P.records.all(P.files['links.yaml'], 'link');
+
+  // Where the site is now, as a new link last in links.yaml; saved at once with a key
+  P.keep = async title => {
+    const path = 'links.yaml';
+    const id = Date.now().toString(36);
+    const entry = { link: P.records.write({ id, title: title || id, ...P.state() }) };
+    P.replace(path, [...(Array.isArray(P.files[path]) ? P.files[path] : []), entry]);
+    if (P.model.backend?.name) await P.backend.save(path);
+  };
+
+
+  // ── meta/pages: the overview ────────────────────────────────────────────────
+
+  P.system_pages['meta/pages'] = [{ 'meta-now': [] }, { 'meta-changes': [] }, { 'meta-links': [] }, { pages: [] }];
+
+  const section = (title, ...content) => H.el('section', { class: 'meta-card' }, H.el('h2', title), content);
+  const row = (name, ...content) => [H.el('dt', name), H.el('dd', content)];
+  const hint = text => H.el('p', { class: 'promising-hint' }, text);
+
+  // The page that shows a file: page/x.yaml is x, axioms.yaml is meta/axioms
+  function fileLink (path)
+  {
+    const meta = 'meta/' + path.replace(/\.yaml$/, '');
+    const page = path.match(/^page\/(.+)\.yaml$/)?.[1] ?? (P.file(meta) === path ? meta : null);
+    return page ? H.el('a', { href: P.router.url(page), 'data-page': page }, path) : H.el('code', path);
+  }
+
+  B['meta-now'] = (vars, model) => {
+    const person = P.persons.find(p => String(p.id) === String(model.user_id));
+    const truths = Object.keys(model.axiom || {}).filter(k => !k.endsWith('_news') && model.axiom[k]);
+    return section('Now', H.el('dl', { class: 'meta-fields' },
+      row('Person', person ? `${person.namn?.komplett ?? person.name ?? person.id} (${person.id})` : String(model.user_id ?? '–')),
+      row('Time', String(model.time).replace('T', ' ').slice(0, 16)),
+      row('Structure', String(model.structure)),
+      row('Dimensions', P.dimensions.chosen(model).join(', ') || '–'),
+      row('True axioms', truths.length ? truths.map((a, i) => [i ? ', ' : '', H.el('a', { href: P.router.url('meta/axioms') + '#axiom-' + a }, a)]) : '–'),
+      model.backend?.name && row('Saving as', model.backend.name)));
+  };
+
+  B['meta-changes'] = (vars, model) => {
+    const changed = P.changed();
+    const b = model.backend;
+    const save = !!b?.name;
+    const time = t => String(t).replace('T', ' ').slice(0, 16);
+    return section('Changes',
+      H.el('h3', 'Not saved yet'),
+      changed.length
+        ? H.el('ul', changed.map(path => H.el('li', fileLink(path), ' ',
+          save && button('Save', () => P.backend.save(path)),
+          button('Undo', () => P.revert([path])))))
+        : hint('Nothing has changed here.'),
+      H.el('h3', 'Saved lately'),
+      !P.backend?.configured() || !b?.available ? hint('No backend: changes stay in the browser until they are downloaded.')
+        : !save ? hint('Open the site with ?key=… to see who saved what.')
+        : b.log?.length ? H.el('ul', { class: 'meta-log' }, b.log.map(e => H.el('li',
+          H.el('time', { datetime: e.time }, time(e.time)), ' ', H.el('strong', e.name), ' ', fileLink(e.file))))
+        : hint('Nothing saved yet.'));
+  };
+
+  B['meta-links'] = () => {
+    const all = links();
+    return section('Saved states',
+      all.length
+        ? H.el('ul', all.map(l => { const { id, title, ...state } = l; return H.el('li', go(state, title ?? id)); }))
+        : hint('None yet. Save where you are from the panel.'),
+      H.el('p', H.el('a', { href: P.router.url('meta/links'), 'data-page': 'meta/links' }, 'All saved states')));
+  };
 
   B.pages = () => {
     const seen = new Set();
     return Object.entries(P.structures).map(([name, items]) => H.el('section', { class: 'meta-card' },
-      H.el('h2', name),
+      H.el('h2', name === 'default' ? 'Pages' : 'Pages: ' + name),
       H.el('ul', P.pages_in(items).filter(href => !seen.has(href) && seen.add(href)).map(href =>
         H.el('li', pageLink(href), ' ', P.title(href) ?? '', ' ',
           H.el('code', { class: 'meta-id' }, P.file(href)),

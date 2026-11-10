@@ -145,6 +145,23 @@ html.promising-split {
   cursor: pointer;
 }
 
+/* Save this state: a name and a button on one line */
+.promising-keep {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  margin-top: 0.6rem;
+}
+
+.promising-panel .promising-keep input {
+  flex: 1;
+  min-width: 0;
+}
+
+.promising-panel.promising-panel .promising-keep button {
+  margin: 0;
+}
+
 .promising-dimensions {
   --inset: 0.75rem;
   margin: 1rem 0 0;
@@ -433,6 +450,27 @@ body.dim-dev-variables .promising-variable::after {
   vertical-align: super;
 }
 
+/* - _p: switched off, shown only with dev-variables */
+body.dim-dev-variables .promising-off {
+  position: relative;
+  outline: 1px dashed #999;
+  opacity: 0.45;
+  text-decoration: line-through;
+}
+
+body.dim-dev-variables .promising-off::after {
+  content: attr(data-off);
+  position: absolute;
+  top: -0.7rem;
+  right: 0;
+  padding: 0 3px;
+  background: #777;
+  color: #fff;
+  font: 10px/1.2 monospace;
+  text-decoration: none;
+  pointer-events: none;
+}
+
 .menu-hidden > a {
   opacity: 0.4;
   text-decoration: line-through;
@@ -536,6 +574,16 @@ body.dim-dev-menu .menu li > :not(.menu-visible, a) {
   margin: 0.6rem 0;
   padding: 0.6rem;
   border: 1px dashed #ccc;
+}
+
+.meta-card h3 {
+  margin: 0.8rem 0 0.3rem;
+  font-size: 0.95rem;
+}
+
+.meta-log time {
+  font-family: monospace;
+  color: #555;
 }
 
 .meta-code {

@@ -1,13 +1,10 @@
 # Dimensions
 
-A dimension is a layer that is on or off. Roles and hats (*logged in*, *party official*) are dimensions, and so are the tools for building a site (`dev-*`). They live in `data/dimensions.yaml`.
+A dimension is a point of view, switched on and off by hand: which hat you look at a page with (*party official*, *easy to read*) and what you may do there, including the tools for building a site (`dev-*`). They live in `data/dimensions.yaml`.
+
+What simply is true or false, like being logged in, is not a dimension but an [axiom](axioms.md).
 
 ```yaml
-- dimension:
-  - id: logged_in
-  - title: Inloggad
-  - group: role
-  - when: user                      # on by itself while the condition holds
 - dimension:
   - id: partifunktionar
   - title: Partifunktionär
@@ -18,7 +15,7 @@ A dimension is a layer that is on or off. Roles and hats (*logged in*, *party of
   - requires: dimension.partifunktionar   # can only be on while this holds
 ```
 
-`when` and `requires` take conditions written as in `if` (see [axioms.md](axioms.md)), one or a list.
+`requires` takes conditions written as in `if` (see [axioms.md](axioms.md)), one or a list, and can use axioms: `requires: axiom.logged_in`.
 
 An active dimension shows up in three places:
 
@@ -59,7 +56,7 @@ They are always there, also without `dimensions.yaml`. List them in it to give t
 |---|---|
 | `dev-text` | Click a text on the page to edit it. You edit the yaml text, `{path}` and all. Enter starts a new paragraph after it, Escape cancels. Text that comes from a component's variable is changed where the component is called. |
 | `dev-code` | The yaml of the page, in the panel right under the switch, applied as you type. For a meta file, go to its page: `meta/axioms` is `axioms.yaml`. Text that is not canonical is still applied, with a note; downloads are always canonical. |
-| `dev-variables` | Marks what the page is drawn from: `if` conditions on the elements they let through and every `{path}` in the text. |
+| `dev-variables` | Marks what the page is drawn from: `if` conditions on the elements they let through and every `{path}` in the text, and the switched off parts (`- _p:`) greyed and struck through. |
 | `dev-model` | The model as a tree. Change values, add new ones. |
 | `dev-persons` | Log in as any test person. Each person's path through the current page is the `if` branches taken: persons with the same colour (frame and background) take the same path, persons without colour the same path as you, and a dotted frame means your path with other text (e.g. their own name). The hover text shows how a path differs: `+` true for them only, `−` true for you only. |
 | `dev-time` | A timeline for the point in time the site is shown at. Axioms follow. |

@@ -65,6 +65,7 @@ The browser checks the format first and never sends yaml that would be refused.
 | `GET api.php?action=stat` | every file's hash, for polling |
 | `GET api.php?action=read&file=…` | a file with its hash |
 | `GET api.php?action=whoami` | the name of the key |
+| `GET api.php?action=log` | the latest saves, newest first: time, name, file, bytes (needs a key) |
 | `POST api.php?action=write` `{ file, text, base_hash }` | replace a file |
 
 The key goes in the header `X-Promising-Key`. The answers: 403 wrong key, 404 no such file, 409 changed since `base_hash`, 413 too large, 422 not correctly formatted, with `{ error }` saying what is wrong. Writes are made one at a time (a lock) and atomically (a new file renamed into place), and logged.

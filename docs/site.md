@@ -52,7 +52,7 @@ Keys that belong to the system:
 | `dimension` | every dimension: `dimension.<id>` |
 | `shared_files` | files with entries everyone adds to, see backend.md |
 | `shared` | their entries: `shared.<name>` |
-| `backend` | `available`, `name` (of the key), `message`, `conflicts` |
+| `backend` | `available`, `name` (of the key), `message`, `conflicts`, `log` |
 | `login_page` | shown instead of pages whose `requires` does not hold |
 | `site_name` | after the page title in the browser tab |
 
@@ -108,13 +108,13 @@ Every page can be seen without logging in. A page that needs something, e.g. a l
 ```yaml
 - structure:
   - href: om_mig
-  - requires: dimension.logged_in
+  - requires: axiom.logged_in
 ```
 
-What logged in means is up to the site. Here it is a dimension, on while the person has a personnummer, and the person `O` is not logged in:
+What logged in means is up to the site. Here it is an axiom, true while the person has a personnummer, so the person `O` is not logged in:
 
 ```yaml
-- dimension:
+- axiom:
   - id: logged_in
   - when: user.personnummer
 ```

@@ -1,4 +1,7 @@
 - axiom:
+  - id: logged_in
+  - when: user.personnummer
+- axiom:
   - id: fortidsrostning_aktivt
   - type: time-window
   - anchor: fokus_val_datum

@@ -22,6 +22,7 @@ In the model:
   backend.name        the name of the key, when it is accepted
   backend.message     what happened last
   backend.conflicts   files changed both here and by someone else
+  backend.log         the latest saves, newest first: { time, name, file, bytes } (with a key)
 
 See docs/backend.md.
 
@@ -39,7 +40,7 @@ Promising.backend = (() => {
   let latest = {};
   let url = null;
 
-  const state = () => P.model.backend ||= { available: false, name: null, message: null, conflicts: [] };
+  const state = () => P.model.backend ||= { available: false, name: null, message: null, conflicts: [], log: [] };
   const tell = message => { state().message = message; P.draw(); };
 
   function readKey ()
@@ -89,12 +90,27 @@ Promising.backend = (() => {
     if (key) {
       try {
         s.name = (await api('whoami')).name;
+        await readLog();
       } catch {
         s.message = 'The key was not accepted.';
       }
     }
     P.draw();
     H.poll(() => api('stat').then(r => r.files), { every, onChange: follow, onError: () => {} }).start();
+  }
+
+  // Who saved what lately; read again whenever a file has been saved
+  async function readLog ()
+  {
+    if (!state().name) return false;
+    try {
+      const log = (await api('log')).log;
+      const changed = JSON.stringify(log) !== JSON.stringify(state().log);
+      state().log = log;
+      return changed;
+    } catch {
+      return false;
+    }
   }
 
   // A conflict is over when the file is no longer changed here (undone): it is now what the backend has
@@ -118,8 +134,9 @@ Promising.backend = (() => {
     const fresh = theirs.filter(path => !changed.includes(path));
     s.conflicts = [...new Set([...s.conflicts, ...theirs.filter(path => changed.includes(path))])];
     for (const path of Object.keys(files)) if (!s.conflicts.includes(path)) hashes[path] = files[path];
+    const logged = await readLog();
     if (fresh.length) await P.revert(fresh);
-    else if (theirs.length) P.draw();
+    else if (theirs.length || logged) P.draw();
   }
 
   async function save (path)

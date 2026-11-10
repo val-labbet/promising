@@ -30,7 +30,7 @@ window.Promising ||= {};
 
   const P = Promising;
   const on = id => !!P.model.dimension?.[id];
-  const META = ['model', 'structures', 'components', 'persons', 'axioms', 'dimensions'].map(n => n + '.yaml');
+  const META = ['model', 'structures', 'components', 'persons', 'axioms', 'dimensions', 'links'].map(n => n + '.yaml');
 
   let panel = null;
   let inside = null;
@@ -124,8 +124,23 @@ window.Promising ||= {};
       H.el('section', { class: 'promising-meta' }, P.structures.meta
         ? P.builtins.menu({ structure: 'meta' }, m)
         : H.el('ul', ['pages', ...META.map(f => f.replace('.yaml', ''))].map(n => H.el('li', H.el('a', { href: P.router.url('meta/' + n), 'data-page': 'meta/' + n }, n))))),
+      keeper,
     ];
   }
+
+  // Save where the site is now as a link (links.yaml, shown on meta/pages and meta/links).
+  // Made once, so a name being typed survives the panel being drawn again.
+  const keeper = (() => {
+    const name = H.el('input', { type: 'text', placeholder: 'Name', 'aria-label': 'Name of the saved state' });
+    return H.el('form', {
+      class: 'promising-keep',
+      onsubmit: async event => {
+        event.preventDefault();
+        await P.keep(name.value.trim());
+        name.value = '';
+      },
+    }, name, H.el('button', { type: 'submit' }, 'Save this state'));
+  })();
 
   const under = {
     'dev-code': () => code.section,
@@ -153,7 +168,7 @@ window.Promising ||= {};
             if (d.id === 'dev-menu' && event.target.checked) P.set('menu_open', true);
           },
         }),
-        ' ', d.title || d.id, d.when !== undefined && H.el('span', { class: 'promising-hint' }, ` when ${[].concat(d.when).join(', ')}`)),
+        ' ', d.title || d.id),
         // What a dev dimension shows sits right under its switch
         d.on && under[d.id] && H.el('div', { class: 'promising-under' }, under[d.id](m))])));
   }

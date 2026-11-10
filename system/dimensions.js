@@ -1,12 +1,10 @@
 /*
 
-Dimensions: layers that are on or off. Roles and hats (logged in, party
-official …) as well as the tools for developing a site (dev-*).
+Dimensions: layers that are switched on and off by hand, the points of view a
+page is seen from and what may be done there. Roles and hats (party official …)
+as well as the tools for developing a site (dev-*). What simply is true or false,
+such as being logged in, is an axiom (axioms.js).
 
-  - dimension:
-    - id: logged_in
-    - title: Inloggad
-    - when: user                  on by itself while the condition holds
   - dimension:
     - id: valfunktionar
     - title: Valfunktionär
@@ -52,26 +50,22 @@ Promising.dimensions = (() => {
 
   const test = (condition, model) => [].concat(condition).every(c => Promising.render.test(String(c), model));
 
-  // Switched on by hand and allowed, or on by itself through when
+  // Switched on by hand and allowed
   function evaluate (model)
   {
     const state = model.dimension ||= {};
-    for (const d of records) {
-      if (d.when !== undefined) state[d.id] = test(d.when, model);
-      else if (d.requires !== undefined && !test(d.requires, model)) state[d.id] = false;
-      else state[d.id] = !!state[d.id];
-    }
+    for (const d of records) state[d.id] = !!state[d.id] && (d.requires === undefined || test(d.requires, model));
   }
 
   // Every dimension, with whether it can be switched by hand right now
   const states = model => records.map(d => ({
     ...d,
     on: !!model.dimension?.[d.id],
-    allowed: d.when === undefined && (d.requires === undefined || test(d.requires, model)),
+    allowed: d.requires === undefined || test(d.requires, model),
   }));
 
   // Switched on by hand, for the address
-  const chosen = (model = Promising.model) => records.filter(d => d.when === undefined && model.dimension?.[d.id]).map(d => d.id);
+  const chosen = (model = Promising.model) => records.filter(d => model.dimension?.[d.id]).map(d => d.id);
 
   return { read, evaluate, states, chosen, list: () => records };
 

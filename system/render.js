@@ -14,6 +14,7 @@ A node is a one-key entry. The key is, in this order:
   an element  where an array value holds attributes and children
 
 Inside an element a scalar value is an attribute, an array value is a child.
+A key that starts with _ is switched off: - _p: is not drawn, - _href: not set.
 See docs/yaml.md for the whole format.
 
   Promising.render.nodes(list, model)   → array of dom nodes
@@ -47,6 +48,7 @@ Promising.render = (() => {
   const isMap = v => v !== null && typeof v === 'object' && Object.getPrototypeOf(v) === Object.prototype;
   const entry = n => (isMap(n) && Object.entries(n)[0]) || [];
   const list = v => Array.isArray(v) ? v : isMap(v) ? [v] : [];
+  const off = key => typeof key === 'string' && key.startsWith('_');
 
   let depth = 0;
 
@@ -84,11 +86,23 @@ Promising.render = (() => {
   {
     const [key, value] = entry(n);
     if (!key) return null;
+    if (off(key)) return switchedOff(key, value, model);
     if (key === 'if') return branch(value, model);
     if (key === 'per') return repeat(value, model);
     if (key in Promising.components) return component(key, value, model);
     if (key in Promising.builtins) return Promising.builtins[key](variables(value, model), model, value);
     return element(key, value, model);
+  }
+
+  // - _p: is left out, but shown greyed with the variables dimension on, so it can be found
+  function switchedOff (key, value, model)
+  {
+    if (!model.dimension?.['dev-variables']) return null;
+    const result = node({ [key.slice(1)]: value }, model);
+    const el = result instanceof Element ? result : H.el('span', [result].flat(Infinity).filter(c => c instanceof Node));
+    el.classList.add('promising-off');
+    el.dataset.off = key;
+    return el;
   }
 
   // ── if ──────────────────────────────────────────────────────────────────────
@@ -102,7 +116,7 @@ Promising.render = (() => {
     const tried = [];
     for (const b of list(branches)) {
       const [condition, content] = entry(b);
-      if (!condition) continue;
+      if (!condition || off(condition)) continue;
       if (condition === 'else' || test(condition, model)) {
         // else is written as what it means: none of the others, e.g. !user.rostratt
         watching?.add(condition === 'else' ? tried.map(c => c.startsWith('!') ? c.slice(1) : '!' + c).join(' & ') : condition);
@@ -195,7 +209,7 @@ Promising.render = (() => {
     for (const e of list(entries)) {
       const [key, value] = entry(e);
       // Nested entries become an object, as in the meta files: - namn: [ - fnamn: Bo ] → vars.namn.fnamn
-      if (key) vars[key] = Promising.records?.isEntries(value) ? Promising.records.read(value) : resolve(value, model);
+      if (key && !off(key)) vars[key] = Promising.records?.isEntries(value) ? Promising.records.read(value) : resolve(value, model);
     }
     return vars;
   }
@@ -217,7 +231,7 @@ Promising.render = (() => {
       if (key !== 'vars-defaults') continue;
       for (const d of list(defaults)) {
         const [name, value] = entry(d);
-        if (!name || vars[name] != null) continue;
+        if (!name || off(name) || vars[name] != null) continue;
         const fill = Promising.defaults?.[value];
         vars[name] = (typeof fill === 'function' ? fill(vars) : resolve(value, model)) ?? null;
       }
@@ -242,6 +256,7 @@ Promising.render = (() => {
     for (const e of list(entries)) {
       const [key, value] = entry(e);
       if (!key) continue;
+      if (off(key) && !Array.isArray(value)) continue;
       if (key === 'if' || key === 'per' || Array.isArray(value)) append(el, drawn(e, entries, model));
       else if (ACTIONS.includes(key) && (key !== 'store' || el.tagName === 'FORM')) action[key] = value;
       else if (!FORM_ATTRIBUTES.has(key.toLowerCase())) attribute(el, key, value, model);

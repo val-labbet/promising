@@ -44,7 +44,7 @@
           - empty: Inga träffar
         - menu: []
         - if:
-          - dimension.logged_in:
+          - axiom.logged_in:
             - button:
               - class: logout-button
               - text: Logga ut

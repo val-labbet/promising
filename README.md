@@ -52,7 +52,8 @@ site/data/structures.yaml the menus: which pages, in what order, titles, icons, 
 site/data/components.yaml reusable pieces, including the layout around every page
 site/data/persons.yaml    test persons to log in as
 site/data/axioms.yaml     statements that are true or false, e.g. "postal voting is open"
-site/data/dimensions.yaml roles and layers that are switched on and off
+site/data/dimensions.yaml points of view that are switched on and off
+site/data/links.yaml      saved states: links to a page as a person, at a time
 site/data/page/*.yaml     one file per page
 ```
 

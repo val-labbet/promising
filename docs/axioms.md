@@ -1,6 +1,6 @@
 # Axioms
 
-An axiom is a statement about the model that is true or false: *you may vote*, *postal voting is open*. They live in `data/axioms.yaml` and are worked out again on every change: a new user, another point in time, a field typed into.
+An axiom is a statement about the model that is true or false, a rule: *you are logged in*, *you may vote*, *postal voting is open*. Nobody switches it; it follows from the model. (What you choose to look at a page as is a [dimension](dimensions.md).) They live in `data/axioms.yaml` and are worked out again on every change: a new user, another point in time, a field typed into.
 
 Pages read them like any other value:
 

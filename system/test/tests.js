@@ -116,6 +116,15 @@ test('null: empty attributes and empty elements',
     eq(render([{ hr: [] }, { p: [{ text: null }] }, { p: [{ text: '' }] }]), '<hr><p></p><p></p>');
   });
 
+test('_: a key that starts with _ is switched off',
+  'A switched off element is not drawn, a switched off attribute not set, a switched off branch not tried; with dev-variables the element is shown, marked.',
+  () => {
+    eq(render([{ p: [{ _class: 'x' }, { text: 'a' }] }, { _p: [{ text: 'b' }] }]), '<p>a</p>');
+    eq(render([{ if: [{ _ok: [{ p: [{ text: 'a' }] }] }, { else: [{ p: [{ text: 'b' }] }] }] }], { ok: true }), '<p data-if="else">b</p>');
+    eq(render([{ _p: [{ text: 'b' }] }], { dimension: { 'dev-variables': true } }), '<p class="promising-off" data-off="_p">b</p>');
+    eq(Promising.records.read([{ a: 1 }, { _b: 2 }]), { a: 1 });
+  });
+
 test('text: {path} from the model',
   'A missing path shows itself in red instead of disappearing; null shows nothing.',
   () => {
@@ -251,22 +260,21 @@ test('a site can add axiom types',
 
 group('Dimensions', 'Layers that are on or off: roles, hats and the dev tools. See docs/dimensions.md.');
 
-test('when, requires and chosen',
-  'when switches a dimension by itself; requires keeps it off until the condition holds; chosen lists those switched on by hand.',
+test('requires and chosen',
+  'A dimension is switched by hand; requires keeps it off until the condition holds; chosen lists those switched on.',
   () => {
     const D = Promising.dimensions;
     D.read([
-      { dimension: [{ id: 'logged_in' }, { when: 'user' }] },
       { dimension: [{ id: 'official' }, { group: 'role' }] },
       { dimension: [{ id: 'secret' }, { requires: 'dimension.official' }] },
     ]);
-    const m = { user: { id: '1' }, dimension: { official: true, secret: true, 'dev-code': true } };
+    const m = { dimension: { official: true, secret: true, 'dev-code': true } };
     D.evaluate(m);
-    eq([m.dimension.logged_in, m.dimension.official, m.dimension.secret], [true, true, true]);
+    eq([m.dimension.official, m.dimension.secret], [true, true]);
     eq(D.chosen(m), ['official', 'secret', 'dev-code']);
-    const n = { user: null, dimension: { secret: true } };
+    const n = { dimension: { secret: true } };
     D.evaluate(n);
-    eq([n.dimension.logged_in, n.dimension.secret], [false, false]);
+    eq(n.dimension.secret, false);
     ok(D.list().some(d => d.id === 'dev-text'), 'the dev dimensions are always there');
   });
 

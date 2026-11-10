@@ -12,6 +12,7 @@ lists of one-key entries. records.js turns them into plain objects.
   Promising.records.all(file, kind, lists?) every record of one kind in a file
   Promising.records.write(object, lists?)   object → entries
 
+A key that starts with _ is switched off and left out.
 A key that occurs more than once becomes a list. Keys named in `lists` are
 always lists, even with a single entry (structure uses this for its children).
 
@@ -32,6 +33,7 @@ Promising.records = (() => {
     const record = {};
     for (const entry of entries) {
       const [key, raw] = Object.entries(entry)[0];
+      if (key.startsWith('_')) continue;
       const value = isEntries(raw) ? read(raw, lists) : raw;
       if (lists.includes(key)) (record[key] ||= []).push(value);
       else if (key in record) record[key] = [].concat(record[key], [value]);

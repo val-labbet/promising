@@ -43,6 +43,23 @@ Text is always text. `<b>` in yaml or in the model is shown as characters.
 
 In the browser the three empty `p` are the same; the difference is kept in the yaml and shown in the code view. Note that `text:` with nothing after it *is* `null` in yaml, so `<p></p>` is written `text: ''`.
 
+## Switched off
+
+A key that starts with `_` is switched off: left out, but kept in the file. One character turns a part off and on again, and unlike a `#` comment it survives every save.
+
+```yaml
+- p:
+  - _class: intro             # the attribute is not set
+  - text: Shown
+- _p:
+  - text: Not shown
+- _div:                       # a whole part, everything under it
+  - h2:
+    - text: Not shown either
+```
+
+It works everywhere: elements, attributes, `if` branches, component variables, and the fields of the meta files (`- _syfte: …` in a person). With `dev-variables` on, switched off parts are shown greyed and struck through, marked with their key.
+
 ## if
 
 The first branch whose condition is true is drawn. A path is true unless it is empty text, an empty list, `false` or `null`. `!` negates. A comparison compares with a number, a text, `true`/`false`/`null` or a `{path}`: `user.alder >= 18`, `user.id == 2`, `time < 2026-09-01`.

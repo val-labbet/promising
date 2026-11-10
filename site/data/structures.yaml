@@ -148,3 +148,6 @@
     - structure:
       - href: meta/model
       - title: Modellen
+    - structure:
+      - href: meta/links
+      - title: Sparade lägen

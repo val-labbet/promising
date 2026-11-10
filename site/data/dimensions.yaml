@@ -1,8 +1,4 @@
 - dimension:
-  - id: logged_in
-  - title: Inloggad
-  - when: user.personnummer
-- dimension:
   - id: V
   - title: V - Väljare
 - dimension:
