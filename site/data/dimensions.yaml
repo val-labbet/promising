@@ -2,6 +2,12 @@
   - id: V
   - title: V - Väljare
 - dimension:
+  - id: U
+  - title: U - Utlandssvensk
+- dimension:
+  - id: D
+  - title: D - Data
+- dimension:
   - id: LL
   - title: LL - Lättläst (för väljare)
 - dimension:
@@ -10,6 +16,9 @@
 - dimension:
   - id: P
   - title: P - Parti
+- dimension:
+  - id: M
+  - title: M - Media
 - dimension:
   - id: F
   - title: F - Valfunktionär

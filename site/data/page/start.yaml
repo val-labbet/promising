@@ -11,6 +11,10 @@
   - text: Välkommen till Promising. Det här är starten på allt.
 - p:
   - text: Nyheter, todo, kalender
+- if:
+  - dimension in (V, P):
+    - p:
+      - text: V eller P!
 - _div:
   - block-link:
     - href: page:valjare

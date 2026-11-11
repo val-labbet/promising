@@ -77,6 +77,18 @@ The first branch whose condition is true is drawn. A path is true unless it is e
       - text: Du får inte rösta i riksdagsvalet.
 ```
 
+`in` asks for one of several: one of the dimensions, one of the values, or a list holding one of them.
+
+```yaml
+- if:
+  - dimension in (V, P, L):
+    - p:
+      - text: Du ser sidan som väljare, parti eller lokal valadministratör.
+  - user.kommun in (Lund, Malmö):
+    - p:
+      - text: Skåne!
+```
+
 Axioms (`axiom.x`) and dimensions (`dimension.x`) are read the same way, see [axioms.md](axioms.md) and [dimensions.md](dimensions.md).
 
 ## per
@@ -90,6 +102,20 @@ One copy per item in a list (or per value in an object). The item gets the name 
       - li:
         - text: '{p.namn.komplett}'
 ```
+
+With two names, the first is the key: the name in an object, the place in a list (from 0). E.g. the names of the axioms that are true right now:
+
+```yaml
+- ul:
+  - per:
+    - axiom[name, value]:
+      - if:
+        - value == true:
+          - li:
+            - text: '{name}'
+```
+
+(`value == true` and not just `value`, since `axiom` also holds the news, `<id>_news`, which are texts.)
 
 `for` is an ordinary attribute again: `- label: [ - for: namn ]`.
 

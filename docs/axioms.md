@@ -48,7 +48,18 @@ user                      user.alder >= 18          time >= 2026-09-01
 !user                     user.id == 2              user.alder < {grans}
 ```
 
-Numbers compare as numbers, everything else as text, so dates work as long as they are written the same way. The same conditions work in `if` on pages.
+Numbers compare as numbers, everything else as text, so dates work as long as they are written the same way.
+
+`in` asks for one of several:
+
+```
+dimension in (V, P, L)          one of dimension.V, dimension.P and dimension.L is true
+user.kommun in (Lund, Malmö)    the value is one of them
+user.roller in (rm, vd)         the list holds one of them
+!dimension in (V, P)            none of them
+```
+
+The same conditions work in `if` on pages.
 
 ## time-window
 

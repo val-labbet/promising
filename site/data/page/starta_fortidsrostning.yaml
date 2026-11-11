@@ -1,6 +1,5 @@
 - form:
   - action: null
-  - 
   - p:
     - text: Börja med att säkerställa identiteten på personen framför dig.
   - label:

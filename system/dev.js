@@ -436,13 +436,24 @@ window.Promising ||= {};
     const area = H.el('textarea', { class: 'promising-code-text', spellcheck: 'false', 'aria-label': 'Yaml', onblur: () => P.draw() });
     const message = H.el('p', { class: 'promising-code-message' });
     const name = H.el('code');
-    const save = H.el('button', { type: 'button', hidden: true, onclick: () => P.backend.save(current()) }, 'Save');
-    const section = H.el('section', { class: 'promising-code', hidden: true },
-      H.el('div', { class: 'promising-code-head' }, name,
+    // What saving gave is told here too, not only in dev-files
+    const save = H.el('button', {
+      type: 'button',
+      hidden: true,
+      onclick: async () => {
+        if (area.value !== (P.files[shown] ? P.yaml.dump(P.files[shown]) : '')) apply();
+        if (broken) return;
+        await P.backend.save(current());
+        message.textContent = P.model.backend?.message || '';
+      },
+    }, 'Save');
+    // Pressing a button would otherwise blur the textarea, and the draw on blur moves the
+    // button away between press and release, so the click never comes
+    const head = H.el('div', { class: 'promising-code-head', onpointerdown: event => { if (event.target.closest('button')) event.preventDefault(); } }, name,
         save,
         H.el('button', { type: 'button', onclick: () => download(current()) }, 'Download'),
-        H.el('button', { type: 'button', onclick: () => revert([current()]).then(show) }, 'Undo')),
-      area, message);
+        H.el('button', { type: 'button', onclick: () => revert([current()]).then(show) }, 'Undo'));
+    const section = H.el('section', { class: 'promising-code', hidden: true }, head, area, message);
 
     const current = () => P.file(P.model.page);
 
@@ -454,7 +465,9 @@ window.Promising ||= {};
       message.textContent = '';
     }
 
-    area.addEventListener('input', H.debounce(() => {
+    // What is typed, applied (a while after typing stops, and before saving)
+    function apply ()
+    {
       try {
         const data = P.yaml.load(area.value);
         const problem = P.yaml.validate(area.value);
@@ -465,7 +478,9 @@ window.Promising ||= {};
         broken = true;
         message.textContent = error.message.split('\n')[0];
       }
-    }, 400));
+    }
+
+    area.addEventListener('input', H.debounce(apply, 400));
 
     function update (m)
     {

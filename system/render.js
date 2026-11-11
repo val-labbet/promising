@@ -144,13 +144,17 @@ Promising.render = (() => {
   // !user               negated
   // user.alder >= 18    compared with a number, a string, true/false/null or a {path}
   const COMPARISON = /^(\S+?)\s*(==|!=|>=|<=|>|<)\s*(.*)$/;
+  const IN = /^(\S+)\s+in\s+\((.*)\)$/;
 
   function test (condition, model)
   {
     const negated = condition.startsWith('!');
     const c = negated ? condition.slice(1) : condition;
-    const m = c.match(COMPARISON);
-    const value = m ? compare(H.get(model, m[1]), m[2], literal(m[3], model)) : truthy(H.get(model, c));
+    const among = c.match(IN);
+    const m = !among && c.match(COMPARISON);
+    const value = among ? within(H.get(model, among[1]), among[2].split(',').map(t => literal(t, model)))
+      : m ? compare(H.get(model, m[1]), m[2], literal(m[3], model))
+      : truthy(H.get(model, c));
     return negated ? !value : value;
   }
 
@@ -161,6 +165,16 @@ Promising.render = (() => {
     if (/^(['"]).*\1$/.test(t)) return t.slice(1, -1);
     const words = { true: true, false: false, null: null };
     return Object.hasOwn(words, t) ? words[t] : t;
+  }
+
+  // dimension in (V, P, L)       one of dimension.V, .P and .L is true
+  // user.kommun in (Lund, Malmö) the value is one of them
+  // user.roller in (rm, vd)      the list holds one of them
+  function within (value, items)
+  {
+    if (isMap(value)) return items.some(item => truthy(value[item]));
+    if (Array.isArray(value)) return value.some(v => items.some(item => compare(v, '==', item)));
+    return items.some(item => compare(value, '==', item));
   }
 
   // Numbers as numbers, everything else (dates too) as text
@@ -189,15 +203,19 @@ Promising.render = (() => {
   //   - persons[p]:
   //     - li:
   //       - text: '{p.namn.komplett}'
+  //
+  // With two names the first is the key (the name in an object, the place in a list, from 0):
+  //   - axiom[name, value]:
   function repeat (spec, model)
   {
     const pairs = isMap(spec) ? Object.entries(spec) : list(spec).map(entry);
     return pairs.map(([head, template]) => {
-      const match = head && head.match(/^(.+)\[([a-z_][a-z0-9_]*)\]$/i);
+      const match = head && head.match(/^(.+)\[\s*(?:([a-z_][a-z0-9_]*)\s*,\s*)?([a-z_][a-z0-9_]*)\s*\]$/i);
       if (!match) return null;
-      const items = H.get(model, match[1]);
-      const values = Array.isArray(items) ? items : isMap(items) ? Object.values(items) : [];
-      return values.map(item => nodes(template, { ...model, [match[2]]: item }));
+      const [, path, key, name] = match;
+      const items = H.get(model, path);
+      const all = Array.isArray(items) ? items.map((v, i) => [i, v]) : isMap(items) ? Object.entries(items) : [];
+      return all.map(([k, item]) => nodes(template, { ...model, ...(key && { [key]: k }), [name]: item }));
     });
   }
 

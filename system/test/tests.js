@@ -116,6 +116,14 @@ test('null: empty attributes and empty elements',
     eq(render([{ hr: [] }, { p: [{ text: null }] }, { p: [{ text: '' }] }]), '<hr><p></p><p></p>');
   });
 
+test('per: one copy per item, with the key when asked for',
+  '- list[x]: gives each item; - object[k, v]: also the name, or the place in a list.',
+  () => {
+    eq(render([{ per: [{ 'xs[x]': [{ b: [{ text: '{x}' }] }] }] }], { xs: ['a', 'b'] }), '<b>a</b><b>b</b>');
+    eq(render([{ per: [{ 'o[k, v]': [{ b: [{ text: '{k}={v}' }] }] }] }], { o: { a: 1, b: 2 } }), '<b>a=1</b><b>b=2</b>');
+    eq(render([{ per: [{ 'xs[i, x]': [{ b: [{ text: '{i}{x}' }] }] }] }], { xs: ['a', 'b'] }), '<b>0a</b><b>1b</b>');
+  });
+
 test('_: a key that starts with _ is switched off',
   'A switched off element is not drawn, a switched off attribute not set, a switched off branch not tried; with dev-variables the element is shown, marked.',
   () => {
@@ -203,6 +211,16 @@ test('paths, negation and comparisons',
     eq([t('user.alder >= 18'), t('user.alder < 18'), t('user.alder<{limit}'), t('!user.alder >= 18')], [false, true, true, true]);
     eq([t('user.id == 2'), t("user.id == '2'"), t('user.id != 2'), t('nope == null')], [true, true, false, true]);
     eq([t('time >= 2026-09-01'), t('time < 2026-08-01')], [true, false]);
+  });
+
+test('in: one of several',
+  'In an object, one of the named keys is true; a value is one of them; a list holds one of them. ! negates.',
+  () => {
+    const m = { dimension: { V: false, P: true, L: false }, user: { kommun: 'Lund', roller: ['rm', 'tr'], id: 2 } };
+    const t = c => Promising.render.test(c, m);
+    eq([t('dimension in (V, P)'), t('dimension in (V, L)'), t('!dimension in (V, L)')], [true, false, true]);
+    eq([t('user.kommun in (Malmö, Lund)'), t("user.kommun in ('Malmö')"), t('user.id in (1, 2)')], [true, false, true]);
+    eq([t('user.roller in (vd, tr)'), t('user.roller in (vd)'), t('nope in (a)')], [true, false, false]);
   });
 
 
