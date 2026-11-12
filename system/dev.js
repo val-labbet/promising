@@ -164,8 +164,8 @@ window.Promising ||= {};
           disabled: !d.allowed,
           onchange: event => {
             P.set(`dimension.${d.id}`, event.target.checked);
-            // Menu visibility is set in the main menu, so open it
-            if (d.id === 'dev-menu' && event.target.checked) P.set('menu_open', true);
+            // Menu visibility is set in the main menu, so open it, and close it again after
+            if (d.id === 'dev-menu') P.set('menu_open', event.target.checked);
           },
         }),
         ' ', d.title || d.id),

@@ -194,7 +194,8 @@ Promising.builtins ||= {};
   };
 
   // The address of a state, so it can also be opened in a new tab or copied
-  const address = state => '?' + new URLSearchParams(Object.entries(state).map(([k, v]) => [k, [].concat(v).join(',')]));
+  const address = state => '?' + new URLSearchParams(Object.entries(state).map(([k, v]) => [k, [].concat(v).join(',')]))
+    .toString().replace(/%(3A|2F|2C|40)/gi, c => decodeURIComponent(c));
 
   const go = (state, text) => H.el('a', {
     href: address(state),
