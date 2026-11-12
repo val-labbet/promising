@@ -55,7 +55,7 @@ They are always there, also without `dimensions.yaml`. List them in it to give t
 | id | |
 |---|---|
 | `dev-text` | Click a text on the page to edit it. You edit the yaml text, `{path}` and all. Enter starts a new paragraph after it, Escape cancels. Text that comes from a component's variable is changed where the component is called. |
-| `dev-code` | The yaml of the page, in the panel right under the switch, applied as you type. For a meta file, go to its page: `meta/axioms` is `axioms.yaml`. Text that is not canonical is still applied, with a note; downloads are always canonical. |
+| `dev-code` | The yaml of the page, in the panel right under the switch, applied as you type. For a meta file, go to its page: `meta/axioms` is `axioms.yaml`. Text that is not canonical is still applied, with a note; downloads are always canonical. The yaml is coloured, and the line with a problem is marked: red when it cannot be read, orange when it is not canonical. Enter starts the next entry (`- `), two spaces further in after a line ending in `:`; Shift+Enter is a plain new line. |
 | `dev-variables` | Marks what the page is drawn from: `if` conditions on the elements they let through and every `{path}` in the text, and the switched off parts (`- _p:`) greyed and struck through. |
 | `dev-model` | The model as a tree. Change values, add new ones. |
 | `dev-persons` | Log in as any test person. Each person's path through the current page is the `if` branches taken: persons with the same colour (frame and background) take the same path, persons without colour the same path as you, and a dotted frame means your path with other text (e.g. their own name). The hover text shows how a path differs: `+` true for them only, `−` true for you only. |

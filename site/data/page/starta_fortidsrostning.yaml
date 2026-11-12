@@ -2,6 +2,8 @@
   - action: null
   - p:
     - text: Börja med att säkerställa identiteten på personen framför dig.
+  - sok-persnr:
+    - text: Personnummer
   - label:
     - text: Personnummer
   - input:

@@ -432,8 +432,19 @@ window.Promising ||= {};
   {
     let shown = null;
     let broken = false;
+    // The line with a problem, from 0, and whether it could not be read at all (error) or is
+    // only not canonical (warning)
+    let wrong = null;
 
-    const area = H.el('textarea', { class: 'promising-code-text', spellcheck: 'false', 'aria-label': 'Yaml', onblur: () => P.draw() });
+    const area = H.el('textarea', {
+      class: 'promising-code-text', spellcheck: 'false', wrap: 'soft', 'aria-label': 'Yaml',
+      onblur: () => P.draw(),
+      onkeydown: newline,
+      oninput: () => paint(),
+      onscroll: () => { view.scrollTop = area.scrollTop; },
+    });
+    // The text again, coloured, behind the textarea, whose own text is transparent
+    const view = H.el('pre', { class: 'promising-code-view', 'aria-hidden': 'true' });
     const message = H.el('p', { class: 'promising-code-message' });
     const name = H.el('code');
     // What saving gave is told here too, not only in dev-files
@@ -453,7 +464,8 @@ window.Promising ||= {};
         save,
         H.el('button', { type: 'button', onclick: () => download(current()) }, 'Download'),
         H.el('button', { type: 'button', onclick: () => revert([current()]).then(show) }, 'Undo'));
-    const section = H.el('section', { class: 'promising-code', hidden: true }, head, area, message);
+    const section = H.el('section', { class: 'promising-code', hidden: true }, head,
+      H.el('div', { class: 'promising-code-editor' }, view, area), message);
 
     const current = () => P.file(P.model.page);
 
@@ -463,6 +475,31 @@ window.Promising ||= {};
       broken = false;
       area.value = P.files[shown] === null || P.files[shown] === undefined ? '' : P.yaml.dump(P.files[shown]);
       message.textContent = '';
+      wrong = null;
+      paint();
+    }
+
+    function paint ()
+    {
+      H.mount(view, highlight(area.value, wrong));
+      view.scrollTop = area.scrollTop;
+    }
+
+    // Enter starts the next entry: after a line ending in : two spaces further in, otherwise
+    // as far in as the line, with "- " written. Shift+Enter is a plain new line.
+    function newline (event)
+    {
+      if (event.key !== 'Enter' || event.shiftKey || event.altKey || event.metaKey || event.ctrlKey || event.isComposing) return;
+      const before = area.value.slice(0, area.selectionStart);
+      const line = before.slice(before.lastIndexOf('\n') + 1);
+      const indent = line.match(/^ */)[0].length + (/:\s*$/.test(line) ? 2 : 0);
+      const text = '\n' + ' '.repeat(indent) + '- ';
+      event.preventDefault();
+      // insertText keeps Cmd+Z working; setRangeText where it is missing
+      if (!document.execCommand?.('insertText', false, text)) {
+        area.setRangeText(text, area.selectionStart, area.selectionEnd, 'end');
+        area.dispatchEvent(new Event('input'));
+      }
     }
 
     // What is typed, applied (a while after typing stops, and before saving)
@@ -471,13 +508,17 @@ window.Promising ||= {};
       try {
         const data = P.yaml.load(area.value);
         const problem = P.yaml.validate(area.value);
+        const line = problem?.match(/at line (\d+)/);
         broken = false;
+        wrong = line ? { line: line[1] - 1, kind: 'warning' } : null;
         message.textContent = problem ? problem + ' (applied; downloads are canonical)' : '';
         P.replace(shown, data);
       } catch (error) {
         broken = true;
+        wrong = Number.isInteger(error.mark?.line) ? { line: error.mark.line, kind: 'error' } : null;
         message.textContent = error.message.split('\n')[0];
       }
+      paint();
     }
 
     area.addEventListener('input', H.debounce(apply, 400));
@@ -500,10 +541,34 @@ window.Promising ||= {};
     {
       const top = area.scrollTop;
       fn();
-      area.scrollTop = top;
+      area.scrollTop = view.scrollTop = top;
     }
 
     return { section, update, typing, keep };
+  }
+
+  // Yaml as coloured spans, one per line: the dash, the key, and in the value quoted text,
+  // {path}, numbers, true, false and null. The line with a problem is marked.
+  function highlight (text, wrong)
+  {
+    const lines = text.split('\n');
+    return lines.map((line, i) => {
+      const [, indent, dashes, key, rest] = line.match(/^( *)((?:- )*-?)((?:'[^']*'|"[^"]*"|[^\s'"#][^#]*?):(?= |$))?(.*)$/);
+      const parts = [indent, dashes && H.el('span', { class: 'y-dash' }, dashes), key && H.el('span', { class: 'y-key' }, key), value(rest)];
+      const end = i < lines.length - 1 ? '\n' : ' ';
+      return wrong?.line === i ? H.el('span', { class: 'y-' + wrong.kind }, parts, end) : [parts, end];
+    });
+  }
+
+  function value (text)
+  {
+    const trimmed = text.trim();
+    if (!trimmed) return text;
+    if (trimmed.startsWith('#')) return H.el('span', { class: 'y-comment' }, text);
+    if (/^(true|false|null|~|-?\d+(\.\d+)?)$/.test(trimmed)) return H.el('span', { class: 'y-literal' }, text);
+    // {path} stands out, inside quotes too
+    const parts = text.split(/(\{[^{}\s]+\})/).map(p => /^\{[^{}\s]+\}$/.test(p) ? H.el('span', { class: 'y-path' }, p) : p);
+    return /^\s*['"]/.test(text) ? H.el('span', { class: 'y-string' }, parts) : parts;
   }
 
 

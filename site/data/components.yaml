@@ -168,3 +168,7 @@
         - span:
           - class: val-chip val-st
           - text: Sameting
+- component:
+  - id: sok-persnr
+  - p:
+    - text: '{vars.text}'

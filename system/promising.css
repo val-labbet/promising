@@ -377,16 +377,60 @@ html.promising-split {
   overflow-wrap: anywhere;
 }
 
-.promising-panel textarea.promising-code-text {
+/* The textarea lies over a coloured copy of its text: the same box, font and wrapping, both
+   always with a scrollbar so the lines break at the same width */
+.promising-code-editor {
+  position: relative;
+}
+
+.promising-panel textarea.promising-code-text,
+.promising-panel pre.promising-code-view {
   box-sizing: border-box;
   width: 100%;
-  min-height: 24rem;
+  margin: 0;
   padding: 0.6rem;
   border: 2px solid #6b3fa0;
   border-radius: 4px;
   font: 13px/1.45 ui-monospace, Menlo, monospace;
+  letter-spacing: normal;
   tab-size: 2;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  overflow-y: scroll;
 }
+
+.promising-panel textarea.promising-code-text {
+  position: relative;
+  display: block;
+  min-height: 24rem;
+  resize: vertical;
+  background: transparent;
+  color: transparent;
+  caret-color: #222;
+}
+
+.promising-panel textarea.promising-code-text::selection {
+  background: rgb(107 63 160 / 0.25);
+}
+
+.promising-panel pre.promising-code-view {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  overflow-y: scroll;
+  background: #fff;
+  color: #222;
+  pointer-events: none;
+}
+
+.promising-code-view .y-dash { color: #999; }
+.promising-code-view .y-key { color: #6b3fa0; font-weight: bold; }
+.promising-code-view .y-string { color: #1e7a35; }
+.promising-code-view .y-path { color: #1f5fbf; background: rgb(31 95 191 / 0.08); }
+.promising-code-view .y-literal { color: #b5540a; }
+.promising-code-view .y-comment { color: #888; font-style: italic; }
+.promising-code-view .y-error { background: rgb(214 40 40 / 0.18); text-decoration: underline wavy #d62828; }
+.promising-code-view .y-warning { background: rgb(230 126 0 / 0.18); }
 
 .promising-code-message {
   min-height: 1.2em;
