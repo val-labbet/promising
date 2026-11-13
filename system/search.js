@@ -1,30 +1,39 @@
 /*
 
-The search builtin: a field that filters while you type.
+The search-field builtin: a field that filters while you type. It is also
+called search, unless the site has a component with that name (which can then
+be built on search-field).
 
-  - search:
+  - search-field:
     - in: structure            the pages of the active structure (the default)
     - in: structure:valjare    valjare and the pages below it
     - in: page:faq             the parts of a page; with nothing typed, the whole page
     - in: vallokaler.json      the items of a json list in data/
-    - fields:                  json only: the fields to search and show
+    - in: persons              the items of a list in the model, e.g. shared.incidenter
+    - fields:                  json and model: the fields to search and show
       - LOKAL
-      - KOMMUN
+      - namn.komplett          a path into the item
     - placeholder: Sök…
     - empty: Inga träffar      shown when nothing matches
     - max: 50                  at most this many hits (default 50)
-    - to: hittade              write the hits to the model instead of listing them
 
-With to, the page draws the hits itself, with per:
+Any other entry is how the hits look: yaml drawn in the field's own list with
+search.hits, search.term and search.none (something typed, nothing found).
+Only that list is drawn again while typing, never the page.
 
-  - search:
+  - search-field:
     - in: vallokaler.json
-    - to: hittade
-  - ul:
-    - per:
-      - hittade[v]:
-        - li:
-          - text: '{v.LOKAL}, {v.KOMMUN}'
+    - ul:
+      - per:
+        - search.hits[v]:
+          - li:
+            - text: '{v.LOKAL}, {v.KOMMUN}'
+    - if:
+      - search.none:
+        - p:
+          - text: Inga träffar
+
+Without it the field lists the hits itself.
 
 Hits are pages { href, title, snippet, link }, parts of a page { tag, text } or
 the json items themselves. Pages are ranked: title, h1–h3, labels, any text.
@@ -47,6 +56,7 @@ Promising.builtins ||= {};
   const terms = {};
   let focused = null;
 
+  const onPage = where => where === 'page' || where.startsWith('page:');
   const words = term => term.toLowerCase().split(/\s+/).filter(Boolean);
   const matches = (body, term) => words(term).every(w => body.toLowerCase().includes(w));
 
@@ -113,7 +123,7 @@ Promising.builtins ||= {};
   {
     const page = where.split(':')[1] || P.model.page;
     return (P.page(page) || [])
-      .filter(n => P.render.entry(n)[0] !== 'search')
+      .filter(n => !['search', 'search-field'].includes(P.render.entry(n)[0]))
       .filter(n => !term || matches(text(n), term));
   }
 
@@ -130,10 +140,17 @@ Promising.builtins ||= {};
 
   async function inJson (term, file, fields)
   {
-    const data = await load(file);
-    const items = Array.isArray(data) ? data : data && typeof data === 'object' ? Object.values(data) : [];
-    const body = item => (fields ? fields.map(f => item?.[f]) : Object.values(item ?? {})).filter(v => v !== null && typeof v !== 'object').join(' ');
-    return items.filter(item => matches(body(item), term));
+    return items(await load(file), term, fields);
+  }
+
+  // ── A list in the model ─────────────────────────────────────────────────────
+
+  // The items whose fields (paths into the item, or all its plain values) hold every word
+  function items (data, term, fields)
+  {
+    const all = Array.isArray(data) ? data : data && typeof data === 'object' ? Object.values(data) : [];
+    const body = item => (fields ? fields.map(f => H.get(item, f)) : Object.values(item ?? {})).filter(v => v !== null && v !== undefined && typeof v !== 'object').join(' ');
+    return all.filter(item => matches(body(item), term));
   }
 
   // ── Together ────────────────────────────────────────────────────────────────
@@ -141,18 +158,22 @@ Promising.builtins ||= {};
   P.search = (term = '', where = 'structure', fields = null) => {
     where = String(where);
     term = term.trim();
-    if (where.startsWith('page')) return parts(term, where);
+    if (onPage(where)) return parts(term, where);
     if (term.length < 2) return where.endsWith('.json') ? Promise.resolve([]) : [];
     if (where.endsWith('.json')) return inJson(term, where, fields);
-    return inStructure(term, where);
+    if (where === 'structure' || where.startsWith('structure:')) return inStructure(term, where);
+    return items(H.get(P.model, where), term, fields);
   };
 
-  P.builtins.search = (vars, model) => {
+  const PARAMETERS = ['in', 'fields', 'placeholder', 'empty', 'max'];
+
+  P.builtins['search-field'] = P.builtins.search = (vars, model, raw) => {
     const where = String(vars.in ?? 'structure');
-    const key = vars.to || where;
+    const key = where;
     const max = Number(vars.max) || 50;
     const fields = vars.fields ? [].concat(vars.fields) : null;
-    const results = vars.to ? null : H.el('ul', { class: 'search-results' });
+    const look = (Array.isArray(raw) ? raw : []).filter(n => !PARAMETERS.includes(P.render.entry(n)[0]));
+    const results = H.el(look.length ? 'div' : 'ul', { class: 'search-results' });
     const field = H.el('input', {
       type: 'search', class: 'search-field', value: terms[key] ?? '',
       placeholder: vars.placeholder ?? '', 'aria-label': vars.placeholder ?? 'Search',
@@ -164,17 +185,18 @@ Promising.builtins ||= {};
     {
       const term = terms[key] = field.value;
       const hits = (await P.search(term, where, fields)).slice(0, max);
-      if (vars.to) {
-        // The page draws the hits; the field is drawn again too, so it gets focus back after
-        if (JSON.stringify(hits) !== JSON.stringify(H.get(P.model, vars.to))) P.set(vars.to, hits);
-        return;
+      const asked = onPage(where) || term.trim().length >= 2;
+      if (look.length) {
+        // Empty while nothing is asked, so the menu next to it shows (promising.css)
+        const search = { term, hits, none: asked && !hits.length };
+        return H.mount(results, asked ? P.render.nodes(look, { ...model, search }) : []);
       }
       H.mount(results, hits.map(hit => show(hit, where, fields, model)));
       if (!hits.length && term.trim().length >= 2 && vars.empty) results.append(H.el('li', { class: 'search-empty' }, vars.empty));
     }
 
     field.addEventListener('input', H.debounce(run, 200));
-    if (terms[key] || where.startsWith('page')) run();
+    if (terms[key] || onPage(where)) run();
     if (focused === key) setTimeout(() => {
       field.focus();
       field.setSelectionRange?.(field.value.length, field.value.length);
@@ -186,9 +208,9 @@ Promising.builtins ||= {};
   // How a hit looks when the search lists it itself
   function show (hit, where, fields, model)
   {
-    if (where.startsWith('page')) return H.el('li', P.render.nodes([hit], model));
-    if (where.endsWith('.json')) {
-      const values = (fields || Object.keys(hit)).map(f => hit[f]).filter(v => v !== null && v !== undefined && typeof v !== 'object' && v !== '');
+    if (onPage(where)) return H.el('li', P.render.nodes([hit], model));
+    if (!where.startsWith('structure')) {
+      const values = (fields || Object.keys(hit)).map(f => H.get(hit, f)).filter(v => v !== null && v !== undefined && typeof v !== 'object' && v !== '');
       return H.el('li', H.el('strong', String(values[0] ?? '')), values.length > 1 && [H.el('br'), H.el('small', values.slice(1, fields ? undefined : 3).join(' · '))]);
     }
     return H.el('li', H.el('a', { href: P.router.url(hit.href), 'data-page': hit.href },

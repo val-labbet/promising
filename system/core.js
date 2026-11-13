@@ -12,7 +12,7 @@ Core: loads a site, keeps the model and draws it.
   Promising.go(page)
   Promising.state()                 where the site is now: { page, user, structure, time, dim }
   Promising.visit(state)            go there, as a saved link does
-  Promising.submit({ to, go, store, data })   what a form does when sent
+  Promising.submit({ to, go, store, call, data })   what a form does when sent
 
   Promising.files                   every loaded file, by path: 'axioms.yaml', 'page/start.yaml'
   Promising.page(name)              the nodes of a page
@@ -223,7 +223,13 @@ window.Promising ||= {};
   };
 
   // What a form sends: written to the model at to, stored through the backend at store
-  P.submit = ({ to, go, store, data }) => {
+  P.submit = async ({ to, go, store, call, data }) => {
+    // A service answers into to (services.js), and the page goes on once it has
+    if (call) {
+      await P.call(call, data, to);
+      if (go) P.go(go);
+      return;
+    }
     if (to) P.set(to, data, { render: !go });
     if (store) {
       if (P.store) P.store(store, data);

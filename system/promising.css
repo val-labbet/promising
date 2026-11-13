@@ -21,7 +21,8 @@
 }
 
 .menu,
-.search-results {
+.search-results,
+.search-results ul {
   list-style: none;
   padding-left: 0;
 }

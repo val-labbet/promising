@@ -12,6 +12,7 @@ The meta files are pages too. `?page=meta/axioms` draws `axioms.yaml` itself: th
 | `meta/dimensions` | `dimensions.yaml` | a switch, and the css class |
 | `meta/model` | `model.yaml` | the start values |
 | `meta/links` | `links.yaml` | a saved state, with a link that goes there |
+| `meta/services` | | the services in `site.js`, with their latest calls, see [services.md](services.md) |
 
 Every record has an `id`. It is shown on the record and used as its html id (`axiom-brevrostning_aktivt`), and a record without one, or with an id used twice, is marked in red.
 

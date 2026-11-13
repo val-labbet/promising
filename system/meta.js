@@ -12,6 +12,7 @@ the model, so there is one source with two uses.
   ?page=meta/model        - model:       the start values
   ?page=meta/links        - link:        a saved state, with a link that goes there
   ?page=meta/pages        the overview: now, changes, saved states and every page
+  ?page=meta/services     the services site.js pretends, with their latest calls
 
   Promising.keep(title)   save where the site is now as a link in links.yaml
 
@@ -216,6 +217,40 @@ Promising.builtins ||= {};
     P.replace(path, [...(Array.isArray(P.files[path]) ? P.files[path] : []), entry]);
     if (P.model.backend?.name) await P.backend.save(path);
   };
+
+
+  // ── meta/services ───────────────────────────────────────────────────────────
+
+  P.system_pages['meta/services'] = [{ services: [] }];
+
+  B.services = () => {
+    const names = Object.keys(P.services || {});
+    if (!names.length) return hint('No services. A site adds them in site.js with Promising.service(name, fn).');
+    return names.map(name => {
+      const { about, delay } = P.services[name];
+      const calls = P.calls.filter(c => c.name === name);
+      return card('service', name, name,
+        about && H.el('p', about),
+        H.el('p', 'Called from a form with ', H.el('code', `- call: ${name}`), ' and ', H.el('code', '- to: …'),
+          ', answers after ', delay ?? '300–800', ' ms.'),
+        H.el('h3', 'Latest calls'),
+        calls.length ? H.el('ol', { class: 'meta-calls' }, calls.map(answer)) : hint('Not called yet.'));
+    });
+  };
+
+  // One call: what was sent and what came back
+  function answer (c)
+  {
+    return H.el('li',
+      H.el('time', { datetime: c.time }, c.time.slice(11, 19)), ' ',
+      H.el('dl', { class: 'meta-fields' },
+        row('sent', fields(c.data) ?? H.el('code', '{}')),
+        row('answer', c.loading ? H.el('em', 'waiting…')
+          : c.error ? H.el('span', { class: 'promising-missing' }, c.error)
+          : c.result === null ? H.el('code', 'null')
+          : typeof c.result === 'object' ? H.el('details', H.el('summary', c.result.id !== undefined ? `id ${c.result.id}` : 'the answer'), fields(c.result))
+          : String(c.result))));
+  }
 
 
   // ── meta/pages: the overview ────────────────────────────────────────────────

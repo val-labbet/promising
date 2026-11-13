@@ -42,7 +42,7 @@ Promising.render = (() => {
   const INPUTS = new Set(['INPUT', 'TEXTAREA', 'SELECT']);
   // A form only ever sends to the page itself (and later the backend), never to an address
   const FORM_ATTRIBUTES = new Set(['action', 'method', 'target', 'formaction', 'formmethod', 'formtarget', 'formenctype']);
-  const ACTIONS = ['to', 'value', 'toggle', 'go', 'store'];
+  const ACTIONS = ['to', 'value', 'toggle', 'go', 'store', 'call'];
   const MAX_DEPTH = 40;
 
   const isMap = v => v !== null && typeof v === 'object' && Object.getPrototypeOf(v) === Object.prototype;
@@ -276,7 +276,7 @@ Promising.render = (() => {
       if (!key) continue;
       if (off(key) && !Array.isArray(value)) continue;
       if (key === 'if' || key === 'per' || Array.isArray(value)) append(el, drawn(e, entries, model));
-      else if (ACTIONS.includes(key) && (key !== 'store' || el.tagName === 'FORM')) action[key] = value;
+      else if (ACTIONS.includes(key) && (!['store', 'call'].includes(key) || el.tagName === 'FORM')) action[key] = value;
       else if (!FORM_ATTRIBUTES.has(key.toLowerCase())) attribute(el, key, value, model);
     }
 

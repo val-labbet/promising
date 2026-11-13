@@ -39,9 +39,7 @@
           - aria-label: Stäng menyn
           - text: ⨯
           - toggle: menu_open
-        - search:
-          - placeholder: Sök…
-          - empty: Inga träffar
+        - search: []
         - menu: []
         - if:
           - axiom.logged_in:
@@ -172,3 +170,28 @@
   - id: sok-persnr
   - p:
     - text: '{vars.text}'
+- component:
+  - id: search
+  - vars-defaults:
+    - in: structure
+    - placeholder: Sök…
+    - empty: Inga träffar
+  - search-field:
+    - in: '{vars.in}'
+    - placeholder: '{vars.placeholder}'
+    - ul:
+      - per:
+        - search.hits[hit]:
+          - li:
+            - a:
+              - href: '{hit.link}'
+              - strong:
+                - text: '{hit.title}'
+              - br: []
+              - small:
+                - text: '{hit.snippet}'
+    - if:
+      - search.none:
+        - p:
+          - class: search-empty
+          - text: '{vars.empty}'

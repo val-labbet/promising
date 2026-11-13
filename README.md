@@ -69,6 +69,7 @@ The ⚙ in the foot opens the panel. There you switch on dimensions, among them 
 - [docs/dimensions.md](docs/dimensions.md): roles, layers and the dev tools
 - [docs/meta.md](docs/meta.md): the meta files as pages you can browse and edit
 - [docs/backend.md](docs/backend.md): saving, keys, working together, shared files
+- [docs/services.md](docs/services.md): pretend services in site.js, called from forms
 
 ## Libraries
 

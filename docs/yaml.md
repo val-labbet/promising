@@ -193,30 +193,37 @@ Written in js, used like components.
 | `- page: []` | the current page, with its title as h1 if it has none |
 | `- menu:` `- structure: default` `- root: valjare` | the pages of a structure as nested lists; both entries optional |
 | `- breadcrumb:` `- text: Upp` | a link to the parent page |
-| `- search:` `- in: structure:valjare` `- placeholder: Sök…` `- empty: Inga träffar` | a field that filters while you type, see below |
+| `- search-field:` `- in: structure:valjare` `- placeholder: Sök…` | a field that filters while you type, see below; also `- search:` unless the site has a component with that name |
 | `- person:`, `- axiom:`, `- structure:` … | a record from a meta file, see [meta.md](meta.md) |
 
 ## Search
 
-`in` is what is searched: `structure` (the default), `structure:valjare` (a part of it), `page:faq` (the parts of a page, all of it while nothing is typed) or `vallokaler.json` (a json list in `data/`, with `fields` to search and show).
+`in` is what is searched: `structure` (the default), `structure:valjare` (a part of it), `page:faq` (the parts of a page, all of it while nothing is typed) `vallokaler.json` (a json list in `data/`) or a list in the model, like `persons` or `shared.incidenter`. For json and the model, `fields` are the fields to search and show, paths into each item (`namn.komplett`); without, all plain values are searched.
 
-Without `to` the search lists the hits itself. With `to` it writes them to the model, and the page draws them with `per`:
+Any entry besides `in`, `fields`, `placeholder`, `empty` and `max` is how the hits look. It is drawn in the field's own list, and only that list is drawn again while you type, never the page. It sees `search.hits`, `search.term` and `search.none` (something typed, nothing found):
 
 ```yaml
-- search:
+- search-field:
   - in: vallokaler.json
   - fields:
     - LOKAL
     - KOMMUN
   - placeholder: Sök vallokal…
   - max: 20
-  - to: hittade
-- ul:
-  - per:
-    - hittade[v]:
-      - li:
-        - text: '{v.LOKAL}, {v.KOMMUN}'
+  - ul:
+    - per:
+      - search.hits[v]:
+        - li:
+          - text: '{v.LOKAL}, {v.KOMMUN}'
+  - if:
+    - search.none:
+      - p:
+        - text: Ingen vallokal hittades.
 ```
+
+Without it the field lists the hits itself, with `empty` when nothing is found. A hit in a structure is `{ href, title, snippet, link }` (`link` is `page:<href>`), in a json file the item itself.
+
+The search in the main menu is a component in `components.yaml`, named `search`, built on `search-field`, so its look is yaml like everything else; change it there.
 
 Every word typed must match. The field keeps what was typed when the page is drawn again.
 
@@ -241,7 +248,7 @@ A form never sends to an address: `action`, `method`, `target` and `formaction` 
       - text: 'Skickat: {incident.typ}'
 ```
 
-`- store: incidenter` also adds it to a shared file everyone sees, see [backend.md](backend.md).
+`- store: incidenter` also adds it to a shared file everyone sees, see [backend.md](backend.md). `- call: folkbokforing` sends it to a service instead, and its answer comes to `to`, see [services.md](services.md).
 
 ## Never created
 

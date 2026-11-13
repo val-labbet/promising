@@ -151,3 +151,6 @@
     - structure:
       - href: meta/links
       - title: Sparade lägen
+    - structure:
+      - href: meta/services
+      - title: Tjänster

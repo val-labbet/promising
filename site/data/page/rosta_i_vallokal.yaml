@@ -10,7 +10,7 @@
     - text: Avisera när jag kommer och om jag behöver särskild hjälp
 - h2:
   - text: Hitta din vallokal
-- search:
+- search-field:
   - in: vallokaler.json
   - fields:
     - LOKAL
@@ -19,16 +19,18 @@
     - KOMMUN
   - placeholder: Sök på ort, adress eller lokal…
   - max: 20
-  - to: vallokal_traffar
-- if:
-  - vallokal_traffar:
-    - ul:
-      - class: search-hits
-      - per:
-        - vallokal_traffar[v]:
-          - li:
-            - strong:
-              - text: '{v.LOKAL}'
-            - br: []
-            - small:
-              - text: '{v.ADRESS2}, {v.KOMMUN} ({v.VALDISTRIKT})'
+  - ul:
+    - class: search-hits
+    - per:
+      - search.hits[v]:
+        - li:
+          - strong:
+            - text: '{v.LOKAL}'
+          - br: []
+          - small:
+            - text: '{v.ADRESS2}, {v.KOMMUN} ({v.VALDISTRIKT})'
+  - if:
+    - search.none:
+      - p:
+        - class: search-empty
+        - text: Ingen vallokal hittades.

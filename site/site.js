@@ -10,6 +10,9 @@ Values computed before every render:
   dagar_till_val    whole days left, null on or after election day
   val_dagar_text    "12 dagar kvar till", "Valdagen är idag —" or null
 
+Pretend services, called from forms with call: (docs/services.md):
+  folkbokforing     a personnummer → the test person whose id is its day
+
 */
 
 (() => {
@@ -51,6 +54,16 @@ Values computed before every render:
       : days === 0 ? 'Valdagen är idag —'
       : null;
   });
+
+  // Pretend services, see docs/services.md
+
+  // Folkbokföringen: the day in a personnummer points out the test person, 01 → Ettan, 23 → Tjugotrean
+  Promising.service('folkbokforing', ({ personnummer = '' }) => {
+    const nr = String(personnummer).trim().replace('-', '');
+    if (!/^(19|20)?\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])\d{4}$/.test(nr)) throw new Error('Felaktigt personnummer');
+    const day = Number(nr.slice(-6, -4));
+    return Promising.persons.find(p => Number(p.id) === day) ?? null;
+  }, { about: 'Folkbokföringen: personnumrets dag pekar ut testpersonen, 01 är Ettan, 23 Tjugotrean.' });
 
   Promising.start({ data: 'data/', root: '#app', backend: '../system/api.php' });
 
