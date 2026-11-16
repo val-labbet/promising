@@ -47,6 +47,7 @@ Keys that belong to the system:
 | `time` | the point in time the site is shown at, now unless told otherwise |
 | `menu_open` | closed again on every page change |
 | `panel_open` | the panel with the dimensions |
+| `fullscreen` | the browser's full screen, and the class `fullscreen` on `<body>` so the site can use the width: `- button: [ - toggle: fullscreen ]`; Escape sets it false |
 | `menu_hidden` | pages hidden from menus and search, by href |
 | `axiom` | every axiom: `axiom.<id>` and `axiom.<id>_news` |
 | `dimension` | every dimension: `dimension.<id>` |

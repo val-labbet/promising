@@ -42,12 +42,15 @@ A form with `call` sends its named fields, and the answer is written to the mode
 
 | In the model | |
 |---|---|
+| `<to>.sent` | the fields that were sent: `{folkbokford.sent.personnummer}` |
 | `<to>.loading` | `true` while waiting |
 | `<to>.result` | the answer, or `null` |
 | `<to>.error` | what went wrong |
 | `<to>.done` | `true` when the answer has come, with or without a result |
 
 With `go`, the page changes once the answer has come.
+
+The page is drawn again when the answer comes, so a field that should keep what was typed takes it from `sent`: `- value: '{folkbokford.sent.personnummer}'`.
 
 ## meta/services
 

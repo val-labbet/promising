@@ -18,6 +18,7 @@ one, so the pages do not change when it becomes real.
 
 The fields are sent, and the answer is written to the model at to:
 
+  hittad.sent      the fields that were sent, e.g. hittad.sent.personnummer
   hittad.loading   true while waiting (a pretend delay, 300–800 ms unless delay is given)
   hittad.result    the answer, or null
   hittad.error     what went wrong, e.g. thrown by the function
@@ -56,7 +57,7 @@ window.Promising ||= {};
     const call = { name, time: new Date().toISOString(), data, loading: true, result: null, error: null };
     P.calls.unshift(call);
     P.calls.length = Math.min(P.calls.length, KEEP);
-    const state = () => ({ loading: call.loading, result: call.result, error: call.error, done: !call.loading });
+    const state = () => ({ sent: data, loading: call.loading, result: call.result, error: call.error, done: !call.loading });
     if (to) P.set(to, state());
 
     await wait(P.services[name]?.delay ?? 300 + Math.random() * 500);

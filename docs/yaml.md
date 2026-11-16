@@ -158,6 +158,8 @@ On a button (or any other element) `to` sets a value when clicked and redraws.
   - toggle: menu_open         # flip true/false
 ```
 
+`- autofocus: null` on a field gives it focus when the page is shown, and again whenever the page is drawn after the focused element went away, e.g. a button like *Försök igen* that is gone once pressed.
+
 ## Components
 
 Defined in `components.yaml`, called like an element. Entries become `{vars.x}`.

@@ -1,60 +1,236 @@
-- form:
-  - action: null
-  - p:
-    - text: Börja med att säkerställa identiteten på personen framför dig.
-- _search-field:
-  - in: persons
-  - fields:
-    - personnummer
-    - namn.komplett
-  - placeholder: '10 eller 12 siffror'
-  - max: 10
-  - ul:
-    - class: search-hits
-    - per:
-      - search.hits[v]:
-        - li:
-          - strong:
-            - text: '{v.namn.komplett}'
-          - br: []
-          - small:
-            - text: '{v.personnummer}'
+- div:
+  - class: fr
+  - div:
+    - class: fr-top
+    - if:
+      - fr in (uppgifter, intyg):
+        - if:
+          - fr.bud:
+            - p:
+              - class: fr-task
+              - text: Vad vill budet {fr.sent.personnummer} göra?
+      - else:
+        - p:
+          - class: fr-task
+          - text: 1. Säkerställ identiteten på personen framför dig
+    - div:
+      - class: fr-tools
+      - if:
+        - fullscreen:
+          - button:
+            - text: Lämna helskärm
+            - toggle: fullscreen
+        - else:
+          - button:
+            - text: ⛶ Helskärm
+            - toggle: fullscreen
+      - if:
+        - fr:
+          - button:
+            - text: Avbryt ✕
+            - to: fr
+            - value: null
   - if:
-    - search.none:
-      - p:
-        - class: search-empty
-        - text: Ingen hittades.
-- form:
-  - call: folkbokforing
-  - to: folkbokford
-  - label:
-    - for: personnummer
-    - text: Nr
-  - input:
-    - id: personnummer
-    - name: personnummer
-    - type: text
-    - pattern: (19|20)?[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])-?[0-9]{4}
-    - placeholder: '10 eller 12 siffror'
-    - required: null
-  - button:
-    - text: Sök
-- if:
-  - folkbokford.loading:
-    - p:
-      - text: Söker i folkbokföringen…
-  - folkbokford.error:
-    - p:
-      - class: search-empty
-      - text: '{folkbokford.error}'
-  - folkbokford.result:
-    - p:
-      - strong:
-        - text: '{folkbokford.result.namn.komplett}'
-      - br: []
-      - small:
-        - text: '{folkbokford.result.personnummer}'
-  - folkbokford.done:
-    - p:
-      - class: search-empty
-      - text: Ingen person hittades.
+    - fr in (uppgifter, intyg):
+      - div:
+        - class: fr-steps
+        - div:
+          - class: fr-col fr-register fr-ok
+          - p:
+            - class: fr-task
+            - text: 1. Säkerställ identiteten på personen framför dig
+          - div:
+            - span:
+              - class: fr-photo
+              - text: 👤
+            - span:
+              - class: fr-card-text
+          - if:
+            - fr.bud:
+              - p:
+                - class: fr-number
+                - text: '{fr.sent.personnummer}'
+              - p:
+                - text: Bud med tjänstgöringsnummer
+            - else:
+              - p:
+                - class: fr-number
+                - text: '{fr.sent.personnummer}'
+              - p:
+                - class: fr-name
+                - text: '{fr.result.namn.enamn}'
+              - p:
+                - class: fr-name
+                - text: '{fr.result.namn.fnamn}'
+          - if:
+            - fr.intyg:
+              - p:
+                - class: fr-check
+                - text: ✓ Röstmottagare {fr.intyg.intygare} går i god för identiteten
+            - else:
+              - p:
+                - class: fr-check
+                - text: ✓ Bilden stämmer
+              - p:
+                - class: fr-check
+                - text: ✓ Uppgifterna stämmer
+        - div:
+          - class: fr-col fr-choices
+          - p:
+            - class: fr-task
+            - text: 2. Vad vill {fr.result.namn.fnamn} göra?
+          - if:
+            - '!fr.bud':
+              - a:
+                - class: fr-choice
+                - href: page:ta_emot_fortidsrost
+                - span:
+                  - class: fr-choice-icon
+                  - text: 🗳️
+                - span:
+                  - text: Lämna sin röst
+          - a:
+            - class: fr-choice
+            - href: page:ta_emot_fortidsrost
+            - span:
+              - class: fr-choice-icon
+              - text: ✉️
+            - span:
+              - text: Lämna budröst
+          - if:
+            - '!fr.bud':
+              - a:
+                - class: fr-choice
+                - href: page:ta_emot_fortidsrost
+                - span:
+                  - class: fr-choice-icon
+                  - text: 🪪
+                - span:
+                  - text: Intyga identitet för en annan person
+    - else:
+      - div:
+        - class: fr-steps
+        - div:
+          - class: fr-col fr-person
+          - div:
+            - class: fr-photo
+            - if:
+              - fr.bild:
+                - span:
+                  - class: fr-photo-ok
+                  - text: 👤
+              - else:
+                - span:
+                  - text: '?'
+          - form:
+            - call: folkbokforing
+            - to: fr
+            - class: fr-search
+            - input:
+              - name: personnummer
+              - type: text
+              - aria-label: Personnummer
+              - placeholder: Personnummer
+              - value: '{fr.sent.personnummer}'
+              - autocomplete: 'off'
+              - required: null
+              - autofocus: null
+            - button:
+              - text: Sök
+        - if:
+          - fr:
+            - div:
+              - class: fr-col fr-register
+              - if:
+                - fr.loading:
+                  - p:
+                    - class: fr-wait
+                    - text: Söker i folkbokföringen…
+                - fr.result:
+                  - div:
+                    - class: fr-card
+                    - span:
+                      - class: fr-card-photo
+                      - text: 👤
+                    - span:
+                      - class: fr-card-text
+                  - p:
+                    - class: fr-number
+                    - text: '{fr.sent.personnummer}'
+                  - p:
+                    - class: fr-name
+                    - text: '{fr.result.namn.enamn}'
+                  - p:
+                    - class: fr-name
+                    - text: '{fr.result.namn.fnamn}'
+                - fr.bud:
+                  - div:
+                    - class: fr-card
+                    - span:
+                      - class: fr-card-photo
+                      - text: 👤
+                    - span:
+                      - class: fr-card-text
+                  - p:
+                    - class: fr-number
+                    - text: '{fr.sent.personnummer}'
+                  - p:
+                    - text: Bud med tjänstgöringsnummer
+                - fr.error:
+                  - p:
+                    - class: fr-number
+                    - text: '{fr.sent.personnummer} är inte ett personnummer'
+                  - button:
+                    - class: fr-again
+                    - text: '< Försök igen'
+                    - to: fr
+                    - value: null
+        - if:
+          - fr.done:
+            - div:
+              - class: fr-col fr-questions
+              - if:
+                - fr.bild:
+                  - p:
+                    - class: fr-question
+                    - text: Stämmer uppgifterna?
+                  - p:
+                    - class: fr-hint
+                    - text: Bekräfta att uppgifterna på skärmen stämmer överens med de uppgifter som finns på id-handlingen.
+                  - button:
+                    - text: Ja
+                    - to: fr.uppgifter
+                    - value: true
+                - fr in (result, bud):
+                  - p:
+                    - class: fr-question
+                    - text: Stämmer bilden?
+                  - p:
+                    - class: fr-hint
+                    - text: Jämför personen framför dig med bilden på id-handlingen.
+                  - button:
+                    - text: Ja
+                    - to: fr.bild
+                    - value: true
+                  - if:
+                    - '!fr.bud':
+                      - form:
+                        - class: fr-vouch
+                        - to: fr.intyg
+                        - p:
+                          - text: Det finns ingen id-handling, men en röstmottagare går i god för identiteten.
+                        - input:
+                          - name: intygare
+                          - type: text
+                          - aria-label: Röstmottagarens tjänstgöringsnummer
+                          - placeholder: Tjänstgöringsnr
+                          - required: null
+                        - button:
+                          - text: OK
+                - fr.error:
+                  - p:
+                    - text: Gå vidare med {fr.sent.personnummer} som ett tjänstgöringsnummer på ett bud.
+                  - button:
+                    - text: OK
+                    - to: fr.bud
+                    - value: true

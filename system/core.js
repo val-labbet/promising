@@ -24,7 +24,7 @@ Core: loads a site, keeps the model and draws it.
 The model is a plain object. These keys belong to the system:
 
   page, previous_page, return_page, user_id, user, persons, structure, start_page,
-  time, menu_open, panel_open, menu_hidden, login_page, site_name, axiom, dimension,
+  time, menu_open, panel_open, fullscreen, menu_hidden, login_page, site_name, axiom, dimension,
   shared_files, shared, backend
 
 Everything else is up to the site. See docs/site.md.
@@ -320,6 +320,20 @@ window.Promising ||= {};
     return [first !== 'h1' && title && H.el('h1', title), P.render.nodes(content, model)];
   };
 
+  // fullscreen: the browser's own full screen, and the class fullscreen on body so the site can
+  // use the width. Asked for only when it changes (the browser wants a click behind it); leaving
+  // with Escape sets it false again.
+  let wanted = false;
+  function fullscreen (on)
+  {
+    if (on === wanted) return;
+    wanted = on;
+    H.fullscreen(on).catch(() => {});
+  }
+  document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement && P.model.fullscreen) P.set('fullscreen', false);
+  });
+
   P.draw = () => {
     derive();
     const m = P.model;
@@ -335,6 +349,12 @@ window.Promising ||= {};
     // Active dimensions as classes on body: dim-logged_in, dim-dev-code …
     for (const c of [...document.body.classList]) if (c.startsWith('dim-')) document.body.classList.remove(c);
     for (const [id, on] of Object.entries(m.dimension || {})) if (on) document.body.classList.add('dim-' + id);
+    document.body.classList.toggle('fullscreen', !!m.fullscreen);
+    fullscreen(!!m.fullscreen);
+    // Focus that went with the old page (a button that is gone, a field drawn anew) goes to autofocus
+    if (!document.activeElement?.isConnected || document.activeElement === document.body) {
+      document.querySelector(root)?.querySelector('[autofocus]')?.focus({ preventScroll: true });
+    }
     for (const fn of drawers) fn(m);
     window.scrollTo(0, scroll);
   };
