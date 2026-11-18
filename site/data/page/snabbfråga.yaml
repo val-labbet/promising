@@ -1,18 +1,26 @@
 - p:
   - text: Ange personnummer för att kontrollera om en förtidsröst finns registrerad.
-- label:
-  - text: Personnummer
-- input:
-  - to: snabbfråga.personnummer
-  - type: text
-- button:
-  - text: Sök
-  - to: snabbfråga.sökts
-  - value: ja
-- span:
-  - if:
-    - snabbfråga.sökts:
-      - p:
-        - text: Ingen registrerad förtidsröst hittad för angivet personnummer.
-    - else:
-      - text: ''
+- form:
+  - call: folkbokföring
+  - to: snabbfråga
+  - label:
+    - for: snabbfråga-personnummer
+    - text: Personnummer
+  - input:
+    - id: snabbfråga-personnummer
+    - name: personnummer
+    - type: text
+    - value: '{snabbfråga.sent.personnummer}'
+    - required: null
+  - button:
+    - text: Sök
+- if:
+  - snabbfråga.loading:
+    - p:
+      - text: Söker…
+  - snabbfråga.error:
+    - p:
+      - text: '{snabbfråga.error}'
+  - snabbfråga.result:
+    - p:
+      - text: Ingen registrerad förtidsröst hittad för {snabbfråga.result.namn.komplett} ({snabbfråga.sent.personnummer}).

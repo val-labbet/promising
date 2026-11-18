@@ -58,12 +58,17 @@ Pretend services, called from forms with call: (docs/services.md):
   // Pretend services, see docs/services.md
 
   // Folkbokföringen: the day in a personnummer points out the test person, 01 → Ettan, 23 → Tjugotrean
+  // Only test persons' numbers are ever kept: a real personnummer that was typed is swapped for
+  // the test person's, in the answer's sent, the field that shows it and meta/services
   Promising.service('folkbokföring', ({ personnummer = '' }) => {
     const nr = String(personnummer).trim().replace('-', '');
     if (!/^(19|20)?\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])\d{4}$/.test(nr)) throw new Error('Felaktigt personnummer');
     const day = Number(nr.slice(-6, -4));
     return Promising.persons.find(p => Number(p.id) === day) ?? null;
-  }, { about: 'Folkbokföringen: personnumrets dag pekar ut testpersonen, 01 är Ettan, 23 Tjugotrean.' });
+  }, {
+    about: 'Folkbokföringen: personnumrets dag pekar ut testpersonen, 01 är Ettan, 23 Tjugotrean. Bara testpersonens personnummer sparas.',
+    keep: (data, person, error) => ({ ...data, personnummer: person ? person.personnummer : error ? data.personnummer : '' }),
+  });
 
   Promising.start({ data: 'data/', root: '#app', backend: '../system/api.php' });
 

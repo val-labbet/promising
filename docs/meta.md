@@ -6,9 +6,9 @@ The meta files are pages too. `?page=meta/axioms` draws `axioms.yaml` itself: th
 |---|---|---|
 | `meta/pages` | | the overview: now, changes, saved states and every page |
 | `meta/structures` | `structures.yaml` | the structure as a tree, with a button to use it |
-| `meta/axioms` | `axioms.yaml` | true or false right now, and the news |
+| `meta/axioms` | `axioms.yaml` | true or false right now, and the news; then the axioms pages define for themselves |
 | `meta/persons` | `persons.yaml` | the person, with a button to log in as them |
-| `meta/components` | `components.yaml` | what it looks like, and the code |
+| `meta/components` | `components.yaml` | what it looks like, and the code; then the components pages define for themselves |
 | `meta/dimensions` | `dimensions.yaml` | a switch, and the css class |
 | `meta/model` | `model.yaml` | the start values |
 | `meta/links` | `links.yaml` | a saved state, with a link that goes there |

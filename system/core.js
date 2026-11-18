@@ -16,6 +16,8 @@ Core: loads a site, keeps the model and draws it.
 
   Promising.files                   every loaded file, by path: 'axioms.yaml', 'page/start.yaml'
   Promising.page(name)              the nodes of a page
+  Promising.local(name)             what a page defines for itself: { components, axioms, content }
+  Promising.draw_page(name, model)  a page's content as dom, with its own components
   Promising.file(page)              the file behind it: 'page/start.yaml', or 'axioms.yaml' for meta/axioms
   Promising.replace(path, data)     use new contents for a file, e.g. from the code editor
   Promising.revert(paths)           load files again, forgetting the changes
@@ -294,6 +296,8 @@ window.Promising ||= {};
     // Dimensions twice: axioms may read dimensions, and a dimension's requires may read axioms
     P.dimensions.evaluate(m);
     P.axioms.evaluate(m);
+    // The page's own axioms, after the others, so they can use them (and win over one with their id)
+    if (m.page) P.axioms.add(P.local(P.visible(m.page, m))?.axioms ?? [], m);
     P.dimensions.evaluate(m);
   }
 
@@ -311,25 +315,65 @@ window.Promising ||= {};
     return P.page(m.login_page) ? m.login_page : page;
   };
 
+  // A page can define components and axioms for itself, written as in components.yaml and
+  // axioms.yaml, at its top level. They are not drawn; the rest of the page is its content.
+  // Only pages in page/: meta/axioms is axioms.yaml itself, drawn record by record.
+  const locals = new WeakMap();
+  P.local = name => {
+    const nodes = P.page(name);
+    if (!Array.isArray(nodes) || !P.file(name).startsWith('page/')) return null;
+    if (!locals.has(nodes)) {
+      const kind = n => P.render.entry(n)[0];
+      const components = {};
+      for (const n of nodes.filter(n => kind(n) === 'component')) {
+        const definition = Array.isArray(n.component) ? n.component : [];
+        const id = definition.find(e => e && typeof e === 'object' && 'id' in e)?.id;
+        if (id) components[id] = definition.filter(e => !(e && typeof e === 'object' && 'id' in e));
+      }
+      locals.set(nodes, {
+        components,
+        axioms: nodes.filter(n => kind(n) === 'axiom' && P.records.isEntries(n.axiom)).map(n => P.records.read(n.axiom)),
+        content: nodes.filter(n => !['component', 'axiom'].includes(kind(n))),
+      });
+    }
+    return locals.get(nodes);
+  };
+
+  P.draw_page = (name, model) => {
+    const local = P.local(name);
+    if (!local) return P.render.nodes(P.page(name) || [], model);
+    return P.render.scope(local.components, () => P.render.nodes(local.content, model));
+  };
+
+  // Nodes drawn after a page, e.g. the local axioms on meta/axioms
+  P.page_after = {};
+
   // - page: [] in the layout component draws the current page, with its title as h1 unless it has one
   P.builtins.page = (vars, model) => {
     const page = P.visible(model.page, model);
-    const content = P.page(page);
+    const content = P.local(page)?.content ?? P.page(page);
     if (!Array.isArray(content)) return H.el('p', { class: 'promising-missing' }, `[page ${page} not found]`);
     const first = P.render.entry(content[0])[0];
     const title = P.title(page);
-    return [first !== 'h1' && title && H.el('h1', title), P.render.nodes(content, model)];
+    return [first !== 'h1' && title && H.el('h1', title), P.draw_page(page, model),
+      P.page_after[page] && P.render.nodes(P.page_after[page], model)];
   };
 
-  // fullscreen: the browser's own full screen, and the class fullscreen on body so the site can
-  // use the width. Asked for only when it changes (the browser wants a click behind it); leaving
-  // with Escape sets it false again.
+  // fullscreen: true is the whole page in the browser's full screen, a selector ('.fr') only that
+  // part of it. The part is drawn anew with every change, which would end its full screen, so it
+  // is the root that goes full screen, with all in it but the part hidden (promising.css). The
+  // class fullscreen on body lets the site use the width. Asked for only when it changes (the
+  // browser wants a click behind it); leaving with Escape sets it false again.
   let wanted = false;
-  function fullscreen (on)
+  function fullscreen (value)
   {
-    if (on === wanted) return;
-    wanted = on;
-    H.fullscreen(on).catch(() => {});
+    const element = document.querySelector(root);
+    const part = typeof value === 'string' && value ? value : null;
+    element?.classList.toggle('promising-fullscreen', !!part);
+    if (part) element?.querySelector(part)?.classList.add('promising-fullscreen-part');
+    if (value === wanted) return;
+    wanted = value;
+    H.fullscreen(!!value, part ? element : document.documentElement).catch(() => {});
   }
   document.addEventListener('fullscreenchange', () => {
     if (!document.fullscreenElement && P.model.fullscreen) P.set('fullscreen', false);
@@ -353,7 +397,7 @@ window.Promising ||= {};
     for (const c of [...document.body.classList]) if (c.startsWith('dim-')) document.body.classList.remove(c);
     for (const [id, on] of Object.entries(m.dimension || {})) if (on) document.body.classList.add('dim-' + id);
     document.body.classList.toggle('fullscreen', !!m.fullscreen);
-    fullscreen(!!m.fullscreen);
+    fullscreen(m.fullscreen || false);
     // Focus that went with the old page (a button that is gone, a field drawn anew) goes to autofocus
     if (!document.activeElement?.isConnected || document.activeElement === document.body) {
       document.querySelector(root)?.querySelector('[autofocus]')?.focus({ preventScroll: true });

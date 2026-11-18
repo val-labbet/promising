@@ -28,6 +28,18 @@
 }
 
 
+/* fullscreen: '.fr' – the root in full screen, showing only that part of the page */
+.promising-fullscreen:fullscreen {
+  overflow: auto;
+  padding: 1.5rem;
+  background: #fff;
+}
+
+.promising-fullscreen:fullscreen :not(.promising-fullscreen-part, .promising-fullscreen-part *, :has(.promising-fullscreen-part)) {
+  display: none !important;
+}
+
+
 /* ── The panel ─────────────────────────────────────────────────────────────── */
 
 .promising-panel {

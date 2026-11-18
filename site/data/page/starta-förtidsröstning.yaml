@@ -1,37 +1,97 @@
+- axiom:
+  - id: hittad
+  - any:
+    - fr.result
+    - fr.bud-med-tjnr
+- axiom:
+  - id: identifierad
+  - any:
+    - fr.uppgifter
+    - fr.intyg
+- axiom:
+  - id: steg-bild
+  - all:
+    - axiom.hittad
+    - '!fr.bild-ok'
+    - '!axiom.identifierad'
+- axiom:
+  - id: steg-uppgifter
+  - all:
+    - fr.bild-ok
+    - '!axiom.identifierad'
+- axiom:
+  - id: steg-bud
+  - all:
+    - fr.error
+    - '!fr.bud-med-tjnr'
+- component:
+  - id: fr-kort
+  - div:
+    - class: fr-card
+    - span:
+      - class: fr-card-photo
+      - text: 👤
+    - span:
+      - class: fr-card-text
+- component:
+  - id: fr-uppgifter
+  - p:
+    - class: fr-number
+    - text: '{fr.sent.personnummer}'
+  - if:
+    - fr.bud-med-tjnr:
+      - p:
+        - text: Bud med tjänstgöringsnummer
+    - else:
+      - p:
+        - class: fr-name
+        - text: '{fr.result.namn.enamn}'
+      - p:
+        - class: fr-name
+        - text: '{fr.result.namn.fnamn}'
+- component:
+  - id: fr-val
+  - a:
+    - class: fr-choice
+    - href: '{vars.href}'
+    - span:
+      - class: fr-choice-icon
+      - text: '{vars.icon}'
+    - span:
+      - text: '{vars.text}'
+- component:
+  - id: fr-verktyg
+  - div:
+    - class: fr-tools
+    - if:
+      - fullscreen:
+        - button:
+          - text: Lämna helskärm
+          - to: fullscreen
+          - value: false
+      - else:
+        - button:
+          - text: ⛶ Helskärm
+          - to: fullscreen
+          - value: '.fr'
+    - if:
+      - fr:
+        - button:
+          - text: Avbryt ✕
+          - to: fr
+          - value: null
 - div:
   - class: fr
-  - div:
-    - class: fr-top
-    - if:
-      - fr in (uppgifter, intyg):
+  - if:
+    - axiom.identifierad:
+      - div:
+        - class: fr-top
         - if:
-          - fr.bud:
+          - fr.bud-med-tjnr:
             - p:
               - class: fr-task
-              - text: Vad vill budet {fr.sent.personnummer} göra?
-      - else:
-        - p:
-          - class: fr-task
-          - text: '1. Säkerställ identiteten på personen framför dig'
-    - div:
-      - class: fr-tools
-      - if:
-        - fullscreen:
-          - button:
-            - text: Lämna helskärm
-            - toggle: fullscreen
-        - else:
-          - button:
-            - text: ⛶ Helskärm
-            - toggle: fullscreen
-      - if:
-        - fr:
-          - button:
-            - text: Avbryt ✕
-            - to: fr
-            - value: null
-  - if:
-    - fr in (uppgifter, intyg):
+              - text: Vad vill budet göra?
+        - fr-verktyg: []
       - div:
         - class: fr-steps
         - div:
@@ -45,23 +105,7 @@
               - text: 👤
             - span:
               - class: fr-card-text
-          - if:
-            - fr.bud:
-              - p:
-                - class: fr-number
-                - text: '{fr.sent.personnummer}'
-              - p:
-                - text: Bud med tjänstgöringsnummer
-            - else:
-              - p:
-                - class: fr-number
-                - text: '{fr.sent.personnummer}'
-              - p:
-                - class: fr-name
-                - text: '{fr.result.namn.enamn}'
-              - p:
-                - class: fr-name
-                - text: '{fr.result.namn.fnamn}'
+          - fr-uppgifter: []
           - if:
             - fr.intyg:
               - p:
@@ -78,36 +122,30 @@
           - class: fr-col fr-choices
           - p:
             - class: fr-task
-            - text: '2. Vad vill {fr.result.namn.fnamn} göra?'
+            - text: '2. Vad vill {fr.result.namn.fnamn || personen framför dig} göra?'
           - if:
-            - '!fr.bud':
-              - a:
-                - class: fr-choice
+            - '!fr.bud-med-tjnr':
+              - fr-val:
+                - icon: 🗳️
+                - text: Lämna sin röst
                 - href: page:ta-emot-förtidsröst
-                - span:
-                  - class: fr-choice-icon
-                  - text: 🗳️
-                - span:
-                  - text: Lämna sin röst
-          - a:
-            - class: fr-choice
+          - fr-val:
+            - icon: ✉️
+            - text: Lämna budröst
             - href: page:ta-emot-förtidsröst
-            - span:
-              - class: fr-choice-icon
-              - text: ✉️
-            - span:
-              - text: Lämna budröst
           - if:
-            - '!fr.bud':
-              - a:
-                - class: fr-choice
+            - '!fr.bud-med-tjnr':
+              - fr-val:
+                - icon: 🪪
+                - text: Intyga identitet för en annan person
                 - href: page:ta-emot-förtidsröst
-                - span:
-                  - class: fr-choice-icon
-                  - text: 🪪
-                - span:
-                  - text: Intyga identitet för en annan person
     - else:
+      - div:
+        - class: fr-top
+        - p:
+          - class: fr-task
+          - text: '1. Säkerställ identiteten på personen framför dig'
+        - fr-verktyg: []
       - div:
         - class: fr-steps
         - div:
@@ -115,7 +153,7 @@
           - div:
             - class: fr-photo
             - if:
-              - fr.bild:
+              - fr.bild-ok:
                 - span:
                   - class: fr-photo-ok
                   - text: 👤
@@ -138,99 +176,72 @@
             - button:
               - text: Sök
         - if:
-          - fr:
+          - fr.loading:
             - div:
               - class: fr-col fr-register
-              - if:
-                - fr.loading:
-                  - p:
-                    - class: fr-wait
-                    - text: Söker i folkbokföringen…
-                - fr.result:
-                  - div:
-                    - class: fr-card
-                    - span:
-                      - class: fr-card-photo
-                      - text: 👤
-                    - span:
-                      - class: fr-card-text
-                  - p:
-                    - class: fr-number
-                    - text: '{fr.sent.personnummer}'
-                  - p:
-                    - class: fr-name
-                    - text: '{fr.result.namn.enamn}'
-                  - p:
-                    - class: fr-name
-                    - text: '{fr.result.namn.fnamn}'
-                - fr.bud:
-                  - div:
-                    - class: fr-card
-                    - span:
-                      - class: fr-card-photo
-                      - text: 👤
-                    - span:
-                      - class: fr-card-text
-                  - p:
-                    - class: fr-number
-                    - text: '{fr.sent.personnummer}'
-                  - p:
-                    - text: Bud med tjänstgöringsnummer
-                - fr.error:
-                  - p:
-                    - class: fr-number
-                    - text: '{fr.sent.personnummer} är inte ett personnummer'
-                  - button:
-                    - class: fr-again
-                    - text: '< Försök igen'
-                    - to: fr
-                    - value: null
-        - if:
-          - fr.done:
+              - p:
+                - class: fr-wait
+                - text: Söker i folkbokföringen…
+          - axiom.hittad:
             - div:
-              - class: fr-col fr-questions
+              - class: fr-col fr-register
+              - fr-kort: []
+              - fr-uppgifter: []
+          - fr.error:
+            - div:
+              - class: fr-col fr-register
+              - p:
+                - class: fr-number
+                - text: '{fr.sent.personnummer} är inte ett personnummer'
+              - button:
+                - class: fr-again
+                - text: '< Försök igen'
+                - to: fr
+                - value: null
+        - div:
+          - class: fr-col fr-questions
+          - if:
+            - axiom.steg-bild:
+              - p:
+                - class: fr-question
+                - text: Stämmer bilden?
+              - p:
+                - class: fr-hint
+                - text: Jämför personen framför dig med bilden på id-handlingen.
+              - button:
+                - text: Ja
+                - to: fr.bild-ok
+                - value: true
               - if:
-                - fr.bild:
-                  - p:
-                    - class: fr-question
-                    - text: Stämmer uppgifterna?
-                  - p:
-                    - class: fr-hint
-                    - text: Bekräfta att uppgifterna på skärmen stämmer överens med de uppgifter som finns på id-handlingen.
-                  - button:
-                    - text: Ja
-                    - to: fr.uppgifter
-                    - value: true
-                - fr in (result, bud):
-                  - p:
-                    - class: fr-question
-                    - text: Stämmer bilden?
-                  - p:
-                    - class: fr-hint
-                    - text: Jämför personen framför dig med bilden på id-handlingen.
-                  - button:
-                    - text: Ja
-                    - to: fr.bild
-                    - value: true
-                  - if:
-                    - '!fr.bud':
-                      - form:
-                        - class: fr-vouch
-                        - to: fr.intyg
-                        - p:
-                          - text: Det finns ingen id-handling, men en röstmottagare går i god för identiteten.
-                        - input:
-                          - name: intygare
-                          - type: text
-                          - aria-label: Röstmottagarens tjänstgöringsnummer
-                          - placeholder: Tjänstgöringsnr
-                          - required: null
-                        - button:
-                          - text: OK
-                - fr.error:
-                  - p:
-                    - text: Gå vidare med {fr.sent.personnummer} som ett tjänstgöringsnummer på ett bud.
-                  - button:
-                    - text: OK
-                    - to: fr.bud
-                    - value: true
+                - '!fr.bud-med-tjnr':
+                  - form:
+                    - class: fr-vouch
+                    - to: fr.intyg
+                    - p:
+                      - text: Det finns ingen id-handling, men en röstmottagare går i god för identiteten.
+                    - input:
+                      - name: intygare
+                      - type: text
+                      - aria-label: Röstmottagare
+                      - placeholder: Röstmottagare
+                      - required: null
+                    - button:
+                      - text: OK
+            - axiom.steg-uppgifter:
+              - p:
+                - class: fr-question
+                - text: Stämmer uppgifterna?
+              - p:
+                - class: fr-hint
+                - text: Bekräfta att uppgifterna på skärmen stämmer överens med de uppgifter som finns på id-handlingen.
+              - button:
+                - text: Ja
+                - to: fr.uppgifter
+                - value: true
+            - axiom.steg-bud:
+              - p:
+                - text: Gå vidare med {fr.sent.personnummer} som ett tjänstgöringsnummer på ett bud.
+              - button:
+                - text: OK
+                - to: fr.bud-med-tjnr
+                - value: true

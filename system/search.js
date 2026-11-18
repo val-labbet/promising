@@ -122,7 +122,7 @@ Promising.builtins ||= {};
   function parts (term, where)
   {
     const page = where.split(':')[1] || P.model.page;
-    return (P.page(page) || [])
+    return (P.local(page)?.content ?? P.page(page) ?? [])
       .filter(n => !['search', 'search-field'].includes(P.render.entry(n)[0]))
       .filter(n => !term || matches(text(n), term));
   }
@@ -174,6 +174,8 @@ Promising.builtins ||= {};
     const fields = vars.fields ? [].concat(vars.fields) : null;
     const look = (Array.isArray(raw) ? raw : []).filter(n => !PARAMETERS.includes(P.render.entry(n)[0]));
     const results = H.el(look.length ? 'div' : 'ul', { class: 'search-results' });
+    // The hits are drawn later, with the components of the page the field is on
+    const components = P.render.scoped();
     const field = H.el('input', {
       type: 'search', class: 'search-field', value: terms[key] ?? '',
       placeholder: vars.placeholder ?? '', 'aria-label': vars.placeholder ?? 'Search',
@@ -189,7 +191,7 @@ Promising.builtins ||= {};
       if (look.length) {
         // Empty while nothing is asked, so the menu next to it shows (promising.css)
         const search = { term, hits, none: asked && !hits.length };
-        return H.mount(results, asked ? P.render.nodes(look, { ...model, search }) : []);
+        return H.mount(results, asked ? P.render.scope(components, () => P.render.nodes(look, { ...model, search })) : []);
       }
       H.mount(results, hits.map(hit => show(hit, where, fields, model)));
       if (!hits.length && term.trim().length >= 2 && vars.empty) results.append(H.el('li', { class: 'search-empty' }, vars.empty));
@@ -208,7 +210,10 @@ Promising.builtins ||= {};
   // How a hit looks when the search lists it itself
   function show (hit, where, fields, model)
   {
-    if (onPage(where)) return H.el('li', P.render.nodes([hit], model));
+    if (onPage(where)) {
+      const page = where.split(':')[1] || model.page;
+      return H.el('li', P.render.scope(P.local(page)?.components, () => P.render.nodes([hit], model)));
+    }
     if (!where.startsWith('structure')) {
       const values = (fields || Object.keys(hit)).map(f => H.get(hit, f)).filter(v => v !== null && v !== undefined && typeof v !== 'object' && v !== '');
       return H.el('li', H.el('strong', String(values[0] ?? '')), values.length > 1 && [H.el('br'), H.el('small', values.slice(1, fields ? undefined : 3).join(' · '))]);

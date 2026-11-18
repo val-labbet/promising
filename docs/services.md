@@ -13,6 +13,14 @@ Promising.service('folkbokföring', ({ personnummer = '' }) => {
 
 The function gets the form's fields and the model, and returns the answer, or a promise of it. What it throws is the error. `about` is shown on `meta/services`; `delay` is how long it pretends to take, 300–800 ms when left out.
 
+`keep(data, result, error)` decides what of the sent fields is kept, in `<to>.sent` and on `meta/services`. The function itself gets what was typed, but nothing else ever sees it. The site uses it so that only test persons' numbers are ever kept: a real personnummer is swapped for the test person's.
+
+```js
+Promising.service('folkbokföring', lookup, {
+  keep: (data, person, error) => ({ ...data, personnummer: person ? person.personnummer : error ? data.personnummer : '' }),
+});
+```
+
 ## Calling it
 
 A form with `call` sends its named fields, and the answer is written to the model at `to`:

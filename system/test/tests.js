@@ -141,6 +141,18 @@ test('text: {path} from the model',
     eq(render([{ p: [{ text: 'a{n}b' }] }], { n: null }), '<p>ab</p>');
   });
 
+test('{a || b || text}: something to fall back on',
+  'The first part that has a value; a part with a space or in quotes is text.',
+  () => {
+    const m = { user: { namn: { fnamn: 'Bo' } }, tom: '', n: null };
+    eq(render([{ p: [{ text: 'Hej {user.namn.fnamn || du}!' }] }], m), '<p>Hej Bo!</p>');
+    eq(render([{ p: [{ text: 'Hej {fr.namn || n || tom || personen framför dig}!' }] }], m), '<p>Hej personen framför dig!</p>');
+    eq(render([{ p: [{ text: "{nope || 'du'}" }] }], m), '<p>du</p>');
+    eq(render([{ p: [{ text: '{nope || user.namn.fnamn}' }] }], m), '<p>Bo</p>');
+    eq(render([{ p: [{ text: '{nope || other}' }] }], m), '<p><span class="promising-missing">[{nope || other}]</span></p>');
+    eq(render([{ a: [{ title: '{nope || inget namn}' }] }], m), '<a title="inget namn"></a>');
+  });
+
 test('text is never html',
   'Html in yaml or in the model is shown as characters.',
   () => {
@@ -174,6 +186,16 @@ test('components with variables and defaults',
     // A value that is not a known default is used as it is
     Promising.components.greeting[0]['vars-defaults'] = [{ who: 'du' }];
     eq(render([{ greeting: [] }]), '<p>Hej du</p>');
+    Promising.components = {};
+  });
+
+test('components of its own: render.scope',
+  'A page can define components for itself; while it draws they win over components.yaml.',
+  () => {
+    Promising.components = { card: [{ p: [{ text: 'global' }] }] };
+    const local = { card: [{ b: [{ text: 'local {vars.x}' }] }], extra: [{ i: [{ text: 'extra' }] }] };
+    eq(html(Promising.render.scope(local, () => Promising.render.nodes([{ card: [{ x: 1 }] }, { extra: [] }], {}))), '<b>local 1</b><i>extra</i>');
+    eq(render([{ card: [] }]), '<p>global</p>');
     Promising.components = {};
   });
 
@@ -242,6 +264,15 @@ test('condition: when, all, any',
     ];
     eq(axioms(file, { user: { alder: 20, eu: true } }), { adult: true, 'adult-news': 'Du får rösta.', eu: true, 'eu-news': null, some: true, 'some-news': null });
     eq(axioms(file, { user: { alder: 16 } }), { adult: false, 'adult-news': null, eu: false, 'eu-news': null, some: false, 'some-news': null });
+  });
+
+test('more axioms, e.g. a page\'s own',
+  'add works out more axioms after the others: they can use them, and one with the same id wins.',
+  () => {
+    const model = { fr: { bild: true } };
+    axioms([{ axiom: [{ id: 'base' }, { when: 'fr' }] }, { axiom: [{ id: 'same' }, { when: 'nope' }] }], model);
+    Promising.axioms.add([{ id: 'step', all: ['axiom.base', 'fr.bild'] }, { id: 'same', when: 'fr.bild' }], model);
+    eq([model.axiom.base, model.axiom.step, model.axiom.same], [true, true, true]);
   });
 
 test('time-window relative to an anchor',

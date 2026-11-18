@@ -1,22 +1,32 @@
 - p:
   - text: Saknar du din rösträtt? Fyll i en anmälan nedan.
-- label:
-  - text: Personnummer
-- input:
-  - to: anmälan.personnummer
-  - type: text
-- label:
-  - text: Anledning till anmälan
-- textarea:
-  - to: anmälan.anledning
-- button:
-  - text: Skicka anmälan
-  - to: anmälan.skickad
-  - value: ja
-- span:
-  - if:
-    - anmälan.skickad:
-      - p:
-        - text: Anmälan registrerad. Du kommer att kontaktas.
-    - else:
-      - text: ''
+- form:
+  - call: folkbokföring
+  - to: anmälan
+  - label:
+    - for: anmälan-personnummer
+    - text: Personnummer
+  - input:
+    - id: anmälan-personnummer
+    - name: personnummer
+    - type: text
+    - value: '{anmälan.sent.personnummer}'
+    - required: null
+  - label:
+    - for: anmälan-anledning
+    - text: Anledning till anmälan
+  - textarea:
+    - id: anmälan-anledning
+    - name: anledning
+  - button:
+    - text: Skicka anmälan
+- if:
+  - anmälan.loading:
+    - p:
+      - text: Skickar…
+  - anmälan.error:
+    - p:
+      - text: '{anmälan.error}'
+  - anmälan.result:
+    - p:
+      - text: Anmälan registrerad för {anmälan.result.namn.komplett}. Du kommer att kontaktas.

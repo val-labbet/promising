@@ -26,7 +26,10 @@ The fields are sent, and the answer is written to the model at to:
 
 The function may return a promise. The latest calls are kept for meta/services.
 
-  Promising.service(name, fn, { about, delay })
+  Promising.service(name, fn, { about, delay, keep })
+                                     keep(data, result, error) → what of the sent fields is kept, in
+                                     the model and the log; e.g. a real personnummer swapped for the
+                                     test person's. The function itself gets what was typed.
   Promising.call(name, data, to)     → the result; what a form's call: does
   Promising.services                 { name: { about, delay } }
   Promising.calls                    the latest calls, newest first
@@ -46,28 +49,33 @@ window.Promising ||= {};
   P.services = {};
   P.calls = [];
 
-  P.service = (name, fn, { about = null, delay = null } = {}) => {
-    functions[name] = fn;
+  P.service = (name, fn, { about = null, delay = null, keep = null } = {}) => {
+    functions[name] = { fn, keep };
     P.services[name] = { about, delay };
   };
 
   const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
+  // The answer is worked out at once, so what is kept of the sent fields is known before anything
+  // is shown or logged; the pretend delay comes after
   P.call = async (name, data = {}, to = null) => {
-    const call = { name, time: new Date().toISOString(), data, loading: true, result: null, error: null };
+    let result = null, error = null;
+    try {
+      if (!functions[name]) throw new Error(`There is no service named ${name}`);
+      result = (await functions[name].fn(data, P.model)) ?? null;
+    } catch (e) {
+      error = e.message;
+    }
+    const kept = functions[name]?.keep ? functions[name].keep({ ...data }, result, error) : data;
+
+    const call = { name, time: new Date().toISOString(), data: kept, loading: true, result: null, error: null };
     P.calls.unshift(call);
     P.calls.length = Math.min(P.calls.length, KEEP);
-    const state = () => ({ sent: data, loading: call.loading, result: call.result, error: call.error, done: !call.loading });
+    const state = () => ({ sent: kept, loading: call.loading, result: call.result, error: call.error, done: !call.loading });
     if (to) P.set(to, state());
 
     await wait(P.services[name]?.delay ?? 300 + Math.random() * 500);
-    try {
-      if (!functions[name]) throw new Error(`There is no service named ${name}`);
-      call.result = (await functions[name](data, P.model)) ?? null;
-    } catch (error) {
-      call.error = error.message;
-    }
-    call.loading = false;
+    Object.assign(call, { result, error, loading: false });
 
     if (to) P.set(to, state());
     else P.draw();

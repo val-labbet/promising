@@ -219,6 +219,36 @@ Promising.builtins ||= {};
   };
 
 
+  // ── Local to a page ─────────────────────────────────────────────────────────
+
+  // meta/axioms and meta/components also show what pages define for themselves, under the page
+  P.page_after['meta/axioms'] = [{ 'local-records': [{ kind: 'axiom' }] }];
+  P.page_after['meta/components'] = [{ 'local-records': [{ kind: 'component' }] }];
+
+  B['local-records'] = (vars, model) => {
+    const kind = vars.kind;
+    const pages = Object.keys(P.files).filter(path => path.startsWith('page/')).map(path => path.slice(5, -5)).sort();
+    const global = P.records.all(P.files[kind + 's.yaml'], kind).map(r => String(r.id));
+    const sections = pages.map(page => {
+      const own = (P.page(page) || []).filter(n => P.render.entry(n)[0] === kind && Array.isArray(n[kind]));
+      if (!own.length) return null;
+      // Worked out here as they would be on their page, after the global ones
+      const seen = kind === 'axiom' ? { ...model, axiom: { ...model.axiom } } : model;
+      if (kind === 'axiom') P.axioms.add(P.local(page).axioms, seen);
+      return H.el('section', { class: 'meta-local' },
+        H.el('h2', 'Local to ', H.el('a', { href: P.router.url(page), 'data-page': page }, page)),
+        own.map(n => {
+          const id = P.records.read(n[kind].filter(e => e && typeof e === 'object' && 'id' in e)).id;
+          return [
+            global.includes(String(id)) && H.el('p', { class: 'promising-hint' }, `${kind} ${id} on this page is its own, not the one in ${kind}s.yaml.`),
+            P.render.scope(P.local(page).components, () => B[kind](vars, seen, n[kind])),
+          ];
+        }));
+    }).filter(Boolean);
+    return sections.length ? sections : hint(`No page has ${kind}s of its own.`);
+  };
+
+
   // ── meta/services ───────────────────────────────────────────────────────────
 
   P.system_pages['meta/services'] = [{ services: [] }];

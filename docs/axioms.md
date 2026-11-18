@@ -18,6 +18,8 @@ Pages read them like any other value:
 
 Axioms are worked out in file order, so an axiom can use the ones above it.
 
+A page can also have axioms of its own, at the top of the page, e.g. the steps of a flow. They are worked out after these, only while the page is shown, see [yaml.md](yaml.md#a-pages-own-components-and-axioms).
+
 ## condition
 
 The default type. `when`, `all` and `any` take conditions written as in `if`.

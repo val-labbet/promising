@@ -1,47 +1,60 @@
 - p:
   - text: Kontrollera väljarens identitet och markera i röstlängden.
-- label:
-  - text: Väljarens personnummer
-- input:
-  - to: röstmottagning.personnummer
-  - type: text
-- label:
-  - text: Röstlängdsnummer
-- input:
-  - to: röstmottagning.röstlängdsnr
-  - type: text
-- p:
-  - text: 'Val att ta emot:'
-- div:
+- form:
+  - call: folkbokföring
+  - to: röstmottagning
   - label:
-    - style: display:flex;align-items:center;gap:0.5rem;font-weight:normal;cursor:pointer;margin-bottom:0.4rem
-    - input:
-      - type: checkbox
-      - to: röstmottagning.riksdag
-    - span:
-      - text: Riksdagsval
+    - for: röstmottagning-personnummer
+    - text: Väljarens personnummer
+  - input:
+    - id: röstmottagning-personnummer
+    - name: personnummer
+    - type: text
+    - value: '{röstmottagning.sent.personnummer}'
+    - required: null
   - label:
-    - style: display:flex;align-items:center;gap:0.5rem;font-weight:normal;cursor:pointer;margin-bottom:0.4rem
-    - input:
-      - type: checkbox
-      - to: röstmottagning.region
-    - span:
-      - text: Regionfullmäktige
-  - label:
-    - style: display:flex;align-items:center;gap:0.5rem;font-weight:normal;cursor:pointer;margin-bottom:0.75rem
-    - input:
-      - type: checkbox
-      - to: röstmottagning.kommun
-    - span:
-      - text: Kommunfullmäktige
-- button:
-  - text: Bekräfta röstmottagning
-  - to: röstmottagning.bekräftad
-  - value: ja
-- span:
-  - if:
-    - röstmottagning.bekräftad:
-      - p:
-        - text: Röst mottagen och registrerad.
-    - else:
-      - text: ''
+    - for: röstmottagning-röstlängdsnr
+    - text: Röstlängdsnummer
+  - input:
+    - id: röstmottagning-röstlängdsnr
+    - name: röstlängdsnr
+    - type: text
+  - p:
+    - text: 'Val att ta emot:'
+  - div:
+    - label:
+      - style: display:flex;align-items:center;gap:0.5rem;font-weight:normal;cursor:pointer;margin-bottom:0.4rem
+      - input:
+        - type: checkbox
+        - name: riksdag
+        - value: ja
+      - span:
+        - text: Riksdagsval
+    - label:
+      - style: display:flex;align-items:center;gap:0.5rem;font-weight:normal;cursor:pointer;margin-bottom:0.4rem
+      - input:
+        - type: checkbox
+        - name: region
+        - value: ja
+      - span:
+        - text: Regionfullmäktige
+    - label:
+      - style: display:flex;align-items:center;gap:0.5rem;font-weight:normal;cursor:pointer;margin-bottom:0.75rem
+      - input:
+        - type: checkbox
+        - name: kommun
+        - value: ja
+      - span:
+        - text: Kommunfullmäktige
+  - button:
+    - text: Bekräfta röstmottagning
+- if:
+  - röstmottagning.loading:
+    - p:
+      - text: Registrerar…
+  - röstmottagning.error:
+    - p:
+      - text: '{röstmottagning.error}'
+  - röstmottagning.result:
+    - p:
+      - text: Röst mottagen och registrerad för {röstmottagning.result.namn.komplett}.

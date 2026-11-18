@@ -20,6 +20,7 @@ See docs/yaml.md for the whole format.
   Promising.render.nodes(list, model)   → array of dom nodes
   Promising.render.test(condition, model)
   Promising.render.origin(element)      → { node, siblings, model, caller } it was drawn from
+  Promising.render.scope(components, fn) → fn's result, drawn with components of its own (a page's)
   Promising.render.watch(fn)            → { result, taken, read } the if branches taken while fn
                                           draws, and the model paths its conditions read
 
@@ -38,8 +39,9 @@ Promising.render = (() => {
   const ATTRIBUTE = /^[a-z_:][-a-z0-9_:.]*$/i;
   const UNSAFE_URL = /^\s*(javascript|vbscript|data):/i;
   const URL_ATTRIBUTES = new Set(['href', 'src', 'action', 'formaction', 'xlink:href', 'poster', 'cite']);
-  const EXPRESSION = /\{([^{}\s]+)\}/g;
-  const ONLY_EXPRESSION = /^\{([^{}\s]+)\}$/;
+  // {path}, or {path || other.path || fallback text}
+  const EXPRESSION = /\{([^{}\s|]+(?:\s*\|\|\s*[^{}|]+?)*)\}/g;
+  const ONLY_EXPRESSION = /^\{([^{}\s|]+(?:\s*\|\|\s*[^{}|]+?)*)\}$/;
   const INPUTS = new Set(['INPUT', 'TEXTAREA', 'SELECT']);
   // A form only ever sends to the page itself (and later the backend), never to an address
   const FORM_ATTRIBUTES = new Set(['action', 'method', 'target', 'formaction', 'formmethod', 'formtarget', 'formenctype']);
@@ -66,8 +68,20 @@ Promising.render = (() => {
   {
     if (typeof value !== 'string') return value;
     const only = value.match(ONLY_EXPRESSION);
-    if (only) return H.get(model, only[1]);
-    return H.fill(value, model);
+    if (only) return lookup(only[1], model);
+    return value.replace(EXPRESSION, (match, expression) => lookup(expression, model) ?? match);
+  }
+
+  // {a.b || c.d || personen framför dig}: the first that has a value (not missing, null or
+  // empty). A part with a space or in quotes is text, the others are paths. The last part is
+  // taken as it is, so a missing path still shows itself.
+  function lookup (expression, model)
+  {
+    const parts = expression.split('||').map(p => p.trim());
+    for (const [i, part] of parts.entries()) {
+      const v = /^(['"]).*\1$/.test(part) ? part.slice(1, -1) : /\s/.test(part) ? part : H.get(model, part);
+      if ((v !== undefined && v !== null && v !== '') || i === parts.length - 1) return v;
+    }
   }
 
   function nodes (items, model)
@@ -90,6 +104,7 @@ Promising.render = (() => {
     if (off(key)) return switchedOff(key, value, model);
     if (key === 'if') return branch(value, model);
     if (key === 'per') return repeat(value, model);
+    if (scoped && Object.hasOwn(scoped, key)) return component(key, value, model, scoped[key]);
     if (key in Promising.components) return component(key, value, model);
     if (key in Promising.builtins) return Promising.builtins[key](variables(value, model), model, value);
     return element(key, value, model);
@@ -245,10 +260,23 @@ Promising.render = (() => {
   // - block-link:
   //   - href: page:väljare
   //   - text: För dig som vill rösta.
-  function component (name, entries, model)
+  // Components that only exist while fn draws, e.g. those a page defines for itself; they win
+  // over components.yaml
+  let scoped = null;
+  function scope (components, fn)
+  {
+    const outer = scoped;
+    scoped = components && Object.keys(components).length ? { ...outer, ...components } : outer;
+    try {
+      return fn();
+    } finally {
+      scoped = outer;
+    }
+  }
+
+  function component (name, entries, model, definition = Promising.components[name])
   {
     if (depth >= MAX_DEPTH) return missing(`[${name}: too deep]`);
-    const definition = Promising.components[name];
     const vars = variables(entries, model);
     callers.set(vars, list(entries));
 
@@ -339,7 +367,7 @@ Promising.render = (() => {
     const show = model.dimension?.['dev-variables'];
     for (const match of value.matchAll(EXPRESSION)) {
       parts.push(value.slice(last, match.index));
-      const v = H.get(model, match[1]);
+      const v = lookup(match[1], model);
       let part = null;
       if (v === undefined) part = missing(`[${match[0]}]`);
       else if (v !== null && typeof v === 'object') part = H.el('span', { class: 'promising-dump' }, JSON.stringify(v, null, 2));
@@ -404,6 +432,6 @@ Promising.render = (() => {
     });
   }
 
-  return { nodes, node, resolve, truthy, test, entry, list, origin, watch };
+  return { nodes, node, resolve, truthy, test, entry, list, origin, watch, scope, scoped: () => scoped };
 
 })();

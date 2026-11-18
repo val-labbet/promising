@@ -1,13 +1,28 @@
 - p:
   - text: Börja med att säkerställa identiteten på personen framför dig.
-- label:
-  - text: Personnummer
-- input:
-  - to: förtidsröst.personnummer
-  - type: number
-  - pattern: (19|20)?[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])-?[0-9]{4}
-  - autofocus: autofocus
-- button:
-  - text: Registrera förtidsröst
-  - to: förtidsröst.registrerad
-  - value: ja
+- form:
+  - call: folkbokföring
+  - to: förtidsröst
+  - label:
+    - for: förtidsröst-personnummer
+    - text: Personnummer
+  - input:
+    - id: förtidsröst-personnummer
+    - name: personnummer
+    - type: text
+    - pattern: (19|20)?[0-9]{2}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])-?[0-9]{4}
+    - value: '{förtidsröst.sent.personnummer}'
+    - required: null
+    - autofocus: null
+  - button:
+    - text: Registrera förtidsröst
+- if:
+  - förtidsröst.loading:
+    - p:
+      - text: Registrerar…
+  - förtidsröst.error:
+    - p:
+      - text: '{förtidsröst.error}'
+  - förtidsröst.result:
+    - p:
+      - text: Förtidsröst registrerad för {förtidsröst.result.namn.komplett}.

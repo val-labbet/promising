@@ -28,6 +28,9 @@ Inside an element, a **scalar** value is an attribute and a **list** is a child.
 | `text: '{n}'` with `n: null` | nothing |
 | `text: '{user.namn}'` | the object as json |
 | `disabled: '{vars.disabled}'` | the attribute only if the value is true |
+| `text: 'Vad vill {fr.result.namn.fnamn \|\| personen framför dig} göra?'` | the first that has a value: the name, or else the text |
+
+`||` gives something to fall back on when a path is missing, `null` or empty. There can be several, `{user.smeknamn || user.namn.fnamn || du}`. A part with a space, or in quotes (`'du'`), is text; the others are paths. If the last one is a path that is missing too, it shows itself in red.
 
 Text is always text. `<b>` in yaml or in the model is shown as characters.
 
@@ -183,6 +186,28 @@ Defined in `components.yaml`, called like an element. Entries become `{vars.x}`.
 `vars-defaults` knows `page-title`, `page-icon` and `page-color`, all read from the page `vars.href` points to. Any other value is used as it is, so `- text: Hej` gives `{vars.text}` the text Hej when the caller leaves it out.
 
 Nested entries become an object, as in the meta files: `- namn: [ - fnamn: Bo ]` is `{vars.namn.fnamn}`.
+
+### A page's own components and axioms
+
+A page can define components and axioms for itself, written exactly as in `components.yaml` and `axioms.yaml`, at the top level of the page (by convention first). They are not drawn; they only exist while that page is shown. If one is needed elsewhere later, move it to `components.yaml` or `axioms.yaml` as it is.
+
+```yaml
+- axiom:
+  - id: steg-bild               # axiom.steg-bild, worked out after the global axioms
+  - all:
+    - fr.result
+    - '!fr.bild'
+- component:
+  - id: fr-kort                 # - fr-kort: [] on this page
+  - div:
+    - class: fr-card
+    - text: 👤
+- if:
+  - axiom.steg-bild:
+    - fr-kort: []
+```
+
+One with the same id as a global component or axiom wins on the page. Both are listed on `meta/axioms` and `meta/components`, under their page.
 
 The component `layout`, if it exists, is drawn around every page. In it, `- page: []` is the current page.
 

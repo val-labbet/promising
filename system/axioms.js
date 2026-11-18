@@ -17,7 +17,8 @@ Types (type: condition when left out):
                 starting_soon, started, ending_soon and ended give the news
 
 Axioms are worked out in file order, so one axiom can use the ones above it.
-A site can add types of its own:
+A page can have axioms of its own, worked out after these while it is shown
+(core.js, Promising.local). A site can add types of its own:
 
   Promising.axioms.type('name', (axiom, model) => ({ value: true, news: 'Text' }))
 
@@ -43,7 +44,14 @@ Promising.axioms = (() => {
   function evaluate (model)
   {
     model.axiom = {};
-    for (const axiom of records) {
+    add(records, model);
+  }
+
+  // More axioms after those in axioms.yaml, e.g. a page's own; one with the same id wins
+  function add (list, model)
+  {
+    model.axiom ||= {};
+    for (const axiom of list) {
       const type = types[axiom.type || 'condition'];
       if (!type) console.warn('[promising] unknown axiom type', axiom.type);
       const { value = false, news = null } = (type && type(axiom, model)) || {};
@@ -113,6 +121,6 @@ Promising.axioms = (() => {
     return null;
   }
 
-  return { read, evaluate, type, list: () => records };
+  return { read, evaluate, add, type, list: () => records };
 
 })();

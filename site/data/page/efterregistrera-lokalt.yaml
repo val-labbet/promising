@@ -1,22 +1,32 @@
 - p:
   - text: Lokal efterregistrering för röster som kräver komplettering på kommunal nivå.
-- label:
-  - text: Personnummer
-- input:
-  - to: efterreg-l.personnummer
-  - type: text
-- label:
-  - text: Kommentar
-- textarea:
-  - to: efterreg-l.kommentar
-- button:
-  - text: Registrera
-  - to: efterreg-l.registrerad
-  - value: ja
-- span:
-  - if:
-    - efterreg-l.registrerad:
-      - p:
-        - text: Efterregistrering genomförd lokalt.
-    - else:
-      - text: ''
+- form:
+  - call: folkbokföring
+  - to: efterreg-l
+  - label:
+    - for: efterreg-l-personnummer
+    - text: Personnummer
+  - input:
+    - id: efterreg-l-personnummer
+    - name: personnummer
+    - type: text
+    - value: '{efterreg-l.sent.personnummer}'
+    - required: null
+  - label:
+    - for: efterreg-l-kommentar
+    - text: Kommentar
+  - textarea:
+    - id: efterreg-l-kommentar
+    - name: kommentar
+  - button:
+    - text: Registrera
+- if:
+  - efterreg-l.loading:
+    - p:
+      - text: Registrerar…
+  - efterreg-l.error:
+    - p:
+      - text: '{efterreg-l.error}'
+  - efterreg-l.result:
+    - p:
+      - text: Efterregistrering genomförd lokalt för {efterreg-l.result.namn.komplett}.

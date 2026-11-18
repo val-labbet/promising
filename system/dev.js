@@ -235,8 +235,7 @@ window.Promising ||= {};
   // The page as this model would draw it: the if branches taken, and the text
   function look (m)
   {
-    const page = P.page(P.visible(m.page, m));
-    const { result, taken } = P.render.watch(() => P.render.nodes(page || [], m));
+    const { result, taken } = P.render.watch(() => P.draw_page(P.visible(m.page, m), m));
     return { path: [...taken].sort().join('\n'), taken, text: H.el('div', result).textContent };
   }
 
@@ -592,7 +591,7 @@ window.Promising ||= {};
     if (trimmed.startsWith('#')) return H.el('span', { class: 'y-comment' }, text);
     if (/^(true|false|null|~|-?\d+(\.\d+)?)$/.test(trimmed)) return H.el('span', { class: 'y-literal' }, text);
     // {path} stands out, inside quotes too
-    const parts = text.split(/(\{[^{}\s]+\})/).map(p => /^\{[^{}\s]+\}$/.test(p) ? H.el('span', { class: 'y-path' }, p) : p);
+    const parts = text.split(/(\{[^{}\s|]+(?:\s*\|\|\s*[^{}|]+?)*\})/).map(p => /^\{[^{}\s|]+/.test(p) && p.endsWith('}') ? H.el('span', { class: 'y-path' }, p) : p);
     return /^\s*['"]/.test(text) ? H.el('span', { class: 'y-string' }, parts) : parts;
   }
 
