@@ -12,7 +12,7 @@
       - else:
         - p:
           - class: fr-task
-          - text: 1. Säkerställ identiteten på personen framför dig
+          - text: '1. Säkerställ identiteten på personen framför dig'
     - div:
       - class: fr-tools
       - if:
@@ -38,7 +38,7 @@
           - class: fr-col fr-register fr-ok
           - p:
             - class: fr-task
-            - text: 1. Säkerställ identiteten på personen framför dig
+            - text: '1. Säkerställ identiteten på personen framför dig'
           - div:
             - span:
               - class: fr-photo
@@ -78,12 +78,12 @@
           - class: fr-col fr-choices
           - p:
             - class: fr-task
-            - text: 2. Vad vill {fr.result.namn.fnamn} göra?
+            - text: '2. Vad vill {fr.result.namn.fnamn} göra?'
           - if:
             - '!fr.bud':
               - a:
                 - class: fr-choice
-                - href: page:ta_emot_fortidsrost
+                - href: page:ta-emot-förtidsröst
                 - span:
                   - class: fr-choice-icon
                   - text: 🗳️
@@ -91,7 +91,7 @@
                   - text: Lämna sin röst
           - a:
             - class: fr-choice
-            - href: page:ta_emot_fortidsrost
+            - href: page:ta-emot-förtidsröst
             - span:
               - class: fr-choice-icon
               - text: ✉️
@@ -101,7 +101,7 @@
             - '!fr.bud':
               - a:
                 - class: fr-choice
-                - href: page:ta_emot_fortidsrost
+                - href: page:ta-emot-förtidsröst
                 - span:
                   - class: fr-choice-icon
                   - text: 🪪
@@ -123,7 +123,7 @@
                 - span:
                   - text: '?'
           - form:
-            - call: folkbokforing
+            - call: folkbokföring
             - to: fr
             - class: fr-search
             - input:

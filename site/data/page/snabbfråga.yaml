@@ -3,15 +3,15 @@
 - label:
   - text: Personnummer
 - input:
-  - to: snabbfraga.personnummer
+  - to: snabbfråga.personnummer
   - type: text
 - button:
   - text: Sök
-  - to: snabbfraga.sokts
+  - to: snabbfråga.sökts
   - value: ja
 - span:
   - if:
-    - snabbfraga.sokts:
+    - snabbfråga.sökts:
       - p:
         - text: Ingen registrerad förtidsröst hittad för angivet personnummer.
     - else:

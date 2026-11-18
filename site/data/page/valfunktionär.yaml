@@ -12,7 +12,7 @@
         - if:
           - user.funk.rm:
             - block-link:
-              - href: page:fortidsrostning
+              - href: page:förtidsröstning
               - title: Förtidsröstning
         - if:
           - user.funk.vd:
@@ -22,7 +22,7 @@
         - if:
           - user.funk.rp:
             - block-link:
-              - href: page:rapportera_resultat
+              - href: page:rapportera-resultat
               - title: Rapportera preliminärt resultat
         - if:
           - user.funk:

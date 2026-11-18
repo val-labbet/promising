@@ -157,7 +157,10 @@ window.Promising ||= {};
     for (const d of P.dimensions.states(m)) (groups[d.group || 'dimension'] ||= []).push(d);
     return Object.entries(groups).map(([group, list]) => H.el('fieldset', { class: 'promising-dimensions' },
       H.el('legend', group),
-      list.map(d => [H.el('label', { class: !d.allowed && 'disabled' },
+      list.map(d => [H.el('label', {
+        class: [!d.allowed && 'disabled', group !== 'dev' && !asked(d.id) && 'unasked'],
+        title: group !== 'dev' && !asked(d.id) ? 'Not asked about on this page: switching it changes nothing here' : null,
+      },
         H.el('input', {
           type: 'checkbox',
           checked: d.on,
@@ -171,6 +174,28 @@ window.Promising ||= {};
         ' ', d.title || d.id),
         // What a dev dimension shows sits right under its switch
         d.on && under[d.id] && H.el('div', { class: 'promising-under' }, under[d.id](m))])));
+  }
+
+
+  // Whether the page asks about a dimension: a condition read dimension.<id> in the last draw
+  // (dimension in (V, P) reads dimension.V and dimension.P), or the css has a rule with .dim-<id>
+  const asked = id => !!P.read?.has('dimension.' + id) || styled().has(id);
+
+  let styledIds = null;
+  function styled ()
+  {
+    if (styledIds) return styledIds;
+    styledIds = new Set();
+    const walk = rules => {
+      for (const rule of rules) {
+        for (const match of (rule.selectorText || '').matchAll(/\.dim-([\w-]+)/g)) styledIds.add(match[1]);
+        if (rule.cssRules) walk(rule.cssRules);
+      }
+    };
+    for (const sheet of document.styleSheets || []) {
+      try { walk(sheet.cssRules); } catch {}
+    }
+    return styledIds;
   }
 
 

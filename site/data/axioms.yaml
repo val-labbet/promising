@@ -1,10 +1,10 @@
 - axiom:
-  - id: logged_in
+  - id: logged-in
   - when: user.personnummer
 - axiom:
-  - id: fortidsrostning_aktivt
+  - id: förtidsröstning-aktivt
   - type: time-window
-  - anchor: fokus_val_datum
+  - anchor: fokus-val-datum
   - start: -18
   - end: '0, 20:00'
   - starting_soon:
@@ -20,9 +20,9 @@
     - for: 3
     - text: Förtidsröstningen är stängd.
 - axiom:
-  - id: utlandsrostning_aktivt
+  - id: utlandsröstning-aktivt
   - type: time-window
-  - anchor: fokus_val_datum
+  - anchor: fokus-val-datum
   - start: -24
   - end: -3
   - starting_soon:
@@ -38,9 +38,9 @@
     - for: 4
     - text: Det går inte längre att rösta från utlandet.
 - axiom:
-  - id: brevrostning_aktivt
+  - id: brevröstning-aktivt
   - type: time-window
-  - anchor: fokus_val_datum
+  - anchor: fokus-val-datum
   - start: -45
   - end: 0
   - starting_soon:
@@ -55,9 +55,9 @@
     - for: 14
     - text: Det går inte längre att brevrösta.
 - axiom:
-  - id: best_brevrost_aktivt
+  - id: best-brevröst-aktivt
   - type: time-window
-  - anchor: fokus_val_datum
+  - anchor: fokus-val-datum
   - start: -60
   - end: '-5, 20:00'
   - starting_soon:

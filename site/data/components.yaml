@@ -12,7 +12,7 @@
     - if:
       - user.personnummer:
         - a:
-          - href: page:om_mig
+          - href: page:om-mig
           - class: user-link
           - span:
             - class: user-label
@@ -42,7 +42,7 @@
         - search: []
         - menu: []
         - if:
-          - axiom.logged_in:
+          - axiom.logged-in:
             - button:
               - class: logout-button
               - text: Logga ut
@@ -60,15 +60,15 @@
       - class: foot-election
       - span:
         - class: foot-date
-        - text: '{datum_text}'
+        - text: '{datum-text}'
       - if:
-        - val_dagar_text:
+        - val-dagar-text:
           - span:
             - class: foot-countdown
             - span:
-              - text: '{val_dagar_text} '
+              - text: '{val-dagar-text} '
             - a:
-              - href: page:rostratt
+              - href: page:rösträtt
               - class: foot-link
               - text: nästa val
     - button:
@@ -137,37 +137,37 @@
   - div:
     - class: val-chips
     - if:
-      - user.rostratt.rd:
+      - user.rösträtt.rd:
         - span:
           - class: val-chip val-rd
           - text: Riksdag
     - if:
-      - user.rostratt.rf:
+      - user.rösträtt.rf:
         - span:
           - class: val-chip val-rf
           - text: Region
     - if:
-      - user.rostratt.kf:
+      - user.rösträtt.kf:
         - span:
           - class: val-chip val-kf
           - text: Kommun
     - if:
-      - user.rostratt.fo:
+      - user.rösträtt.fo:
         - span:
           - class: val-chip val-fo
           - text: Folkomröstning
     - if:
-      - user.rostratt.eu:
+      - user.rösträtt.eu:
         - span:
           - class: val-chip val-eu
           - text: EU
     - if:
-      - user.rostratt.st:
+      - user.rösträtt.st:
         - span:
           - class: val-chip val-st
           - text: Sameting
 - component:
-  - id: sok-persnr
+  - id: sök-persnr
   - p:
     - text: '{vars.text}'
 - component:

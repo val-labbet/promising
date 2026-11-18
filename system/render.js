@@ -20,7 +20,8 @@ See docs/yaml.md for the whole format.
   Promising.render.nodes(list, model)   → array of dom nodes
   Promising.render.test(condition, model)
   Promising.render.origin(element)      → { node, siblings, model, caller } it was drawn from
-  Promising.render.watch(fn)            → { result, taken } the if branches taken while fn draws
+  Promising.render.watch(fn)            → { result, taken, read } the if branches taken while fn
+                                          draws, and the model paths its conditions read
 
 */
 
@@ -108,7 +109,7 @@ Promising.render = (() => {
   // ── if ──────────────────────────────────────────────────────────────────────
 
   // - if:
-  //   - user.rostratt.rd: [ …nodes ]
+  //   - user.rösträtt.rd: [ …nodes ]
   //   - '!user': [ …nodes ]
   //   - else: [ …nodes ]
   function branch (branches, model)
@@ -118,7 +119,7 @@ Promising.render = (() => {
       const [condition, content] = entry(b);
       if (!condition || off(condition)) continue;
       if (condition === 'else' || test(condition, model)) {
-        // else is written as what it means: none of the others, e.g. !user.rostratt
+        // else is written as what it means: none of the others, e.g. !user.rösträtt
         watching?.add(condition === 'else' ? tried.map(c => c.startsWith('!') ? c.slice(1) : '!' + c).join(' & ') : condition);
         return mark(nodes(content, model), condition);
       }
@@ -127,20 +128,23 @@ Promising.render = (() => {
     return null;
   }
 
-  // The branches taken while fn draws, e.g. to see why two models draw a page differently
+  // The branches taken while fn draws, e.g. to see why two models draw a page differently, and
+  // the paths the conditions read, e.g. to see which dimensions a page asks about
   let watching = null;
+  let reading = null;
   function watch (fn)
   {
-    const outer = watching;
+    const outer = [watching, reading];
     watching = new Set();
+    reading = new Set();
     try {
-      return { result: fn(), taken: watching };
+      return { result: fn(), taken: watching, read: reading };
     } finally {
-      watching = outer;
+      [watching, reading] = outer;
     }
   }
 
-  // user.rostratt.rd    true if the value is true
+  // user.rösträtt.rd    true if the value is true
   // !user               negated
   // user.alder >= 18    compared with a number, a string, true/false/null or a {path}
   const COMPARISON = /^(\S+?)\s*(==|!=|>=|<=|>|<)\s*(.*)$/;
@@ -152,6 +156,12 @@ Promising.render = (() => {
     const c = negated ? condition.slice(1) : condition;
     const among = c.match(IN);
     const m = !among && c.match(COMPARISON);
+    if (reading) {
+      const path = among ? among[1] : m ? m[1] : c;
+      reading.add(path);
+      // dimension in (V, P): dimension.V and dimension.P are asked about
+      if (among) for (const item of among[2].split(',')) reading.add(path + '.' + item.trim());
+    }
     const value = among ? within(H.get(model, among[1]), among[2].split(',').map(t => literal(t, model)))
       : m ? compare(H.get(model, m[1]), m[2], literal(m[3], model))
       : truthy(H.get(model, c));
@@ -233,7 +243,7 @@ Promising.render = (() => {
   }
 
   // - block-link:
-  //   - href: page:valjare
+  //   - href: page:väljare
   //   - text: För dig som vill rösta.
   function component (name, entries, model)
   {
@@ -350,7 +360,7 @@ Promising.render = (() => {
   // ── model bindings ──────────────────────────────────────────────────────────
 
   // - input:
-  //   - to: anmalan.namn      the field reads and writes model.anmalan.namn without re-rendering
+  //   - to: anmälan.namn      the field reads and writes model.anmälan.namn without re-rendering
   function bind (el, path, model)
   {
     const current = H.get(model, path);

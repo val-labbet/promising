@@ -2,10 +2,10 @@
 
 Axioms: statements about the model that are true or false, worked out again
 on every change. Pages read them as axiom.<id>, and what is new about them as
-axiom.<id>_news.
+axiom.<id>-news.
 
-  - axiom:                            model.axiom.kan_rosta = true
-    - id: kan_rosta
+  - axiom:                            model.axiom.kan-rösta = true
+    - id: kan-rösta
     - all:
       - user
       - user.alder >= 18
@@ -48,7 +48,7 @@ Promising.axioms = (() => {
       if (!type) console.warn('[promising] unknown axiom type', axiom.type);
       const { value = false, news = null } = (type && type(axiom, model)) || {};
       model.axiom[axiom.id] = !!value;
-      model.axiom[axiom.id + '_news'] = news;
+      model.axiom[axiom.id + '-news'] = news;
     }
   }
 

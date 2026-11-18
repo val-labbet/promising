@@ -4,7 +4,7 @@ promising: yaml-driven prototyping system, successor to `../promisi`. Read READM
 
 - `system/` is generic and must never know about elections; election logic goes in `site/site.js`.
 - All dom through hetmule (`H.el`, `H.svg`, `H.mount`). Never `innerHTML`/`outerHTML`/`insertAdjacentHTML`.
-- English names in code, folders and system model keys. Site data (pages, person fields) may be Swedish.
+- English names in code, folders and system model keys. Site names (pages, files, ids, person fields, site model keys) are Swedish with åäö, words joined by `-` (docs/site.md).
 - Data files must be canonical yaml (docs/yaml.md). Check with `Promising.yaml.validate`.
 - `system/lib/hetmule.js` is a copy of `../hetmule/hetmule.js`: change it there (with tests), then copy.
 - Plan and stages: ~/.claude/plans/pasted-content-id-f279-jag-vill-distributed-storm.md

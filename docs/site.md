@@ -16,6 +16,12 @@ data/
   page/*.yaml       pages
 ```
 
+## Names
+
+The site's own names are Swedish, spelt as they are, with words joined by `-`: the page `rösta-från-utlandet` is the file `page/rösta-från-utlandet.yaml` and `?page=rösta-från-utlandet` in the address. The same goes for ids (`brevröstning-aktivt`), person fields (`user.rösträtt.kf`) and values `site.js` adds to the model (`fokus-val-datum`, read in js as `model['fokus-val-datum']`). A key that starts with `_` is switched off (see [yaml.md](yaml.md)), so `_` is not used in names.
+
+The system's own keys stay English, with `_`: `user_id`, `menu_open`, `login_page` …
+
 ## site.js
 
 ```js
@@ -30,7 +36,7 @@ Promising.start({ data: 'data/', root: '#app', backend: '../system/api.php' });
 
 ## The model
 
-One plain object, `Promising.model`. It starts from `model.yaml`, then the address: `?user=2&structure=snal&time=2026-09-01&dim=dev-code` and any model path, e.g. `?anmalan.namn=Bo`.
+One plain object, `Promising.model`. It starts from `model.yaml`, then the address: `?user=2&structure=snål&time=2026-09-01&dim=dev-code` and any model path, e.g. `?anmälan.namn=Bo`.
 
 Keys that belong to the system:
 
@@ -49,7 +55,7 @@ Keys that belong to the system:
 | `panel_open` | the panel with the dimensions |
 | `fullscreen` | the browser's full screen, and the class `fullscreen` on `<body>` so the site can use the width: `- button: [ - toggle: fullscreen ]`; Escape sets it false |
 | `menu_hidden` | pages hidden from menus and search, by href |
-| `axiom` | every axiom: `axiom.<id>` and `axiom.<id>_news` |
+| `axiom` | every axiom: `axiom.<id>` and `axiom.<id>-news` |
 | `dimension` | every dimension: `dimension.<id>` |
 | `shared_files` | files with entries everyone adds to, see backend.md |
 | `shared` | their entries: `shared.<name>` |
@@ -78,7 +84,7 @@ They use the same one-key entries as pages, so the system can both read them and
     - href: start
     - title: Start
     - structure:
-      - href: valjare
+      - href: väljare
       - title: Jag som väljare
       - icon: 🗳️
       - color: '#1a6e3c'
@@ -108,15 +114,15 @@ Every page can be seen without logging in. A page that needs something, e.g. a l
 
 ```yaml
 - structure:
-  - href: om_mig
-  - requires: axiom.logged_in
+  - href: om-mig
+  - requires: axiom.logged-in
 ```
 
 What logged in means is up to the site. Here it is an axiom, true while the person has a personnummer, so the person `O` is not logged in:
 
 ```yaml
 - axiom:
-  - id: logged_in
+  - id: logged-in
   - when: user.personnummer
 ```
 

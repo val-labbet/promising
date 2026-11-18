@@ -164,8 +164,11 @@ pre {
   background: var(--accent-light);
 }
 
-.menu a.active {
-  color: var(--accent);
+/* The page's own colour, mostly see-through, so the text stays easy to read */
+.menu a.active,
+.menu a.active:hover {
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
+  color: var(--text);
   font-weight: 600;
 }
 

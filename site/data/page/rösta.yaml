@@ -1,19 +1,19 @@
 - p:
   - text: Välj hur du vill rösta.
 - block-link:
-  - href: page:fortidsrosta
+  - href: page:förtidsrösta
   - title: Förtidsrösta
   - text: Rösta i förväg.
 - block-link:
-  - href: page:rosta_i_vallokal
+  - href: page:rösta-i-vallokal
   - title: Rösta i din vallokal
   - text: Öppet på valdagen.
 - block-link:
-  - href: page:rosta_fran_utlandet
+  - href: page:rösta-från-utlandet
   - title: Rösta från utlandet
   - text: Om du är utomlands.
 - block-link:
-  - href: page:hjalp_att_rosta
+  - href: page:hjälp-att-rösta
   - title: Jag behöver hjälp
   - text: Det finns fler alternativ
 - ul:

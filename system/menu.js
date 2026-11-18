@@ -4,7 +4,7 @@ Builtins for navigation.
 
   - menu:                     the pages of a structure as nested lists
     - structure: default      optional, the active structure otherwise
-    - root: valjare           optional, only the pages below valjare
+    - root: väljare           optional, only the pages below väljare
 
   - breadcrumb:               a link up to the parent page
     - text: Upp
@@ -48,6 +48,7 @@ Promising.builtins ||= {};
           href: P.router ? P.router.url(item.href) : '?page=' + item.href,
           'data-page': item.href,
           class: item.href === model.page && 'active',
+          'aria-current': item.href === model.page && 'page',
         }, item.title ?? item.href),
         list(item.structure || [], model, level + 1)
       )

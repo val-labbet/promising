@@ -2,7 +2,7 @@
   - text: Här finns information om din rösträtt och hur du röstar.
 - a:
   - class: block-link
-  - href: page:rostratt
+  - href: page:rösträtt
   - div:
     - class: block-link-body
     - h2:
@@ -13,18 +13,18 @@
         - p:
           - text: Du måste vara inloggad för att se din rösträtt
           - class: block-link-text
-      - user.rostratt:
+      - user.rösträtt:
         - val-chips: []
       - else:
         - p:
           - text: Jag har ingen rösträtt
           - class: block-link-text
 - block-link:
-  - href: page:rosta
+  - href: page:rösta
   - title: Jag vill rösta
   - text: Olika sätt att rösta
 - block-link:
-  - href: page:hur_gick_det
+  - href: page:hur-gick-det
   - text: Valresultatet hos mig
 - block-link:
   - href: page:namninsamling

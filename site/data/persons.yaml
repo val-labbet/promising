@@ -6,13 +6,13 @@
     - komplett: Ettan Ettansson
     - fnamn: Ettan
     - enamn: Ettansson
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: '0191010111'
-    - lan: '01'
+    - län: '01'
     - kommun: '0191'
     - valdistrikt: '0101'
     - nr: '11'
-  - rostratt:
+  - rösträtt:
     - rd: Riksdagen, Stockholms län
     - rf: Regionfullmäktige i Region Stockholm, Nordväst
     - kf: Kommunfullmäktige i Sigtuna
@@ -32,13 +32,13 @@
     - komplett: Tvåan Tvåansson
     - fnamn: Tvåan
     - enamn: Tvåansson
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: '226002025'
-    - lan: '22'
+    - län: '22'
     - kommun: '2260'
     - valdistrikt: '0202'
     - nr: '5'
-  - rostratt:
+  - rösträtt:
     - rd: Riksdagen, Västernorrlands län
     - rf: Regionfullmäktige i Region Västernorrland
     - kf: Kommunfullmäktige i Ånge
@@ -56,13 +56,13 @@
     - komplett: Trean Treansson
     - fnamn: Trean
     - enamn: Treansson
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: '0330336325'
-    - lan: '03'
+    - län: '03'
     - kommun: '0330'
     - valdistrikt: '3363'
     - nr: '25'
-  - rostratt:
+  - rösträtt:
     - rd: null
     - rf: Regionfullmäktige i Region Uppsala, Uppsala läns mellersta
     - kf: Kommunfullmäktige i Knivsta
@@ -82,13 +82,13 @@
     - komplett: Fyran Fyransson
     - fnamn: Fyran
     - enamn: Fyransson
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: '048401043'
-    - lan: '04'
+    - län: '04'
     - kommun: '0484'
     - valdistrikt: '0104'
     - nr: '3'
-  - rostratt:
+  - rösträtt:
     - rd: null
     - rf: Regionfullmäktige i Region Sörmland
     - kf: Kommunfullmäktige i Eskilstuna
@@ -106,13 +106,13 @@
     - komplett: Femman Femmansson
     - fnamn: Femman
     - enamn: Femmansson
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: '058035058'
-    - lan: '05'
+    - län: '05'
     - kommun: '0580'
     - valdistrikt: '3505'
     - nr: '8'
-  - rostratt:
+  - rösträtt:
     - rd: Riksdagen, Östergötlands län
     - rf: null
     - kf: null
@@ -129,13 +129,13 @@
     - komplett: Sexan Sexansson
     - fnamn: Sexan
     - enamn: Sexansson
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: '0662010610'
-    - lan: '06'
+    - län: '06'
     - kommun: '0662'
     - valdistrikt: '0106'
     - nr: '10'
-  - rostratt:
+  - rösträtt:
     - rd: Riksdagen, Jönköpings län
     - rf: Regionfullmäktige i Jönköpings län, Tredje valkretsen
     - kf: Kommunfullmäktige i Gislaved
@@ -152,13 +152,13 @@
     - komplett: Sjuan Sjuansson
     - fnamn: Sjuan
     - enamn: Sjuansson
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: '1480070750'
-    - lan: '14'
+    - län: '14'
     - kommun: '1480'
     - valdistrikt: '0707'
     - nr: '50'
-  - rostratt:
+  - rösträtt:
     - rd: Riksdagen, Kronobergs län
     - rf: null
     - kf: null
@@ -175,13 +175,13 @@
     - komplett: Åttan Åttansson
     - fnamn: Åttan
     - enamn: Åttansson
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: '0885080860'
-    - lan: '08'
+    - län: '08'
     - kommun: '0885'
     - valdistrikt: '0808'
     - nr: '60'
-  - rostratt:
+  - rösträtt:
     - rd: Riksdagen, Kalmar län
     - rf: Regionfullmäktige i Region Kalmar län, Kalmar 6 Borgholm Mörbylånga
     - kf: Kommunfullmäktige i Borgholm
@@ -198,13 +198,13 @@
     - komplett: Nian Niansson
     - fnamn: Nian
     - enamn: Niansson
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: '0980010912'
-    - lan: '09'
+    - län: '09'
     - kommun: '0980'
     - valdistrikt: '0109'
     - nr: '12'
-  - rostratt:
+  - rösträtt:
     - rd: Riksdagen, Gotlands län
     - rf: null
     - kf: Kommunfullmäktige i Gotland
@@ -221,13 +221,13 @@
     - komplett: Tian Tiansson
     - fnamn: Tian
     - enamn: Tiansson
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: '10801002181'
-    - lan: '10'
+    - län: '10'
     - kommun: '1080'
     - valdistrikt: '1002'
     - nr: '181'
-  - rostratt:
+  - rösträtt:
     - rd: Riksdagen, Blekinge län
     - rf: Region Blekinge, Karlskronakretsen
     - kf: Kommunfullmäktige i Karlskrona, Karlskrona Ö
@@ -248,13 +248,13 @@
     - komplett: Elvan Elvansson
     - fnamn: Elvan
     - enamn: Elvansson
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: '019101017'
-    - lan: '01'
+    - län: '01'
     - kommun: '0191'
     - valdistrikt: '0101'
     - nr: '7'
-  - rostratt:
+  - rösträtt:
     - rd: Riksdagen, Stockholms län
     - rf: Regionfullmäktige i Region Stockholm, Nordväst
     - kf: Kommunfullmäktige i Sigtuna
@@ -274,13 +274,13 @@
     - komplett: Tolvan Tolvansson
     - fnamn: Tolvan
     - enamn: Tolvansson
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: '1284001218'
-    - lan: '12'
+    - län: '12'
     - kommun: '1284'
     - valdistrikt: '0012'
     - nr: '18'
-  - rostratt:
+  - rösträtt:
     - rd: Riksdagen, Skåne läns västra valkrets
     - rf: Regionfullmäktige i Region Skåne, Nordvästkretsen
     - kf: Kommunfullmäktige i Höganäs
@@ -297,13 +297,13 @@
     - komplett: Tretton Trettonsson
     - fnamn: Tretton
     - enamn: Trettonsson
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: '033033631'
-    - lan: '03'
+    - län: '03'
     - kommun: '0330'
     - valdistrikt: '3363'
     - nr: '1'
-  - rostratt:
+  - rösträtt:
     - rd: null
     - rf: Regionfullmäktige i Region Uppsala, Uppsala läns mellersta
     - kf: Kommunfullmäktige i Knivsta
@@ -321,13 +321,13 @@
     - komplett: Fjorton Fjortonsson
     - fnamn: Fjorton
     - enamn: Fjortonsson
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: '04840104209'
-    - lan: '04'
+    - län: '04'
     - kommun: '0484'
     - valdistrikt: '0104'
     - nr: '209'
-  - rostratt:
+  - rösträtt:
     - rd: null
     - rf: Regionfullmäktige i Region Sörmland
     - kf: Kommunfullmäktige i Eskilstuna
@@ -344,13 +344,13 @@
     - komplett: Femton Femtonsson
     - fnamn: Femton
     - enamn: Femtonsson
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: '058035056'
-    - lan: '05'
+    - län: '05'
     - kommun: '0580'
     - valdistrikt: '3505'
     - nr: '6'
-  - rostratt:
+  - rösträtt:
     - rd: Riksdagen, Östergötlands län
     - rf: null
     - kf: null
@@ -367,13 +367,13 @@
     - komplett: Sexton Sextonsson
     - fnamn: Sexton
     - enamn: Sextonsson
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: '066201064'
-    - lan: '06'
+    - län: '06'
     - kommun: '0662'
     - valdistrikt: '0106'
     - nr: '4'
-  - rostratt:
+  - rösträtt:
     - rd: Riksdagen, Jönköpings län
     - rf: Regionfullmäktige i Jönköpings län, Tredje valkretsen
     - kf: Kommunfullmäktige i Gislaved
@@ -390,13 +390,13 @@
     - komplett: Sjutton Sjuttonsson
     - fnamn: Sjutton
     - enamn: Sjuttonsson
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: '0180171723'
-    - lan: '01'
+    - län: '01'
     - kommun: '0180'
     - valdistrikt: '1717'
     - nr: '23'
-  - rostratt:
+  - rösträtt:
     - rd: Riksdagen, Kronobergs län
     - rf: null
     - kf: null
@@ -413,13 +413,13 @@
     - komplett: Arton Artonsson
     - fnamn: Arton
     - enamn: Artonsson
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: '0885080857'
-    - lan: '08'
+    - län: '08'
     - kommun: '0885'
     - valdistrikt: '0808'
     - nr: '57'
-  - rostratt:
+  - rösträtt:
     - rd: Riksdagen, Kalmar län
     - rf: Regionfullmäktige i Region Kalmar län, Kalmar 6 Borgholm Mörbylånga
     - kf: Kommunfullmäktige i Borgholm
@@ -436,13 +436,13 @@
     - komplett: Nitton Nittonsson
     - fnamn: Nitton
     - enamn: Nittonsson
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: '0980010966'
-    - lan: '09'
+    - län: '09'
     - kommun: '0980'
     - valdistrikt: '0109'
     - nr: '66'
-  - rostratt:
+  - rösträtt:
     - rd: Riksdagen, Gotlands län
     - rf: null
     - kf: Kommunfullmäktige i Gotland
@@ -459,13 +459,13 @@
     - komplett: Tjugo Tjugosson
     - fnamn: Tjugo
     - enamn: Tjugosson
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: '1080100224'
-    - lan: '10'
+    - län: '10'
     - kommun: '1080'
     - valdistrikt: '1002'
     - nr: '24'
-  - rostratt:
+  - rösträtt:
     - rd: Riksdagen, Blekinge län
     - rf: Region Blekinge, Karlskronakretsen
     - kf: Kommunfullmäktige i Karlskrona, Karlskrona Ö
@@ -482,13 +482,13 @@
     - komplett: Tjugoett Tjugoettsson
     - fnamn: Tjugoett
     - enamn: Tjugoettsson
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: '0191010168'
-    - lan: '01'
+    - län: '01'
     - kommun: '0191'
     - valdistrikt: '0101'
     - nr: '68'
-  - rostratt:
+  - rösträtt:
     - rd: Riksdagen, Stockholms län
     - rf: Regionfullmäktige i Region Stockholm, Nordväst
     - kf: Kommunfullmäktige i Sigtuna
@@ -505,13 +505,13 @@
     - komplett: Tjugotvå Tjugotvåsson
     - fnamn: Tjugotvå
     - enamn: Tjugotvåsson
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: '1284001222'
-    - lan: '12'
+    - län: '12'
     - kommun: '1284'
     - valdistrikt: '0012'
     - nr: '22'
-  - rostratt:
+  - rösträtt:
     - rd: Riksdagen, Skåne läns västra valkrets
     - rf: Regionfullmäktige i Region Skåne, Nordvästkretsen
     - kf: Kommunfullmäktige i Höganäs
@@ -528,13 +528,13 @@
     - komplett: Tjugotre Tjugotresson
     - fnamn: Tjugotre
     - enamn: Tjugotresson
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: '033033639'
-    - lan: '03'
+    - län: '03'
     - kommun: '0330'
     - valdistrikt: '3363'
     - nr: '9'
-  - rostratt:
+  - rösträtt:
     - rd: null
     - rf: Regionfullmäktige i Region Uppsala, Uppsala läns mellersta
     - kf: Kommunfullmäktige i Knivsta
@@ -551,13 +551,13 @@
     - komplett: Tjugofyra Tjugofyrasson
     - fnamn: Tjugofyra
     - enamn: Tjugofyrasson
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: '04840104103'
-    - lan: '04'
+    - län: '04'
     - kommun: '0484'
     - valdistrikt: '0104'
     - nr: '103'
-  - rostratt:
+  - rösträtt:
     - rd: null
     - rf: Regionfullmäktige i Region Sörmland
     - kf: Kommunfullmäktige i Eskilstuna
@@ -574,13 +574,13 @@
     - komplett: Tjugofem Tjugofemsson
     - fnamn: Tjugofem
     - enamn: Tjugofemsson
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: '05803505202'
-    - lan: '05'
+    - län: '05'
     - kommun: '0580'
     - valdistrikt: '3505'
     - nr: '202'
-  - rostratt:
+  - rösträtt:
     - rd: Riksdagen, Östergötlands län
     - rf: null
     - kf: null
@@ -597,13 +597,13 @@
     - komplett: Tjugosex Tjugosexsson
     - fnamn: Tjugosex
     - enamn: Tjugosexsson
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: '0662010661'
-    - lan: '06'
+    - län: '06'
     - kommun: '0662'
     - valdistrikt: '0106'
     - nr: '61'
-  - rostratt:
+  - rösträtt:
     - rd: Riksdagen, Jönköpings län
     - rf: Regionfullmäktige i Jönköpings län, Tredje valkretsen
     - kf: Kommunfullmäktige i Gislaved
@@ -620,13 +620,13 @@
     - komplett: Tjugosju Tjugosjusson
     - fnamn: Tjugosju
     - enamn: Tjugosjusson
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: '0180272762'
-    - lan: '01'
+    - län: '01'
     - kommun: '0180'
     - valdistrikt: '2727'
     - nr: '62'
-  - rostratt:
+  - rösträtt:
     - rd: Riksdagen, Stockholms stad
     - rf: null
     - kf: null
@@ -643,13 +643,13 @@
     - komplett: Tjugoåtta Tjugoåttasson
     - fnamn: Tjugoåtta
     - enamn: Tjugoåttasson
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: '08850808107'
-    - lan: '08'
+    - län: '08'
     - kommun: '0885'
     - valdistrikt: '0808'
     - nr: '107'
-  - rostratt:
+  - rösträtt:
     - rd: Riksdagen, Kalmar län
     - rf: Regionfullmäktige i Region Kalmar län, Kalmar 6 Borgholm Mörbylånga
     - kf: Kommunfullmäktige i Borgholm
@@ -666,13 +666,13 @@
     - komplett: Tjugonio Tjugoniosson
     - fnamn: Tjugonio
     - enamn: Tjugoniosson
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: '0980010999'
-    - lan: '09'
+    - län: '09'
     - kommun: '0980'
     - valdistrikt: '0109'
     - nr: '99'
-  - rostratt:
+  - rösträtt:
     - rd: Riksdagen, Gotlands län
     - rf: null
     - kf: Kommunfullmäktige i Gotland
@@ -689,13 +689,13 @@
     - komplett: Trettio Trettiosson
     - fnamn: Trettio
     - enamn: Trettiosson
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: null
-    - lan: null
+    - län: null
     - kommun: null
     - valdistrikt: null
     - nr: null
-  - rostratt:
+  - rösträtt:
     - rd: Riksdagen, Blekinge län
     - rf: null
     - kf: null
@@ -712,13 +712,13 @@
     - komplett: Trettioett Trettioettsson
     - fnamn: Trettioett
     - enamn: Trettioettsson
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: '10801002207'
-    - lan: '10'
+    - län: '10'
     - kommun: '1080'
     - valdistrikt: '1002'
     - nr: '207'
-  - rostratt:
+  - rösträtt:
     - rd: Riksdagen, Blekinge län
     - rf: Region Blekinge, Karlskronakretsen
     - kf: Kommunfullmäktige i Karlskrona, Karlskrona Ö
@@ -735,13 +735,13 @@
     - komplett: Alfa Alfasson
     - fnamn: Alfa
     - enamn: Alfasson
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: null
-    - lan: null
+    - län: null
     - kommun: null
     - valdistrikt: null
     - nr: null
-  - rostratt: null
+  - rösträtt: null
   - inte: null
   - funk: null
 - person:
@@ -752,12 +752,12 @@
     - komplett: null
     - fnamn: null
     - enamn: null
-  - rostlangdsnr:
+  - röstlängdsnr:
     - komplett: null
-    - lan: null
+    - län: null
     - kommun: null
     - valdistrikt: null
     - nr: null
-  - rostratt: null
+  - rösträtt: null
   - inte: null
   - funk: null

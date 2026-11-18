@@ -1,0 +1,16 @@
+- p:
+  - text: Om du är utomlands kan du rösta på svenska ambassader och konsulat, eller per brev.
+- if:
+  - axiom.brevröstning-aktivt:
+    - block-link:
+      - href: page:brevrösta
+      - text: '{axiom.brevröstning-aktivt-news}'
+  - axiom.best-brevröst-aktivt:
+    - block-link:
+      - href: page:brevrösta
+      - text: '{axiom.best-brevröst-aktivt-news}'
+  - else:
+    - block-link:
+      - href: page:brevrösta
+- block-link:
+  - href: page:ambassadrösta

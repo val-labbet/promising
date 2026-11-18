@@ -16,37 +16,37 @@
       - dt:
         - text: Röstlängdsnummer
       - dd:
-        - text: '{user.rostlangdsnr.komplett}'
+        - text: '{user.röstlängdsnr.komplett}'
       - dt:
         - text: Riksdag
       - dd:
-        - text: '{user.rostratt.rd}'
+        - text: '{user.rösträtt.rd}'
       - dt:
         - text: Regionfullmäktige
       - dd:
-        - text: '{user.rostratt.rf}'
+        - text: '{user.rösträtt.rf}'
       - dt:
         - text: Kommunfullmäktige
       - dd:
-        - text: '{user.rostratt.kf}'
+        - text: '{user.rösträtt.kf}'
       - dt:
         - text: Folkomröstning
       - dd:
-        - text: '{user.rostratt.fo}'
+        - text: '{user.rösträtt.fo}'
       - dt:
         - text: Europaparlamentet
       - dd:
-        - text: '{user.rostratt.eu}'
+        - text: '{user.rösträtt.eu}'
       - dt:
         - text: Sametinget
       - dd:
-        - text: '{user.rostratt.st}'
+        - text: '{user.rösträtt.st}'
       - dt:
         - text: Syfte (testperson)
       - dd:
         - text: '{user.syfte}'
     - block-link:
-      - href: page:mina_data
+      - href: page:mina-data
       - title: Mina data
       - text: Allt mitt data i råformat
   - else:

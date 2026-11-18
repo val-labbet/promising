@@ -34,9 +34,9 @@ To save changes, add a key from `private/config.json` once: `site/?key=…` (see
 - p:
   - text: Hej {user.namn.fnamn}!
 - if:
-  - user.rostratt.rd:
+  - user.rösträtt.rd:
     - block-link:
-      - href: page:rostratt
+      - href: page:rösträtt
       - text: Du får rösta i riksdagsvalet.
 ```
 

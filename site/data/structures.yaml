@@ -4,48 +4,48 @@
     - href: start
     - title: Start
     - structure:
-      - href: valjare
+      - href: väljare
       - title: Jag som väljare
       - icon: 🗳️
       - color: '#1a6e3c'
       - structure:
-        - href: rostratt
+        - href: rösträtt
         - title: Min rösträtt
         - structure:
-          - href: rostlangd
+          - href: röstlängd
           - title: Min plats i röstlängden
       - structure:
-        - href: rosta
+        - href: rösta
         - title: Jag vill rösta
         - structure:
-          - href: fortidsrosta
+          - href: förtidsrösta
           - title: Förtidsrösta
         - structure:
-          - href: rosta_i_vallokal
+          - href: rösta-i-vallokal
           - title: Rösta i vallokal
         - structure:
-          - href: rosta_fran_utlandet
+          - href: rösta-från-utlandet
           - title: Rösta från utlandet
           - structure:
-            - href: ambassadrosta
+            - href: ambassadrösta
             - title: Rösta på ambassad eller konsulat
           - structure:
-            - href: brevrosta
+            - href: brevrösta
             - title: Brevrösta
             - structure:
-              - href: bestall_brevrostningsmaterial
+              - href: beställ-brevröstningsmaterial
               - title: Beställ brevröstningsmaterial
             - structure:
-              - href: registrera_brevrost
+              - href: registrera-brevröst
               - title: Registrera brevröst
         - structure:
-          - href: hjalp_att_rosta
+          - href: hjälp-att-rösta
           - title: Hjälp att rösta
       - structure:
-        - href: anmal_rostlangd
+        - href: anmäl-röstlängd
         - title: Anmälan till röstlängd
       - structure:
-        - href: hur_gick_det
+        - href: hur-gick-det
         - title: Hur gick det i valet?
       - structure:
         - href: namninsamling
@@ -65,7 +65,7 @@
         - href: partiombud
         - title: Partiadministratör
     - structure:
-      - href: valfunktionar
+      - href: valfunktionär
       - title: Jag som valfunktionär
       - icon: 🦺
       - color: '#b05000'
@@ -73,25 +73,25 @@
         - href: vallokal
         - title: Röstmottagning i vallokal
         - structure:
-          - href: ta_emot_rost
+          - href: ta-emot-röst
           - title: Ta emot röst
         - structure:
-          - href: granska_fortidsrost
+          - href: granska-förtidsröst
           - title: Granska förtidsröster
       - structure:
-        - href: rapportera_resultat
+        - href: rapportera-resultat
         - title: Rapportera preliminärt valresultat
       - structure:
-        - href: fortidsrostning
+        - href: förtidsröstning
         - title: Förtidsröstning
         - structure:
-          - href: starta_fortidsrostning
+          - href: starta-förtidsröstning
           - title: Ta emot förtidsröster
         - structure:
-          - href: ta_emot_fortidsrost
+          - href: ta-emot-förtidsröst
           - title: Registrera förtidsröst
         - structure:
-          - href: snabbfraga
+          - href: snabbfråga
           - title: Identifiera förtidsröst
       - structure:
         - href: incidentrapport
@@ -100,28 +100,28 @@
         - href: tryckeri
         - title: Tryckeri
     - structure:
-      - href: om_mig
+      - href: om-mig
       - title: Om mig/inställningar
       - icon: 👤
       - structure:
-        - href: mina_data
+        - href: mina-data
         - title: Mina data
     - structure:
-      - href: finis_start
+      - href: finis-start
       - title: Start (efter val)
       - structure:
-        - href: efterregistrera_centralt
+        - href: efterregistrera-centralt
         - title: Efterregistrera centralt
       - structure:
-        - href: efterregistrera_lokalt
+        - href: efterregistrera-lokalt
         - title: Efterregistrera lokalt
 - structure:
-  - id: snal
+  - id: snål
   - structure:
-    - href: rostratt
+    - href: rösträtt
     - title: Min rösträtt
     - structure:
-      - href: rostlangd
+      - href: röstlängd
       - title: Röstlängd
 - structure:
   - id: meta

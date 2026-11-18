@@ -3,19 +3,19 @@
 - label:
   - text: Personnummer
 - input:
-  - to: anmalan.personnummer
+  - to: anmälan.personnummer
   - type: text
 - label:
   - text: Anledning till anmälan
 - textarea:
-  - to: anmalan.anledning
+  - to: anmälan.anledning
 - button:
   - text: Skicka anmälan
-  - to: anmalan.skickad
+  - to: anmälan.skickad
   - value: ja
 - span:
   - if:
-    - anmalan.skickad:
+    - anmälan.skickad:
       - p:
         - text: Anmälan registrerad. Du kommer att kontaktas.
     - else:

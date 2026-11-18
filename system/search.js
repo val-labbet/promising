@@ -6,7 +6,7 @@ be built on search-field).
 
   - search-field:
     - in: structure            the pages of the active structure (the default)
-    - in: structure:valjare    valjare and the pages below it
+    - in: structure:väljare    väljare and the pages below it
     - in: page:faq             the parts of a page; with nothing typed, the whole page
     - in: vallokaler.json      the items of a json list in data/
     - in: persons              the items of a list in the model, e.g. shared.incidenter

@@ -20,6 +20,7 @@ Core: loads a site, keeps the model and draws it.
   Promising.replace(path, data)     use new contents for a file, e.g. from the code editor
   Promising.revert(paths)           load files again, forgetting the changes
   Promising.changed()               the files that differ from what was loaded
+  Promising.read                    the model paths the conditions read in the last draw
 
 The model is a plain object. These keys belong to the system:
 
@@ -173,7 +174,7 @@ window.Promising ||= {};
     dim: P.dimensions.chosen().join(',') || null,
   });
 
-  // ?user=2&structure=snal&time=2026-09-01&dim=dev-code,dev-time and any other model path, e.g. ?anmalan.namn=Bo
+  // ?user=2&structure=snål&time=2026-09-01&dim=dev-code,dev-time and any other model path, e.g. ?anmälan.namn=Bo
   function readAddress (params = H.params())
   {
     for (const [key, value] of Object.entries(params)) {
@@ -339,14 +340,16 @@ window.Promising ||= {};
     const m = P.model;
     const scroll = window.scrollY;
     const layout = P.components.layout ? [{ layout: [] }] : [{ page: [] }];
-    H.mount(root, P.render.nodes(layout, m));
+    const drawn = P.render.watch(() => P.render.nodes(layout, m));
+    H.mount(root, drawn.result);
+    P.read = drawn.read;
 
     const title = P.title(m.page);
     document.title = title ? `${title} – ${m.site_name}` : m.site_name;
     paint(P.inherit(m.page, 'icon'), P.inherit(m.page, 'color'));
     markRelated();
 
-    // Active dimensions as classes on body: dim-logged_in, dim-dev-code …
+    // Active dimensions as classes on body: dim-logged-in, dim-dev-code …
     for (const c of [...document.body.classList]) if (c.startsWith('dim-')) document.body.classList.remove(c);
     for (const [id, on] of Object.entries(m.dimension || {})) if (on) document.body.classList.add('dim-' + id);
     document.body.classList.toggle('fullscreen', !!m.fullscreen);

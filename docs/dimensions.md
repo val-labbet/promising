@@ -15,7 +15,7 @@ What simply is true or false, like being logged in, is not a dimension but an [a
   - requires: dimension.partifunktionar   # can only be on while this holds
 ```
 
-`requires` takes conditions written as in `if` (see [axioms.md](axioms.md)), one or a list, and can use axioms: `requires: axiom.logged_in`.
+`requires` takes conditions written as in `if` (see [axioms.md](axioms.md)), one or a list, and can use axioms: `requires: axiom.logged-in`.
 
 An active dimension shows up in three places:
 
@@ -29,7 +29,7 @@ An active dimension shows up in three places:
 - if:
   - dimension.partifunktionar:
     - a:
-      - href: page:anmal_kandidat
+      - href: page:anmäl-kandidat
       - text: Anmäl kandidater
 ```
 
@@ -40,7 +40,7 @@ body.dim-partifunktionar .internal-note { display: block; }
 
 ## The panel
 
-The panel lists every dimension by group, with checkboxes for those that can be switched. It is open while `panel_open` is true; the site decides where the button is:
+The panel lists every dimension by group, with checkboxes for those that can be switched. A dimension the current page never asks about is greyed: no condition read `dimension.<id>` while the page was drawn (`dimension in (…)` counts), and no css rule has `.dim-<id>`. Switching it on changes nothing on that page. It is open while `panel_open` is true; the site decides where the button is:
 
 ```yaml
 - button:

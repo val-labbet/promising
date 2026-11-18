@@ -201,6 +201,10 @@ html.promising-split {
   margin-left: auto;
 }
 
+.promising-dimensions .unasked {
+  color: #999;
+}
+
 .promising-dimensions .disabled {
   opacity: 0.5;
   cursor: default;

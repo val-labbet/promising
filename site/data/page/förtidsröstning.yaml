@@ -6,8 +6,8 @@
       - text: Du är inte behörig.
   - else:
     - block-link:
-      - href: page:starta_fortidsrostning
+      - href: page:starta-förtidsröstning
       - text: Börja ta emot förtidsröster
     - block-link:
-      - href: page:snabbfraga
+      - href: page:snabbfråga
       - text: Kontrollera kuvert

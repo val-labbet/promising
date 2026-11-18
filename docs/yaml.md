@@ -7,7 +7,7 @@ A page is a list of **nodes**. A node is an entry with one key.
   - text: Min rösträtt
 - p:
   - class: intro
-  - text: Du får rösta i {user.rostratt.kf}.
+  - text: Du får rösta i {user.rösträtt.kf}.
 ```
 
 ```html
@@ -62,11 +62,11 @@ It works everywhere: elements, attributes, `if` branches, component variables, a
 
 ## if
 
-The first branch whose condition is true is drawn. A path is true unless it is empty text, an empty list, `false` or `null`. `!` negates. A comparison compares with a number, a text, `true`/`false`/`null` or a `{path}`: `user.alder >= 18`, `user.id == 2`, `time < 2026-09-01`.
+The first branch whose condition is true is drawn. A path is true unless it is empty text, an empty list, `false` or `null`. `!` negates. A comparison compares with a number, a text, `true`/`false`/`null` or a `{path}`: `user.ålder >= 18`, `user.id == 2`, `time < 2026-09-01`.
 
 ```yaml
 - if:
-  - user.rostratt.rd:
+  - user.rösträtt.rd:
     - p:
       - text: Du får rösta i riksdagsvalet.
   - '!user':
@@ -115,7 +115,7 @@ With two names, the first is the key: the name in an object, the place in a list
             - text: '{name}'
 ```
 
-(`value == true` and not just `value`, since `axiom` also holds the news, `<id>_news`, which are texts.)
+(`value == true` and not just `value`, since `axiom` also holds the news, `<id>-news`, which are texts.)
 
 `for` is an ordinary attribute again: `- label: [ - for: namn ]`.
 
@@ -123,7 +123,7 @@ With two names, the first is the key: the name in an object, the place in a list
 
 ```yaml
 - a:
-  - href: page:rostratt
+  - href: page:rösträtt
   - text: Min rösträtt
 ```
 
@@ -136,10 +136,10 @@ With two names, the first is the key: the name in an object, the place in a list
 ```yaml
 - input:
   - type: text
-  - to: anmalan.namn
+  - to: anmälan.namn
 - input:
   - type: checkbox
-  - to: anmalan.godkand
+  - to: anmälan.godkand
 ```
 
 On a button (or any other element) `to` sets a value when clicked and redraws.
@@ -147,7 +147,7 @@ On a button (or any other element) `to` sets a value when clicked and redraws.
 ```yaml
 - button:
   - text: Skicka
-  - to: anmalan.skickad      # set to true, or to value
+  - to: anmälan.skickad      # set to true, or to value
 - button:
   - text: Logga ut
   - to: user_id
@@ -177,7 +177,7 @@ Defined in `components.yaml`, called like an element. Entries become `{vars.x}`.
 ```yaml
 - greeting:
   - who: Tvåan
-  - href: page:rostratt
+  - href: page:rösträtt
 ```
 
 `vars-defaults` knows `page-title`, `page-icon` and `page-color`, all read from the page `vars.href` points to. Any other value is used as it is, so `- text: Hej` gives `{vars.text}` the text Hej when the caller leaves it out.
@@ -193,14 +193,14 @@ Written in js, used like components.
 | Node | |
 |---|---|
 | `- page: []` | the current page, with its title as h1 if it has none |
-| `- menu:` `- structure: default` `- root: valjare` | the pages of a structure as nested lists; both entries optional |
+| `- menu:` `- structure: default` `- root: väljare` | the pages of a structure as nested lists; both entries optional |
 | `- breadcrumb:` `- text: Upp` | a link to the parent page |
-| `- search-field:` `- in: structure:valjare` `- placeholder: Sök…` | a field that filters while you type, see below; also `- search:` unless the site has a component with that name |
+| `- search-field:` `- in: structure:väljare` `- placeholder: Sök…` | a field that filters while you type, see below; also `- search:` unless the site has a component with that name |
 | `- person:`, `- axiom:`, `- structure:` … | a record from a meta file, see [meta.md](meta.md) |
 
 ## Search
 
-`in` is what is searched: `structure` (the default), `structure:valjare` (a part of it), `page:faq` (the parts of a page, all of it while nothing is typed) `vallokaler.json` (a json list in `data/`) or a list in the model, like `persons` or `shared.incidenter`. For json and the model, `fields` are the fields to search and show, paths into each item (`namn.komplett`); without, all plain values are searched.
+`in` is what is searched: `structure` (the default), `structure:väljare` (a part of it), `page:faq` (the parts of a page, all of it while nothing is typed) `vallokaler.json` (a json list in `data/`) or a list in the model, like `persons` or `shared.incidenter`. For json and the model, `fields` are the fields to search and show, paths into each item (`namn.komplett`); without, all plain values are searched.
 
 Any entry besides `in`, `fields`, `placeholder`, `empty` and `max` is how the hits look. It is drawn in the field's own list, and only that list is drawn again while you type, never the page. It sees `search.hits`, `search.term` and `search.none` (something typed, nothing found):
 
@@ -250,7 +250,7 @@ A form never sends to an address: `action`, `method`, `target` and `formaction` 
       - text: 'Skickat: {incident.typ}'
 ```
 
-`- store: incidenter` also adds it to a shared file everyone sees, see [backend.md](backend.md). `- call: folkbokforing` sends it to a service instead, and its answer comes to `to`, see [services.md](services.md).
+`- store: incidenter` also adds it to a shared file everyone sees, see [backend.md](backend.md). `- call: folkbokföring` sends it to a service instead, and its answer comes to `to`, see [services.md](services.md).
 
 ## Never created
 

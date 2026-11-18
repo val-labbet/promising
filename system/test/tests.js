@@ -240,8 +240,8 @@ test('condition: when, all, any',
       { axiom: [{ id: 'eu' }, { all: ['axiom.adult', 'user.eu'] }] },
       { axiom: [{ id: 'some' }, { any: ['user.eu', 'user.rd'] }] },
     ];
-    eq(axioms(file, { user: { alder: 20, eu: true } }), { adult: true, adult_news: 'Du får rösta.', eu: true, eu_news: null, some: true, some_news: null });
-    eq(axioms(file, { user: { alder: 16 } }), { adult: false, adult_news: null, eu: false, eu_news: null, some: false, some_news: null });
+    eq(axioms(file, { user: { alder: 20, eu: true } }), { adult: true, 'adult-news': 'Du får rösta.', eu: true, 'eu-news': null, some: true, 'some-news': null });
+    eq(axioms(file, { user: { alder: 16 } }), { adult: false, 'adult-news': null, eu: false, 'eu-news': null, some: false, 'some-news': null });
   });
 
 test('time-window relative to an anchor',
@@ -250,7 +250,7 @@ test('time-window relative to an anchor',
     const file = [{ axiom: [{ id: 'open' }, { type: 'time-window' }, { anchor: 'election' }, { start: -10 }, { end: '0, 20:00' },
       { starting_soon: [{ before: 2 }, { text: 'soon' }] }, { started: [{ for: 1 }, { text: 'started' }] },
       { ending_soon: [{ from: '0, 08:00' }, { text: 'closing' }] }, { ended: [{ for: 3 }, { text: 'closed' }] }] }];
-    const at = time => { const a = axioms(file, { election: '2026-09-13T00:00', time }); return [a.open, a.open_news]; };
+    const at = time => { const a = axioms(file, { election: '2026-09-13T00:00', time }); return [a.open, a['open-news']]; };
     eq(at('2026-09-01T12:00'), [false, 'soon']);
     eq(at('2026-09-03T12:00'), [true, 'started']);
     eq(at('2026-09-08T12:00'), [true, null]);

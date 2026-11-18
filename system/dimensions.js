@@ -6,12 +6,12 @@ as well as the tools for developing a site (dev-*). What simply is true or false
 such as being logged in, is an axiom (axioms.js).
 
   - dimension:
-    - id: valfunktionar
+    - id: valfunktionär
     - title: Valfunktionär
     - group: role                 switched on and off in the panel
   - dimension:
     - id: dev-code
-    - requires: dimension.valfunktionar   can only be on while this holds
+    - requires: dimension.valfunktionär   can only be on while this holds
 
 An active dimension is model.dimension.<id> = true, so pages can use if, and
 the class dim-<id> on <body>, so css can show and hide whole layers.

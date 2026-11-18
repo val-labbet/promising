@@ -2,7 +2,7 @@
   - span:
     - text: Hej
   - if:
-    - axiom.logged_in:
+    - axiom.logged-in:
       - span:
         - text: ' {user.namn.fnamn}'
   - span:
@@ -17,7 +17,7 @@
       - text: V eller P!
 - _div:
   - block-link:
-    - href: page:valjare
+    - href: page:väljare
     - title: Jag som väljare
     - text: För dig som vill/får rösta.
   - block-link:
@@ -25,6 +25,6 @@
     - title: Jag som partiföreträdare
     - text: För dig som på något sätt representerar ett parti.
   - block-link:
-    - href: page:valfunktionar
+    - href: page:valfunktionär
     - title: Jag som valfunktionär
     - text: För dig som jobbar med valet.

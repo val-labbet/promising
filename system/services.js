@@ -6,12 +6,12 @@ site.js that only pretends; a page calls it the same way it would call a real
 one, so the pages do not change when it becomes real.
 
   // site.js
-  Promising.service('folkbokforing', ({ personnummer }) => …the answer…,
+  Promising.service('folkbokföring', ({ personnummer }) => …the answer…,
     { about: 'Looks up a person', delay: 500 })
 
   # a page
   - form:
-    - call: folkbokforing
+    - call: folkbokföring
     - to: hittad
     - input:
       - name: personnummer

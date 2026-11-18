@@ -120,7 +120,7 @@ Promising.builtins ||= {};
   B.axiom = (vars, model, raw) => {
     const a = record(raw);
     const on = model.axiom?.[a.id];
-    const news = model.axiom?.[a.id + '_news'];
+    const news = model.axiom?.[a.id + '-news'];
     return card('axiom', a.id, a.id,
       H.el('p', { class: 'meta-state' },
         H.el('span', { class: ['meta-value', on ? 'meta-true' : 'meta-false'] }, on ? 'true' : 'false'),
@@ -183,12 +183,12 @@ Promising.builtins ||= {};
   // - link:
   //   - id: trean-valnatt
   //   - title: Trean på valnatten
-  //   - page: rapportera_resultat
+  //   - page: rapportera-resultat
   //   - user: '3'
   //   - time: '2026-09-13T21:00:00'
   //   - dim: dev-variables
   //
-  // Any other entry is a model path, as in the address: - anmalan.namn: Bo
+  // Any other entry is a model path, as in the address: - anmälan.namn: Bo
   B.link = (vars, model, raw) => {
     const { id, title, ...state } = record(raw);
     return card('link', id, title ?? id, H.el('p', go(state, 'Go there')), fields(state));
@@ -196,7 +196,7 @@ Promising.builtins ||= {};
 
   // The address of a state, so it can also be opened in a new tab or copied
   const address = state => '?' + new URLSearchParams(Object.entries(state).map(([k, v]) => [k, [].concat(v).join(',')]))
-    .toString().replace(/%(3A|2F|2C|40)/gi, c => decodeURIComponent(c));
+    .toString().replace(/%(3A|2F|2C|40)|(?:%[C-F][0-9A-F](?:%[89AB][0-9A-F])+)+/gi, c => decodeURIComponent(c));
 
   const go = (state, text) => H.el('a', {
     href: address(state),
@@ -271,7 +271,7 @@ Promising.builtins ||= {};
 
   B['meta-now'] = (vars, model) => {
     const person = P.persons.find(p => String(p.id) === String(model.user_id));
-    const truths = Object.keys(model.axiom || {}).filter(k => !k.endsWith('_news') && model.axiom[k]);
+    const truths = Object.keys(model.axiom || {}).filter(k => !k.endsWith('-news') && model.axiom[k]);
     return section('Now', H.el('dl', { class: 'meta-fields' },
       row('Person', person ? `${person.namn?.komplett ?? person.name ?? person.id} (${person.id})` : String(model.user_id ?? '–')),
       row('Time', String(model.time).replace('T', ' ').slice(0, 16)),

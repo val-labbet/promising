@@ -3,19 +3,19 @@
 - label:
   - text: Personnummer
 - input:
-  - to: efterreg_c.personnummer
+  - to: efterreg-c.personnummer
   - type: text
 - label:
   - text: Kommentar
 - textarea:
-  - to: efterreg_c.kommentar
+  - to: efterreg-c.kommentar
 - button:
   - text: Registrera
-  - to: efterreg_c.registrerad
+  - to: efterreg-c.registrerad
   - value: ja
 - span:
   - if:
-    - efterreg_c.registrerad:
+    - efterreg-c.registrerad:
       - p:
         - text: Efterregistrering genomförd centralt.
     - else:

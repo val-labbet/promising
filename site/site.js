@@ -4,14 +4,14 @@ Minasidor: our site built on promising. Everything about elections lives here,
 the system itself knows nothing about them.
 
 Values computed before every render:
-  datum_text        "Fredag, den 1 mars 2026"
-  fokus_val         the nearest election the user can vote in, -14 to +365 days away
-  fokus_val_datum   its date
-  dagar_till_val    whole days left, null on or after election day
-  val_dagar_text    "12 dagar kvar till", "Valdagen är idag —" or null
+  datum-text        "Fredag, den 1 mars 2026"
+  fokus-val         the nearest election the user can vote in, -14 to +365 days away
+  fokus-val-datum   its date
+  dagar-till-val    whole days left, null on or after election day
+  val-dagar-text    "12 dagar kvar till", "Valdagen är idag —" or null
 
 Pretend services, called from forms with call: (docs/services.md):
-  folkbokforing     a personnummer → the test person whose id is its day
+  folkbokföring     a personnummer → the test person whose id is its day
 
 */
 
@@ -27,7 +27,7 @@ Pretend services, called from forms with call: (docs/services.md):
   // The nearest election, within -14 to +365 days, of a type the user may vote in
   function focusElection (model, now)
   {
-    const rights = model.user?.rostratt || {};
+    const rights = model.user?.rösträtt || {};
     let best = null;
     for (const [date, types] of Object.entries(model.val || {})) {
       const days = (new Date(date).getTime() - now) / DAY;
@@ -42,15 +42,15 @@ Pretend services, called from forms with call: (docs/services.md):
   Promising.derive(model => {
     const time = new Date(model.time);
     const now = time.getTime();
-    model.datum_text = `${DAYS[time.getDay()]}, den ${time.getDate()} ${MONTHS[time.getMonth()]} ${time.getFullYear()}`;
+    model['datum-text'] = `${DAYS[time.getDay()]}, den ${time.getDate()} ${MONTHS[time.getMonth()]} ${time.getFullYear()}`;
 
     const focus = focusElection(model, now);
-    model.fokus_val = focus && { datum: focus.datum, typer: focus.typer };
-    model.fokus_val_datum = focus?.datum ?? null;
+    model['fokus-val'] = focus && { datum: focus.datum, typer: focus.typer };
+    model['fokus-val-datum'] = focus?.datum ?? null;
 
     const days = focus ? Math.ceil((new Date(focus.datum).getTime() - now) / DAY) : null;
-    model.dagar_till_val = days > 0 ? days : null;
-    model.val_dagar_text = days > 0 ? `${days} ${days === 1 ? 'dag' : 'dagar'} kvar till`
+    model['dagar-till-val'] = days > 0 ? days : null;
+    model['val-dagar-text'] = days > 0 ? `${days} ${days === 1 ? 'dag' : 'dagar'} kvar till`
       : days === 0 ? 'Valdagen är idag —'
       : null;
   });
@@ -58,7 +58,7 @@ Pretend services, called from forms with call: (docs/services.md):
   // Pretend services, see docs/services.md
 
   // Folkbokföringen: the day in a personnummer points out the test person, 01 → Ettan, 23 → Tjugotrean
-  Promising.service('folkbokforing', ({ personnummer = '' }) => {
+  Promising.service('folkbokföring', ({ personnummer = '' }) => {
     const nr = String(personnummer).trim().replace('-', '');
     if (!/^(19|20)?\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])\d{4}$/.test(nr)) throw new Error('Felaktigt personnummer');
     const day = Number(nr.slice(-6, -4));

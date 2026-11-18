@@ -1,7 +1,7 @@
 - p:
   - text: Du måste vara utomlands för att få brevrösta.
 - if:
-  - axiom.best_brevrost_aktivt:
+  - axiom.best-brevröst-aktivt:
     - p:
       - text: Nu kan du beställa brevröstningsmaterial
 - block-checkbox:
@@ -10,7 +10,7 @@
 - label:
   - text: Namn
 - input:
-  - to: beställning_brevröst
+  - to: beställning-brevröst
   - type: text
 - ul:
   - li:

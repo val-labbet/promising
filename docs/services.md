@@ -4,7 +4,7 @@ A service is something the site sends a question to and gets an answer from: a p
 
 ```js
 // site.js: the day in a personnummer points out the test person, 01 → Ettan
-Promising.service('folkbokforing', ({ personnummer = '' }) => {
+Promising.service('folkbokföring', ({ personnummer = '' }) => {
   const nr = String(personnummer).trim().replace('-', '');
   if (!/^(19|20)?\d{10}$/.test(nr)) throw new Error('Felaktigt personnummer');
   return Promising.persons.find(p => Number(p.id) === Number(nr.slice(-6, -4))) ?? null;
@@ -19,30 +19,30 @@ A form with `call` sends its named fields, and the answer is written to the mode
 
 ```yaml
 - form:
-  - call: folkbokforing
-  - to: folkbokford
+  - call: folkbokföring
+  - to: folkbokförd
   - input:
     - name: personnummer
   - button:
     - text: Sök
 - if:
-  - folkbokford.loading:
+  - folkbokförd.loading:
     - p:
       - text: Söker…
-  - folkbokford.error:
+  - folkbokförd.error:
     - p:
-      - text: '{folkbokford.error}'
-  - folkbokford.result:
+      - text: '{folkbokförd.error}'
+  - folkbokförd.result:
     - p:
-      - text: '{folkbokford.result.namn.komplett}'
-  - folkbokford.done:
+      - text: '{folkbokförd.result.namn.komplett}'
+  - folkbokförd.done:
     - p:
       - text: Ingen person hittades.
 ```
 
 | In the model | |
 |---|---|
-| `<to>.sent` | the fields that were sent: `{folkbokford.sent.personnummer}` |
+| `<to>.sent` | the fields that were sent: `{folkbokförd.sent.personnummer}` |
 | `<to>.loading` | `true` while waiting |
 | `<to>.result` | the answer, or `null` |
 | `<to>.error` | what went wrong |
@@ -50,7 +50,7 @@ A form with `call` sends its named fields, and the answer is written to the mode
 
 With `go`, the page changes once the answer has come.
 
-The page is drawn again when the answer comes, so a field that should keep what was typed takes it from `sent`: `- value: '{folkbokford.sent.personnummer}'`.
+The page is drawn again when the answer comes, so a field that should keep what was typed takes it from `sent`: `- value: '{folkbokförd.sent.personnummer}'`.
 
 ## meta/services
 

@@ -6,29 +6,29 @@
       - dt:
         - text: Riksdagsval
       - dd:
-        - text: '{user.rostratt.rd}'
+        - text: '{user.rösträtt.rd}'
       - dt:
         - text: Regionfullmäktige
       - dd:
-        - text: '{user.rostratt.rf}'
+        - text: '{user.rösträtt.rf}'
       - dt:
         - text: Kommunfullmäktige
       - dd:
-        - text: '{user.rostratt.kf}'
+        - text: '{user.rösträtt.kf}'
       - dt:
         - text: Folkomröstning
       - dd:
-        - text: '{user.rostratt.fo}'
+        - text: '{user.rösträtt.fo}'
       - dt:
         - text: Europaparlamentet
       - dd:
-        - text: '{user.rostratt.eu}'
+        - text: '{user.rösträtt.eu}'
       - dt:
         - text: Sametinget
       - dd:
-        - text: '{user.rostratt.st}'
+        - text: '{user.rösträtt.st}'
     - block-link:
-      - href: page:rostlangd
+      - href: page:röstlängd
       - title: Min plats i röstlängden
     - ul:
       - li:
@@ -47,32 +47,32 @@
     - p:
       - text: Du måste vara inloggad för att se din rösträtt.
 - if:
-  - user.rostratt.rd:
+  - user.rösträtt.rd:
     - p:
       - text: rd
       - class: val-rd
 - if:
-  - user.rostratt.rf:
+  - user.rösträtt.rf:
     - p:
       - text: rf
       - class: val-rf
 - if:
-  - user.rostratt.kf:
+  - user.rösträtt.kf:
     - p:
       - text: kf
       - class: val-kf
 - if:
-  - user.rostratt.fo:
+  - user.rösträtt.fo:
     - p:
       - text: fo
       - class: val-fo
 - if:
-  - user.rostratt.eu:
+  - user.rösträtt.eu:
     - p:
       - text: eu
       - class: val-eu
 - if:
-  - user.rostratt.st:
+  - user.rösträtt.st:
     - p:
       - text: st
       - class: val-st

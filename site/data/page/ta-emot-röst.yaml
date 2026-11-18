@@ -3,12 +3,12 @@
 - label:
   - text: Väljarens personnummer
 - input:
-  - to: rostmottagning.personnummer
+  - to: röstmottagning.personnummer
   - type: text
 - label:
   - text: Röstlängdsnummer
 - input:
-  - to: rostmottagning.rostlangdsnr
+  - to: röstmottagning.röstlängdsnr
   - type: text
 - p:
   - text: 'Val att ta emot:'
@@ -17,30 +17,30 @@
     - style: display:flex;align-items:center;gap:0.5rem;font-weight:normal;cursor:pointer;margin-bottom:0.4rem
     - input:
       - type: checkbox
-      - to: rostmottagning.riksdag
+      - to: röstmottagning.riksdag
     - span:
       - text: Riksdagsval
   - label:
     - style: display:flex;align-items:center;gap:0.5rem;font-weight:normal;cursor:pointer;margin-bottom:0.4rem
     - input:
       - type: checkbox
-      - to: rostmottagning.region
+      - to: röstmottagning.region
     - span:
       - text: Regionfullmäktige
   - label:
     - style: display:flex;align-items:center;gap:0.5rem;font-weight:normal;cursor:pointer;margin-bottom:0.75rem
     - input:
       - type: checkbox
-      - to: rostmottagning.kommun
+      - to: röstmottagning.kommun
     - span:
       - text: Kommunfullmäktige
 - button:
   - text: Bekräfta röstmottagning
-  - to: rostmottagning.bekraftad
+  - to: röstmottagning.bekräftad
   - value: ja
 - span:
   - if:
-    - rostmottagning.bekraftad:
+    - röstmottagning.bekräftad:
       - p:
         - text: Röst mottagen och registrerad.
     - else:

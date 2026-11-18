@@ -6,15 +6,15 @@ Pages read them like any other value:
 
 ```yaml
 - if:
-  - axiom.brevrostning_aktivt:
+  - axiom.brevröstning-aktivt:
     - p:
-      - text: '{axiom.brevrostning_aktivt_news}'
+      - text: '{axiom.brevröstning-aktivt-news}'
 ```
 
 | In the model | |
 |---|---|
 | `axiom.<id>` | `true` or `false` |
-| `axiom.<id>_news` | what is new about it right now, or `null` |
+| `axiom.<id>-news` | what is new about it right now, or `null` |
 
 Axioms are worked out in file order, so an axiom can use the ones above it.
 
@@ -25,18 +25,18 @@ The default type. `when`, `all` and `any` take conditions written as in `if`.
 ```yaml
 - axiom:
   - id: myndig
-  - when: user.alder >= 18
+  - when: user.ålder >= 18
 - axiom:
-  - id: kan_rosta_eu
+  - id: kan-rösta-eu
   - all:
     - axiom.myndig
-    - user.medborgare_eu
+    - user.medborgare-eu
   - text: Du får rösta i Europaparlamentsvalet.
 - axiom:
-  - id: rostratt_nagot
+  - id: rösträtt-något
   - any:
-    - user.rostratt.rd
-    - user.rostratt.kf
+    - user.rösträtt.rd
+    - user.rösträtt.kf
 ```
 
 All of `when` and `all` must hold, and at least one of `any`. `text` becomes the news while the axiom is true.
@@ -44,8 +44,8 @@ All of `when` and `all` must hold, and at least one of `any`. `text` becomes the
 A condition is a path (true unless empty, `false` or `null`), `!` in front negates, and a comparison compares with a number, a text, `true`/`false`/`null` or a `{path}`:
 
 ```
-user                      user.alder >= 18          time >= 2026-09-01
-!user                     user.id == 2              user.alder < {grans}
+user                      user.ålder >= 18          time >= 2026-09-01
+!user                     user.id == 2              user.ålder < {grans}
 ```
 
 Numbers compare as numbers, everything else as text, so dates work as long as they are written the same way.
@@ -67,9 +67,9 @@ True between `start` and `end`. With an `anchor`, they are days relative to the 
 
 ```yaml
 - axiom:
-  - id: brevrostning_aktivt
+  - id: brevröstning-aktivt
   - type: time-window
-  - anchor: fokus_val_datum     # 0 is election day
+  - anchor: fokus-val-datum     # 0 is election day
   - start: -45                  # 45 days before
   - end: '-5, 20:00'            # 20:00 five days before
 - axiom:

@@ -14,7 +14,7 @@ The meta files are pages too. `?page=meta/axioms` draws `axioms.yaml` itself: th
 | `meta/links` | `links.yaml` | a saved state, with a link that goes there |
 | `meta/services` | | the services in `site.js`, with their latest calls, see [services.md](services.md) |
 
-Every record has an `id`. It is shown on the record and used as its html id (`axiom-brevrostning_aktivt`), and a record without one, or with an id used twice, is marked in red.
+Every record has an `id`. It is shown on the record and used as its html id (`axiom-brevröstning-aktivt`), and a record without one, or with an id used twice, is marked in red.
 
 Since axioms and dimensions are worked out on every change, `meta/axioms` shows them switch as you move the timeline.
 
@@ -33,15 +33,15 @@ A saved state is a link that puts the site where it was: page, person, structure
 
 ```yaml
 - link:
-  - id: trean-valfunktionar
+  - id: trean-valfunktionär
   - title: Trean som valfunktionär
-  - page: valfunktionar
+  - page: valfunktionär
   - user: '3'
   - time: '2026-09-13T21:00:00'
   - dim: dev-persons,dev-variables
 ```
 
-Any other entry is a model path, as in the address (`- anmalan.namn: Bo`). Following the link keeps changes made in the browser; the address it shows (`?page=valfunktionar&user=3&…`) can also be copied or opened in a new tab.
+Any other entry is a model path, as in the address (`- anmälan.namn: Bo`). Following the link keeps changes made in the browser; the address it shows (`?page=valfunktionär&user=3&…`) can also be copied or opened in a new tab.
 
 *Save this state* in the panel adds where you are now, with the name you give it, last in `links.yaml`. With a key it is saved at once, otherwise it is a changed file like any other. Edit or remove links on `meta/links` with `dev-code`.
 
