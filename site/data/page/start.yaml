@@ -12,9 +12,24 @@
 - p:
   - text: Nyheter, todo, kalender
 - if:
-  - dimension in (V, P):
+  - dimension in (V):
     - p:
-      - text: V eller P!
+      - text: Väljare!
+  - dimension in (P):
+    - p:
+      - text: Parti!
+  - dimension in (F):
+    - p:
+      - text: Valfunktionär!
+  - dimension in (L):
+    - p:
+      - text: Lokal valadministratör!
+  - dimension in (R):
+    - p:
+      - text: Regional valadministratör!
+  - dimension in (C):
+    - p:
+      - text: Central valadministratör!
 - _div:
   - block-link:
     - href: page:väljare
