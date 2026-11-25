@@ -235,7 +235,7 @@ Promising.render = (() => {
   {
     const pairs = isMap(spec) ? Object.entries(spec) : list(spec).map(entry);
     return pairs.map(([head, template]) => {
-      const match = head && head.match(/^(.+)\[\s*(?:([a-z_][a-z0-9_]*)\s*,\s*)?([a-z_][a-z0-9_]*)\s*\]$/i);
+      const match = head && head.match(/^(.+)\[\s*(?:([\p{L}_][\p{L}\p{N}_-]*)\s*,\s*)?([\p{L}_][\p{L}\p{N}_-]*)\s*\]$/u);
       if (!match) return null;
       const [, path, key, name] = match;
       const items = H.get(model, path);

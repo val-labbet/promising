@@ -173,7 +173,8 @@ window.Promising ||= {};
     user: P.model.user_id,
     structure: P.model.structure !== 'default' && P.model.structure,
     time: timeChanged && P.model.time,
-    dim: P.dimensions.chosen().join(',') || null,
+    // dim=none: none at all, also when model.yaml switches some on
+    dim: P.dimensions.chosen().join(',') || (Object.values(modelFile().dimension || {}).some(Boolean) ? 'none' : null),
   });
 
   // ?user=2&structure=snål&time=2026-09-01&dim=dev-code,dev-time and any other model path, e.g. ?anmälan.namn=Bo
@@ -182,7 +183,11 @@ window.Promising ||= {};
     for (const [key, value] of Object.entries(params)) {
       if (key === 'page' || key === 'key') continue;
       if (key === 'user') P.model.user_id = value;
-      else if (key === 'dim') for (const id of String(value).split(',')) H.set(P.model, `dimension.${id}`, true);
+      // The dimensions in the address replace those model.yaml starts with
+      else if (key === 'dim') {
+        P.model.dimension = {};
+        for (const id of String(value).split(',')) if (id && id !== 'none') H.set(P.model, `dimension.${id}`, true);
+      }
       else if (key === 'time') { P.model.time = value; timeChanged = true; }
       else H.set(P.model, key, value);
     }
@@ -205,7 +210,9 @@ window.Promising ||= {};
 
   P.act = ({ to, value, toggle, go }) => {
     const later = { render: !go };
-    if (toggle) P.set(toggle, !P.render.truthy(H.get(P.model, toggle)), later);
+    // toggle alone flips true/false; with a value it opens that value, or closes it if it is open
+    if (toggle && value !== undefined && !to) P.set(toggle, String(H.get(P.model, toggle)) === String(value) ? null : value, later);
+    else if (toggle) P.set(toggle, !P.render.truthy(H.get(P.model, toggle)), later);
     if (to) P.set(to, value === undefined ? true : value, later);
     if (go) P.go(go);
   };

@@ -36,7 +36,7 @@ Promising.start({ data: 'data/', root: '#app', backend: '../system/api.php' });
 
 ## The model
 
-One plain object, `Promising.model`. It starts from `model.yaml`, then the address: `?user=2&structure=snål&time=2026-09-01&dim=dev-code` and any model path, e.g. `?anmälan.namn=Bo`.
+One plain object, `Promising.model`. It starts from `model.yaml`, then the address: `?user=2&structure=snål&time=2026-09-01&dim=dev-code` and any model path, e.g. `?anmälan.namn=Bo`. What the address says replaces what `model.yaml` starts with: `model.yaml` with `dimension: [ - V: … ]` and `&dim=C` gives C only.
 
 Keys that belong to the system:
 

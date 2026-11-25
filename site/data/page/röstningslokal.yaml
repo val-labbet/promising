@@ -1,0 +1,147 @@
+- h1:
+  - text: '{röstningslokal.LOKAL || Ny röstningslokal}'
+- p:
+  - a:
+    - href: page:röstningslokaler-översikt
+    - text: '< Alla röstningslokaler'
+- form:
+  - class: röstningslokal
+  - to: röstningslokal
+  - label:
+    - for: LOKAL
+    - text: Lokal
+  - input:
+    - id: LOKAL
+    - name: LOKAL
+    - type: text
+    - value: '{röstningslokal.LOKAL}'
+  - label:
+    - for: ADRESS1
+    - text: Adress, rad 1
+  - input:
+    - id: ADRESS1
+    - name: ADRESS1
+    - type: text
+    - value: '{röstningslokal.ADRESS1}'
+  - label:
+    - for: ADRESS2
+    - text: Adress, rad 2
+  - input:
+    - id: ADRESS2
+    - name: ADRESS2
+    - type: text
+    - value: '{röstningslokal.ADRESS2}'
+  - label:
+    - for: KOMMUN
+    - text: Kommun
+  - input:
+    - id: KOMMUN
+    - name: KOMMUN
+    - type: text
+    - value: '{röstningslokal.KOMMUN}'
+  - label:
+    - for: KOMMUNKOD
+    - text: Kommunkod
+  - input:
+    - id: KOMMUNKOD
+    - name: KOMMUNKOD
+    - type: text
+    - value: '{röstningslokal.KOMMUNKOD}'
+  - label:
+    - for: LÄN
+    - text: Län
+  - input:
+    - id: LÄN
+    - name: LÄN
+    - type: text
+    - value: '{röstningslokal.LÄN}'
+  - label:
+    - for: LÄNSKOD
+    - text: Länskod
+  - input:
+    - id: LÄNSKOD
+    - name: LÄNSKOD
+    - type: text
+    - value: '{röstningslokal.LÄNSKOD}'
+  - label:
+    - for: LOKALID
+    - text: Lokal-id
+  - input:
+    - id: LOKALID
+    - name: LOKALID
+    - type: text
+    - value: '{röstningslokal.LOKALID}'
+  - label:
+    - for: VALNÄMND
+    - text: Valnämnd
+  - input:
+    - id: VALNÄMND
+    - name: VALNÄMND
+    - type: text
+    - value: '{röstningslokal.VALNÄMND}'
+  - label:
+    - for: HEMSIDA
+    - text: Hemsida
+  - input:
+    - id: HEMSIDA
+    - name: HEMSIDA
+    - type: text
+    - value: '{röstningslokal.HEMSIDA}'
+  - label:
+    - for: TELNR
+    - text: Telefon
+  - input:
+    - id: TELNR
+    - name: TELNR
+    - type: text
+    - value: '{röstningslokal.TELNR}'
+  - label:
+    - for: TILLGÄNGL
+    - text: Tillgänglighet
+  - input:
+    - id: TILLGÄNGL
+    - name: TILLGÄNGL
+    - type: text
+    - value: '{röstningslokal.TILLGÄNGL}'
+  - label:
+    - for: BEGRTILLT
+    - text: Begränsad tillgänglighet (J/N)
+  - input:
+    - id: BEGRTILLT
+    - name: BEGRTILLT
+    - type: text
+    - value: '{röstningslokal.BEGRTILLT}'
+  - label:
+    - for: LATITUD
+    - text: Latitud
+  - input:
+    - id: LATITUD
+    - name: LATITUD
+    - type: text
+    - value: '{röstningslokal.LATITUD}'
+  - label:
+    - for: LONGITUD
+    - text: Longitud
+  - input:
+    - id: LONGITUD
+    - name: LONGITUD
+    - type: text
+    - value: '{röstningslokal.LONGITUD}'
+  - if:
+    - röstningslokal:
+      - h2:
+        - text: Öppettider
+      - per:
+        - röstningslokal[fält, värde]:
+          - if:
+            - fält <= 9999-12-31:
+              - label:
+                - for: '{fält}'
+                - text: '{fält}'
+              - input:
+                - id: '{fält}'
+                - name: '{fält}'
+                - type: text
+                - value: '{värde}'
+  - button:
+    - text: Spara

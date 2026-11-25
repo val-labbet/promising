@@ -159,7 +159,41 @@ On a button (or any other element) `to` sets a value when clicked and redraws.
 - button:
   - text: ☰
   - toggle: menu_open         # flip true/false
+- tr:
+  - toggle: tabell.öppen      # open this row (set to value), or close it if it is open
+  - value: '{l.name}'
 ```
+
+## Grouped lists
+
+`- group:` groups the items of a json list (or a list in the model) by some fields, counts and sorts them, for a table whose rows open one by one. The tree is drawn with what follows the parameters.
+
+```yaml
+- group:
+  - in: röstningslokaler.json
+  - by: LÄN, KOMMUN            # outermost first
+  - name: LOKAL                # what an item is called
+  - key: LOKALID               # what tells items apart
+  - open: röstningslokaler.öppen
+  - as: tabell
+  - table:
+    - tr:
+      - td:
+        - text: '{tabell.count}'
+    - per:
+      - tabell.groups[l]:
+        - tr:
+          - toggle: '{l.toggle}'
+          - value: '{l.name}'
+          - td:
+            - text: '{l.name} {l.count}'
+        - if:
+          - l.open:
+            - per:
+              - l.groups[k]: …
+```
+
+Every row has `name`, `count`, `items`, `groups` (the rows inside, the items in the last group), `open`, `toggle` and `level`; an item also has `data`. The json is loaded once, and the page is drawn when it has come. See `system/group.js`.
 
 `- autofocus: null` on a field gives it focus when the page is shown, and again whenever the page is drawn after the focused element went away, e.g. a button like *Försök igen* that is gone once pressed.
 

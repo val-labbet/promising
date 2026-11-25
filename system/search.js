@@ -52,7 +52,6 @@ Promising.builtins ||= {};
 
   const P = Promising;
   const EXPRESSION = /\{[^{}]*\}/g;
-  const json = {};
   const terms = {};
   let focused = null;
 
@@ -129,18 +128,9 @@ Promising.builtins ||= {};
 
   // ── Json ────────────────────────────────────────────────────────────────────
 
-  function load (file)
-  {
-    json[file] ||= H.request(P.data + file, { as: 'json' }).catch(error => {
-      console.warn('[promising] could not load', file, error.message);
-      return [];
-    });
-    return json[file];
-  }
-
   async function inJson (term, file, fields)
   {
-    return items(await load(file), term, fields);
+    return items(await P.json(file), term, fields);
   }
 
   // ── A list in the model ─────────────────────────────────────────────────────

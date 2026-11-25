@@ -1,0 +1,93 @@
+- component:
+  - id: funneling-table
+  - group:
+    - in: '{vars.in}'
+    - by: '{vars.by}'
+    - name: '{vars.name}'
+    - key: '{vars.key}'
+    - open: '{vars.open}'
+    - as: tratt
+    - table:
+      - class: funneling
+      - tbody:
+        - tr:
+          - class: funneling-total
+          - th:
+            - text: '{vars.total}'
+          - td:
+            - text: '{tratt.count}'
+        - per:
+          - tratt.groups[a]:
+            - tr:
+              - class: funneling-row funneling-1
+              - data-open: '{a.open}'
+              - toggle: '{a.toggle}'
+              - value: '{a.name}'
+              - th:
+                - text: '{a.name}'
+              - td:
+                - text: '{a.count}'
+            - if:
+              - a.open:
+                - per:
+                  - a.groups[b]:
+                    - tr:
+                      - class: funneling-row funneling-2
+                      - data-open: '{b.open}'
+                      - toggle: '{b.toggle}'
+                      - value: '{b.name}'
+                      - th:
+                        - text: '{b.name}'
+                      - td:
+                        - text: '{b.count}'
+                    - if:
+                      - b.open:
+                        - per:
+                          - b.groups[c]:
+                            - tr:
+                              - class: funneling-link funneling-3
+                              - to: '{vars.item-to}'
+                              - value: '{c.data}'
+                              - go: '{vars.item-page}'
+                              - th:
+                                - text: '{c.name}'
+                              - td: []
+- funneling-table:
+  - in: röstningslokaler.json
+  - by: LÄN, KOMMUN
+  - name: LOKAL
+  - key: LOKALID
+  - open: röstningslokaler.öppen
+  - total: Totalt
+  - item-to: röstningslokal
+  - item-page: röstningslokal
+- button:
+  - text: + Ny röstningslokal
+  - to: röstningslokal
+  - value: null
+  - go: röstningslokal
+- h2:
+  - text: Hitta en röstningslokal
+- search-field:
+  - in: röstningslokaler.json
+  - fields:
+    - LOKAL
+    - ADRESS2
+    - KOMMUN
+  - placeholder: Sök på ort, adress eller lokal…
+  - max: 20
+  - ul:
+    - class: search-hits
+    - per:
+      - search.hits[v]:
+        - li:
+          - strong:
+            - text: '{v.LOKAL}'
+          - br: []
+          - small:
+            - text: '{v.ADRESS2}, {v.KOMMUN}'
+  - if:
+    - search.none:
+      - p:
+        - class: search-empty
+        - text: Ingen hittades.

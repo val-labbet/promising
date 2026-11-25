@@ -23,7 +23,7 @@ An active dimension shows up in three places:
 |---|---|
 | `dimension.<id>` in the model | so pages can use `if` |
 | the class `dim-<id>` on `<body>` | so css can show and hide whole layers |
-| `?dim=dev-code,dev-time` in the address | the ones switched on by hand, so a link keeps them |
+| `?dim=dev-code,dev-time` in the address | the ones switched on by hand, so a link keeps them; they replace those `model.yaml` starts with, and `dim=none` is none at all |
 
 ```yaml
 - if:

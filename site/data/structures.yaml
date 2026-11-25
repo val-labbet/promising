@@ -124,6 +124,14 @@
       - href: röstlängd
       - title: Röstlängd
 - structure:
+  - id: rlok
+  - structure:
+    - href: röstningslokaler-översikt
+    - title: Röstningslokaler
+    - structure:
+      - href: röstningslokal
+      - title: Röstningslokal
+- structure:
   - id: meta
   - structure:
     - href: meta/pages

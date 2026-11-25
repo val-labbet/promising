@@ -83,7 +83,6 @@ body.dim-C .hamburger {
   justify-content: space-between;
   padding: 0.75rem 1rem;
   border-bottom: 1px solid var(--border);
-  position: sticky;
   top: 0;
   background: var(--background);
   z-index: 10;
@@ -265,6 +264,96 @@ body.dim-C .hamburger {
 .search-empty {
   padding: 0.85rem 0.5rem;
   color: #666;
+}
+
+/* ── Funneling table: rows that open, one level in each time ── */
+
+.funneling {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.5rem 0 1.5rem;
+}
+
+.funneling th,
+.funneling td {
+  padding: 0.45rem 0.6rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  font-weight: normal;
+}
+
+.funneling td {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.funneling-total th,
+.funneling-total td {
+  font-weight: 600;
+  border-bottom: 2px solid var(--text);
+}
+
+.funneling-row {
+  cursor: pointer;
+}
+
+.funneling-row:hover {
+  background: var(--accent-light);
+}
+
+.funneling-row th::before {
+  content: '▸';
+  display: inline-block;
+  width: 1.1em;
+  color: var(--accent);
+  transition: transform 0.15s;
+}
+
+.funneling-row[data-open] th::before {
+  transform: rotate(90deg);
+}
+
+/* A row that opens a page of its own, not more rows */
+.funneling-link {
+  cursor: pointer;
+}
+
+.funneling-link th {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.funneling-link th::after {
+  content: ' →';
+  text-decoration: none;
+  display: inline-block;
+  margin-left: 0.3em;
+}
+
+.funneling-link:hover {
+  background: var(--accent-light);
+}
+
+.funneling-link:hover th {
+  text-decoration-thickness: 2px;
+}
+
+.funneling-2 {
+  background: rgb(0 0 0 / 0.03);
+}
+
+.funneling-2 th {
+  padding-left: 1.8rem;
+}
+
+.funneling-3 {
+  background: rgb(0 0 0 / 0.06);
+  font-size: 0.95em;
+}
+
+.funneling-3 th {
+  padding-left: 4.1rem;
 }
 
 /* ── Breadcrumb ── */

@@ -9,27 +9,60 @@
     - text: '!'
 - p:
   - text: Välkommen till Promising. Det här är starten på allt.
-- p:
-  - text: Nyheter, todo, kalender
 - if:
   - dimension in (V):
     - p:
-      - text: Väljare!
+      - text: Jag är väljare!
+    - p:
+      - text: Jag ser...
+    - ul:
+      - li:
+        - text: A
+- if:
   - dimension in (P):
     - p:
-      - text: Parti!
+      - text: Jag är parti!
+    - p:
+      - text: Jag ser...
+    - ul:
+      - li:
+        - text: A
+- if:
   - dimension in (F):
     - p:
-      - text: Valfunktionär!
+      - text: Jag är valfunktionär!
+    - p:
+      - text: Jag ser...
+    - ul:
+      - li:
+        - text: A
+- if:
   - dimension in (L):
     - p:
-      - text: Lokal valadministratör!
+      - text: Jag är lokal valadministratör!
+    - p:
+      - text: Jag ser...
+    - ul:
+      - li:
+        - text: A
+- if:
   - dimension in (R):
     - p:
-      - text: Regional valadministratör!
+      - text: Jag är regional valadministratör!
+    - p:
+      - text: Jag ser...
+    - ul:
+      - li:
+        - text: A
+- if:
   - dimension in (C):
     - p:
-      - text: Central valadministratör!
+      - text: Jag är central valadministratör!
+    - p:
+      - text: Jag ser...
+    - ul:
+      - li:
+        - text: A
 - _div:
   - block-link:
     - href: page:väljare
