@@ -130,7 +130,7 @@ With two names, the first is the key: the name in an object, the place in a list
   - text: Min rösträtt
 ```
 
-`page:` links switch page without reloading, keep the back button working and can be opened in a new tab. `javascript:` and `data:` links are removed.
+`page:` links switch page without reloading, keep the back button working and can be opened in a new tab. `javascript:` and `data:` links are removed. A link can also set model paths: `page:röstningslokal?lokal=1082004` (see `in_address` in [site.md](site.md)).
 
 ## Fields and buttons
 
@@ -194,6 +194,20 @@ On a button (or any other element) `to` sets a value when clicked and redraws.
 ```
 
 Every row has `name`, `count`, `items`, `groups` (the rows inside, the items in the last group), `open`, `toggle` and `level`; an item also has `data`. The json is loaded once, and the page is drawn when it has come. See `system/group.js`.
+
+`- find:` gives one item, e.g. the one a link points to; null if there is none, so a form for it starts empty.
+
+```yaml
+- find:
+  - in: röstningslokaler.json
+  - key: LOKALID
+  - value: '{lokal}'
+  - as: röstningslokal
+  - h1:
+    - text: '{röstningslokal.LOKAL || Ny röstningslokal}'
+```
+
+If the model already has an item at `as` with the same key (e.g. sent there by a form), that one is shown.
 
 `- autofocus: null` on a field gives it focus when the page is shown, and again whenever the page is drawn after the focused element went away, e.g. a button like *Försök igen* that is gone once pressed.
 

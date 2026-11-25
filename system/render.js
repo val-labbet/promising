@@ -348,10 +348,17 @@ Promising.render = (() => {
     if (v === true) v = '';
     v = String(v);
 
+    // page:röstningslokal?lokal=1082004 also says what else the address should have
     if (key === 'href' && v.startsWith('page:')) {
-      const page = v.slice(5);
+      const [page, extra] = v.slice(5).split(/\?(.*)/s);
       el.dataset.page = page;
       v = Promising.router ? Promising.router.url(page) : '?page=' + encodeURIComponent(page);
+      if (extra) {
+        const at = v.indexOf('?');
+        const params = new URLSearchParams(at < 0 ? '' : v.slice(at + 1));
+        for (const [k, x] of new URLSearchParams(extra)) params.set(k, x);
+        v = (at < 0 ? v : v.slice(0, at)) + '?' + params;
+      }
     }
     if (URL_ATTRIBUTES.has(key.toLowerCase()) && UNSAFE_URL.test(v) && !(key === 'src' && /^\s*data:image\//i.test(v))) return;
     el.setAttribute(key, v);

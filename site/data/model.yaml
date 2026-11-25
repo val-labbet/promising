@@ -10,6 +10,8 @@
   - login_page: login
   - shared_files:
     - incidenter
+  - in_address:
+    - lokal
   - val:
     - '2024-06-09':
       - eu: true

@@ -36,7 +36,7 @@ Promising.start({ data: 'data/', root: '#app', backend: '../system/api.php' });
 
 ## The model
 
-One plain object, `Promising.model`. It starts from `model.yaml`, then the address: `?user=2&structure=snål&time=2026-09-01&dim=dev-code` and any model path, e.g. `?anmälan.namn=Bo`. What the address says replaces what `model.yaml` starts with: `model.yaml` with `dimension: [ - V: … ]` and `&dim=C` gives C only.
+One plain object, `Promising.model`. It starts from `model.yaml`, then the address: `?user=2&structure=snål&time=2026-09-01&dim=dev-code` and any model path, e.g. `?anmälan.namn=Bo`. What the address says replaces what `model.yaml` starts with: `model.yaml` with `dimension: [ - V: … ]` and `&dim=C` gives C only. Model paths listed in `in_address` (`- in_address: [ - lokal ]`) are kept in the address, so a link like `page:röstningslokal?lokal=1082004` can point to one item and be saved or sent; the back button brings them back too.
 
 Keys that belong to the system:
 

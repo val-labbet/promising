@@ -180,7 +180,7 @@ window.H = (() => {
     return result;
   }
 
-  function router ({ param = 'page', start, render, params: extra = () => ({}) })
+  function router ({ param = 'page', start, render, params: extra = () => ({}), arrive = () => {} })
   {
     const r = {
       current: null,
@@ -204,7 +204,11 @@ window.H = (() => {
       await render(page);
     }
 
-    addEventListener('popstate', () => show(params()[param] || start));
+    // arrive gets the other parameters of an address one goes to, before it is shown
+    addEventListener('popstate', () => {
+      arrive(params());
+      show(params()[param] || start);
+    });
 
     // Plain links to this page, e.g. <a href="?page=about">, switch page without reloading
     document.addEventListener('click', event => {
@@ -213,6 +217,9 @@ window.H = (() => {
       const url = new URL(a.href);
       if (url.origin !== location.origin || url.pathname !== location.pathname || !url.searchParams.has(param)) return;
       event.preventDefault();
+      const values = {};
+      for (const [key, value] of url.searchParams) values[key] = key in values ? [].concat(values[key], value) : value;
+      arrive(values);
       r.go(url.searchParams.get(param));
     });
 

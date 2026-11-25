@@ -31,6 +31,18 @@ A click opens a row, and closes it again: one open row per level.
     - toggle: '{l.toggle}'
     - value: '{l.name}'
 
+The find builtin: one item, e.g. the one a link points to.
+
+  - find:
+    - in: röstningslokaler.json    a json list in data/, or a list in the model
+    - key: LOKALID                 the field to look in
+    - value: '{lokal}'             what it should be; nothing → no item
+    - as: röstningslokal           what it is called below
+    - h1: …                        drawn with {röstningslokal.…}, null if none
+
+If the model already has an item at as with the same key, e.g. sent from a
+form there, that one is shown instead.
+
 The json is loaded once; until then nothing is drawn, then the page is drawn
 again.
 
@@ -97,12 +109,10 @@ Promising.builtins ||= {};
     })));
   }
 
-  P.builtins.group = (vars, model, raw) => {
-    const where = String(vars.in ?? '');
-    const as = String(vars.as || 'group');
-    const look = (Array.isArray(raw) ? raw : []).filter(n => !PARAMETERS.includes(P.render.entry(n)[0]));
-    const spec = { name: vars.name, key: vars.key, open: String(vars.open || 'promising-group.' + as) };
-
+  // The list at in, or null while a json file is on its way (the page is drawn again when it comes)
+  function list (where, model)
+  {
+    where = String(where ?? '');
     let items;
     if (where.endsWith('.json')) {
       items = P.json.loaded[where];
@@ -113,10 +123,34 @@ Promising.builtins ||= {};
     } else {
       items = H.get(model, where);
     }
-    items = Array.isArray(items) ? items : items && typeof items === 'object' ? Object.values(items) : [];
+    return Array.isArray(items) ? items : items && typeof items === 'object' ? Object.values(items) : [];
+  }
+
+  const look = (raw, parameters) => (Array.isArray(raw) ? raw : []).filter(n => !parameters.includes(P.render.entry(n)[0]));
+  const empty = v => v === undefined || v === null || v === '';
+
+  P.builtins.group = (vars, model, raw) => {
+    const as = String(vars.as || 'group');
+    const spec = { name: vars.name, key: vars.key, open: String(vars.open || 'promising-group.' + as) };
+    const items = list(vars.in, model);
+    if (!items) return null;
 
     const tree = { name: null, count: items.length, items, level: 0, groups: rows(items, fields(vars.by), 1, spec) };
-    return P.render.nodes(look, { ...model, [as]: tree });
+    return P.render.nodes(look(raw, PARAMETERS), { ...model, [as]: tree });
+  };
+
+  P.builtins.find = (vars, model, raw) => {
+    const as = String(vars.as || 'item');
+    const key = String(vars.key ?? '');
+    const value = empty(vars.value) ? '' : String(vars.value);
+    const own = H.get(model, as);
+    let item = own && typeof own === 'object' && String(H.get(own, key) ?? '') === value ? own : null;
+    if (!item && value) {
+      const items = list(vars.in, model);
+      if (!items) return null;
+      item = items.find(i => String(H.get(i, key) ?? '') === value) ?? null;
+    }
+    return P.render.nodes(look(raw, ['in', 'key', 'value', 'as']), { ...model, [as]: item });
   };
 
 })();

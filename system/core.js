@@ -155,6 +155,13 @@ window.Promising ||= {};
       param: 'page',
       start: P.structure()[0]?.href || 'start',
       params: () => address(),
+      // A link or the back button: what its address says, and the kept paths it leaves out are emptied
+      arrive: values => {
+        const { page, ...rest } = values;
+        for (const path of kept()) if (!(path in rest)) H.set(P.model, path, null);
+        readAddress(rest);
+        derive();
+      },
       render: async page => {
         await loadPage(page);
         if (page !== P.model.page) P.model.previous_page = P.model.page;
@@ -168,8 +175,12 @@ window.Promising ||= {};
     if (backend && P.backend) P.backend.connect(backend, { every });
   };
 
+  // Model paths model.yaml wants in the address, e.g. in_address: [ - lokal ], so a link can point to them
+  const kept = () => [].concat(P.model.in_address ?? []).map(String);
+
   // What the address keeps besides the page
   const address = () => ({
+    ...Object.fromEntries(kept().map(path => [path, H.get(P.model, path)])),
     user: P.model.user_id,
     structure: P.model.structure !== 'default' && P.model.structure,
     time: timeChanged && P.model.time,

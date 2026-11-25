@@ -46,12 +46,11 @@
                           - b.groups[c]:
                             - tr:
                               - class: funneling-link funneling-3
-                              - to: '{vars.item-to}'
-                              - value: '{c.data}'
-                              - go: '{vars.item-page}'
                               - th:
-                                - text: '{c.name}'
-                              - td: []
+                                - colspan: '2'
+                                - a:
+                                  - href: page:{vars.item-page}?{vars.item-param}={c.id}
+                                  - text: '{c.name}'
 - funneling-table:
   - in: röstningslokaler.json
   - by: LÄN, KOMMUN
@@ -59,11 +58,11 @@
   - key: LOKALID
   - open: röstningslokaler.öppen
   - total: Totalt
-  - item-to: röstningslokal
   - item-page: röstningslokal
+  - item-param: lokal
 - button:
   - text: + Ny röstningslokal
-  - to: röstningslokal
+  - to: lokal
   - value: null
   - go: röstningslokal
 - h2:
@@ -81,11 +80,13 @@
     - per:
       - search.hits[v]:
         - li:
-          - strong:
-            - text: '{v.LOKAL}'
-          - br: []
-          - small:
-            - text: '{v.ADRESS2}, {v.KOMMUN}'
+          - a:
+            - href: page:röstningslokal?lokal={v.LOKALID}
+            - strong:
+              - text: '{v.LOKAL}'
+            - br: []
+            - small:
+              - text: '{v.ADRESS2}, {v.KOMMUN}'
   - if:
     - search.none:
       - p:

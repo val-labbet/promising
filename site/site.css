@@ -313,29 +313,26 @@ body.dim-C .hamburger {
   transform: rotate(90deg);
 }
 
-/* A row that opens a page of its own, not more rows */
-.funneling-link {
-  cursor: pointer;
+/* A row that opens a page of its own, not more rows: a link over the whole row */
+.funneling-link:hover {
+  background: var(--accent-light);
 }
 
-.funneling-link th {
+.funneling-link a {
+  display: block;
   color: var(--accent);
   text-decoration: underline;
   text-underline-offset: 0.15em;
 }
 
-.funneling-link th::after {
+.funneling-link a::after {
   content: ' →';
-  text-decoration: none;
   display: inline-block;
   margin-left: 0.3em;
+  text-decoration: none;
 }
 
-.funneling-link:hover {
-  background: var(--accent-light);
-}
-
-.funneling-link:hover th {
+.funneling-link:hover a {
   text-decoration-thickness: 2px;
 }
 
