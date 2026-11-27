@@ -1,0 +1,11 @@
+- p:
+  - text: Alla platser där man kan rösta, i tre slag.
+- block-link:
+  - href: page:röstningslokaler-översikt
+  - text: Förtidsröstning före valdagen, i hela landet.
+- block-link:
+  - href: page:vallokaler
+  - text: Valdagen, en vallokal för varje valdistrikt.
+- block-link:
+  - href: page:utlandsmyndigheter
+  - text: Ambassader och konsulat för den som röstar från utlandet.

@@ -1,0 +1,174 @@
+- find:
+  - in: vallokaler.json
+  - key: LÄNSKOD, KOMMUNKOD, VALDISTRIKTKOD
+  - value: '{valdistrikt}'
+  - as: vallokal
+  - h1:
+    - text: '{vallokal.LOKAL || Ny vallokal}'
+  - p:
+    - a:
+      - href: page:vallokaler
+      - text: '< Alla vallokaler'
+  - form:
+    - class: lokal-form
+    - to: vallokal
+    - label:
+      - for: LOKAL
+      - text: Vallokal
+    - input:
+      - id: LOKAL
+      - name: LOKAL
+      - type: text
+      - value: '{vallokal.LOKAL}'
+    - label:
+      - for: ADRESS1
+      - text: Adress, rad 1
+    - input:
+      - id: ADRESS1
+      - name: ADRESS1
+      - type: text
+      - value: '{vallokal.ADRESS1}'
+    - label:
+      - for: ADRESS2
+      - text: Adress, rad 2
+    - input:
+      - id: ADRESS2
+      - name: ADRESS2
+      - type: text
+      - value: '{vallokal.ADRESS2}'
+    - label:
+      - for: TILLGÄNGL
+      - text: Tillgänglighet
+    - input:
+      - id: TILLGÄNGL
+      - name: TILLGÄNGL
+      - type: text
+      - value: '{vallokal.TILLGÄNGL}'
+    - label:
+      - for: LATITUD
+      - text: Latitud
+    - input:
+      - id: LATITUD
+      - name: LATITUD
+      - type: text
+      - value: '{vallokal.LATITUD}'
+    - label:
+      - for: LONGITUD
+      - text: Longitud
+    - input:
+      - id: LONGITUD
+      - name: LONGITUD
+      - type: text
+      - value: '{vallokal.LONGITUD}'
+    - h2:
+      - text: Valdistrikt
+    - label:
+      - for: VALDISTRIKT
+      - text: Valdistrikt
+    - input:
+      - id: VALDISTRIKT
+      - name: VALDISTRIKT
+      - type: text
+      - value: '{vallokal.VALDISTRIKT}'
+    - label:
+      - for: VALDISTRIKTKOD
+      - text: Valdistriktskod
+    - input:
+      - id: VALDISTRIKTKOD
+      - name: VALDISTRIKTKOD
+      - type: text
+      - value: '{vallokal.VALDISTRIKTKOD}'
+    - label:
+      - for: KOMMUNVALKRETS
+      - text: Kommunvalkrets
+    - input:
+      - id: KOMMUNVALKRETS
+      - name: KOMMUNVALKRETS
+      - type: text
+      - value: '{vallokal.KOMMUNVALKRETS}'
+    - label:
+      - for: KOMMUNVALKRETSKOD
+      - text: Kommunvalkretskod
+    - input:
+      - id: KOMMUNVALKRETSKOD
+      - name: KOMMUNVALKRETSKOD
+      - type: text
+      - value: '{vallokal.KOMMUNVALKRETSKOD}'
+    - label:
+      - for: KOMMUN
+      - text: Kommun
+    - input:
+      - id: KOMMUN
+      - name: KOMMUN
+      - type: text
+      - value: '{vallokal.KOMMUN}'
+    - label:
+      - for: KOMMUNKOD
+      - text: Kommunkod
+    - input:
+      - id: KOMMUNKOD
+      - name: KOMMUNKOD
+      - type: text
+      - value: '{vallokal.KOMMUNKOD}'
+    - label:
+      - for: LÄN
+      - text: Län
+    - input:
+      - id: LÄN
+      - name: LÄN
+      - type: text
+      - value: '{vallokal.LÄN}'
+    - label:
+      - for: LÄNSKOD
+      - text: Länskod
+    - input:
+      - id: LÄNSKOD
+      - name: LÄNSKOD
+      - type: text
+      - value: '{vallokal.LÄNSKOD}'
+    - h2:
+      - text: Valnämnd
+    - label:
+      - for: VALNÄMND
+      - text: Valnämnd
+    - input:
+      - id: VALNÄMND
+      - name: VALNÄMND
+      - type: text
+      - value: '{vallokal.VALNÄMND}'
+    - label:
+      - for: HEMSIDA
+      - text: Hemsida
+    - input:
+      - id: HEMSIDA
+      - name: HEMSIDA
+      - type: text
+      - value: '{vallokal.HEMSIDA}'
+    - label:
+      - for: TELNR
+      - text: Telefon
+    - input:
+      - id: TELNR
+      - name: TELNR
+      - type: text
+      - value: '{vallokal.TELNR}'
+    - h2:
+      - text: Valdagen
+    - label:
+      - for: VALDAG
+      - text: Valdag
+    - input:
+      - id: VALDAG
+      - name: VALDAG
+      - type: text
+      - value: '{vallokal.VALDAG}'
+    - label:
+      - for: ÖPPETTID
+      - text: Öppettid
+    - input:
+      - id: ÖPPETTID
+      - name: ÖPPETTID
+      - type: text
+      - value: '{vallokal.ÖPPETTID}'
+    - button:
+      - text: Spara

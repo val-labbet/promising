@@ -1,0 +1,152 @@
+- find:
+  - in: utlmynd.json
+  - key: LANDKOD, NAMN
+  - value: '{myndighet}'
+  - as: utlandsmyndighet
+  - h1:
+    - text: '{utlandsmyndighet.NAMN || Ny utlandsmyndighet}'
+  - p:
+    - a:
+      - href: page:utlandsmyndigheter
+      - text: '< Alla utlandsmyndigheter'
+  - form:
+    - class: lokal-form
+    - to: utlandsmyndighet
+    - label:
+      - for: NAMN
+      - text: Namn
+    - input:
+      - id: NAMN
+      - name: NAMN
+      - type: text
+      - value: '{utlandsmyndighet.NAMN}'
+    - label:
+      - for: LAND
+      - text: Land
+    - input:
+      - id: LAND
+      - name: LAND
+      - type: text
+      - value: '{utlandsmyndighet.LAND}'
+    - label:
+      - for: LANDKOD
+      - text: Landkod
+    - input:
+      - id: LANDKOD
+      - name: LANDKOD
+      - type: text
+      - value: '{utlandsmyndighet.LANDKOD}'
+    - label:
+      - for: ADRESS1
+      - text: Adress, rad 1
+    - input:
+      - id: ADRESS1
+      - name: ADRESS1
+      - type: text
+      - value: '{utlandsmyndighet.ADRESS1}'
+    - label:
+      - for: ADRESS2
+      - text: Adress, rad 2
+    - input:
+      - id: ADRESS2
+      - name: ADRESS2
+      - type: text
+      - value: '{utlandsmyndighet.ADRESS2}'
+    - label:
+      - for: ADRESS3
+      - text: Adress, rad 3
+    - input:
+      - id: ADRESS3
+      - name: ADRESS3
+      - type: text
+      - value: '{utlandsmyndighet.ADRESS3}'
+    - label:
+      - for: ADRESS4
+      - text: Adress, rad 4
+    - input:
+      - id: ADRESS4
+      - name: ADRESS4
+      - type: text
+      - value: '{utlandsmyndighet.ADRESS4}'
+    - label:
+      - for: ADRESS5
+      - text: Adress, rad 5
+    - input:
+      - id: ADRESS5
+      - name: ADRESS5
+      - type: text
+      - value: '{utlandsmyndighet.ADRESS5}'
+    - label:
+      - for: TELNR
+      - text: Telefon
+    - input:
+      - id: TELNR
+      - name: TELNR
+      - type: text
+      - value: '{utlandsmyndighet.TELNR}'
+    - label:
+      - for: FAXNR
+      - text: Fax
+    - input:
+      - id: FAXNR
+      - name: FAXNR
+      - type: text
+      - value: '{utlandsmyndighet.FAXNR}'
+    - label:
+      - for: EPOST
+      - text: E-post
+    - input:
+      - id: EPOST
+      - name: EPOST
+      - type: text
+      - value: '{utlandsmyndighet.EPOST}'
+    - label:
+      - for: HEMSIDA
+      - text: Hemsida
+    - input:
+      - id: HEMSIDA
+      - name: HEMSIDA
+      - type: text
+      - value: '{utlandsmyndighet.HEMSIDA}'
+    - label:
+      - for: ÖPPETTIDER
+      - text: Öppettider (text)
+    - input:
+      - id: ÖPPETTIDER
+      - name: ÖPPETTIDER
+      - type: text
+      - value: '{utlandsmyndighet.ÖPPETTIDER}'
+    - label:
+      - for: KLARMARKERAD
+      - text: Klarmarkerad (J/N)
+    - input:
+      - id: KLARMARKERAD
+      - name: KLARMARKERAD
+      - type: text
+      - value: '{utlandsmyndighet.KLARMARKERAD}'
+    - label:
+      - for: ENDASTBREVROST
+      - text: Endast brevröst (J/N)
+    - input:
+      - id: ENDASTBREVROST
+      - name: ENDASTBREVROST
+      - type: text
+      - value: '{utlandsmyndighet.ENDASTBREVROST}'
+    - if:
+      - utlandsmyndighet:
+        - h2:
+          - text: Öppettider
+        - per:
+          - utlandsmyndighet[fält, värde]:
+            - if:
+              - fält <= 9999-12-31:
+                - label:
+                  - for: '{fält}'
+                  - text: '{fält}'
+                - input:
+                  - id: '{fält}'
+                  - name: '{fält}'
+                  - type: text
+                  - value: '{värde}'
+    - button:
+      - text: Spara

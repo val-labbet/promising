@@ -21,9 +21,9 @@
     - st: null
   - inte: null
   - funk:
-    - rm: true
-    - vd: true
-    - rp: true
+    - rm: 0180
+    - vd: 01800101
+    - rp: 01800101
 - person:
   - id: '2'
   - personnummer: '190207029802'

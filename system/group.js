@@ -7,7 +7,9 @@ by some fields, counted and sorted, for a table that opens row by row.
     - in: röstningslokaler.json    a json list in data/, or a list in the model
     - by: LÄN, KOMMUN              the fields, outermost first
     - name: LOKAL                  what an item is called (and sorted by)
-    - key: LOKALID                 what tells items apart (default: name)
+    - label: LOKAL                 something more to show about an item, e.g. a link text
+    - key: LOKALID                 what tells items apart (default: name); several
+                                   fields, e.g. LÄNSKOD, KOMMUNKOD, LOKAL, give 14/80/Nordstan
     - open: röstningslokaler.öppen where in the model the open rows are kept
     - as: tabell                   what the tree is called below (default: group)
     - table: …                     how it looks, drawn with {tabell.…}
@@ -23,6 +25,7 @@ The tree, and every row in it:
     .open           true when the row is open
     .toggle         the model path that holds the open row of this level
     .data           an item: the item itself
+    .label          an item: its label field, or null
     .level          1, 2 … (items: one more than the last field)
 
 A click opens a row, and closes it again: one open row per level.
@@ -35,7 +38,7 @@ The find builtin: one item, e.g. the one a link points to.
 
   - find:
     - in: röstningslokaler.json    a json list in data/, or a list in the model
-    - key: LOKALID                 the field to look in
+    - key: LOKALID                 the field (or fields, as for group) to look in
     - value: '{lokal}'             what it should be; nothing → no item
     - as: röstningslokal           what it is called below
     - h1: …                        drawn with {röstningslokal.…}, null if none
@@ -59,7 +62,7 @@ Promising.builtins ||= {};
   'use strict';
 
   const P = Promising;
-  const PARAMETERS = ['in', 'by', 'name', 'key', 'open', 'as'];
+  const PARAMETERS = ['in', 'by', 'name', 'label', 'key', 'open', 'as'];
   const promises = {};
 
   P.json = file => {
@@ -76,19 +79,25 @@ Promising.builtins ||= {};
   const fields = by => (Array.isArray(by) ? by : String(by ?? '').split(','))
     .map(f => String(f).trim()).filter(Boolean);
 
+  // An item's id: the value of the key field, or of several joined with /
+  const idOf = (item, key) => {
+    const values = fields(key).map(f => H.get(item, f));
+    return values.every(v => v === undefined || v === null) ? null : values.map(v => v ?? '').join('/');
+  };
+
   const sorted = rows => rows.sort((a, b) => String(a.name).localeCompare(String(b.name), 'sv'));
 
   // The rows of one level: the items grouped by the first field, or the items themselves
   function rows (items, by, level, spec)
   {
     if (!by.length) {
-      const toggle = `${spec.open}.${spec.key || spec.name || 'item'}`;
+      const toggle = `${spec.open}.${fields(spec.key || spec.name)[0] || 'item'}`;
       const open = H.get(P.model, toggle);
       return sorted(items.map(item => {
-        const id = H.get(item, spec.key || spec.name) ?? null;
+        const id = idOf(item, spec.key || spec.name);
         return {
           name: spec.name ? H.get(item, spec.name) ?? '' : id, id, count: 1, items: [item], groups: [],
-          data: item, level, toggle, open: id !== null && open !== undefined && open !== null && String(open) === String(id),
+          data: item, label: spec.label ? H.get(item, spec.label) ?? null : null, level, toggle, open: id !== null && open !== undefined && open !== null && String(open) === String(id),
         };
       }));
     }
@@ -131,7 +140,7 @@ Promising.builtins ||= {};
 
   P.builtins.group = (vars, model, raw) => {
     const as = String(vars.as || 'group');
-    const spec = { name: vars.name, key: vars.key, open: String(vars.open || 'promising-group.' + as) };
+    const spec = { name: vars.name, label: vars.label, key: vars.key, open: String(vars.open || 'promising-group.' + as) };
     const items = list(vars.in, model);
     if (!items) return null;
 
@@ -141,14 +150,14 @@ Promising.builtins ||= {};
 
   P.builtins.find = (vars, model, raw) => {
     const as = String(vars.as || 'item');
-    const key = String(vars.key ?? '');
+    const key = vars.key;
     const value = empty(vars.value) ? '' : String(vars.value);
     const own = H.get(model, as);
-    let item = own && typeof own === 'object' && String(H.get(own, key) ?? '') === value ? own : null;
+    let item = own && typeof own === 'object' && (idOf(own, key) ?? '') === value ? own : null;
     if (!item && value) {
       const items = list(vars.in, model);
       if (!items) return null;
-      item = items.find(i => String(H.get(i, key) ?? '') === value) ?? null;
+      item = items.find(i => idOf(i, key) === value) ?? null;
     }
     return P.render.nodes(look(raw, ['in', 'key', 'value', 'as']), { ...model, [as]: item });
   };

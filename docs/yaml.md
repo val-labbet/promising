@@ -46,6 +46,20 @@ Text is always text. `<b>` in yaml or in the model is shown as characters.
 
 In the browser the three empty `p` are the same; the difference is kept in the yaml and shown in the code view. Note that `text:` with nothing after it *is* `null` in yaml, so `<p></p>` is written `text: ''`.
 
+## Svg
+
+`- svg:` and everything inside it are drawn as svg, so icons can be written in yaml:
+
+```yaml
+- svg:
+  - viewBox: '0 0 256 256'
+  - aria-hidden: 'true'
+  - path:
+    - d: M228,192a4,4,0,0,1-4,4H80 …
+```
+
+The up link in `components.yaml` (`breadcrumb`) is drawn like that, from `parent_page` in the model: `{ href, title }` of the page above, or null at the top.
+
 ## Switched off
 
 A key that starts with `_` is switched off: left out, but kept in the file. One character turns a part off and on again, and unlike a `#` comment it survives every save.
@@ -130,7 +144,7 @@ With two names, the first is the key: the name in an object, the place in a list
   - text: Min rösträtt
 ```
 
-`page:` links switch page without reloading, keep the back button working and can be opened in a new tab. `javascript:` and `data:` links are removed. A link can also set model paths: `page:röstningslokal?lokal=1082004` (see `in_address` in [site.md](site.md)).
+`page:` links switch page without reloading, keep the back button working and can be opened in a new tab. `javascript:` and `data:` links are removed. A link can also set model paths: `page:röstningslokal?lokal={l.id}` (the parameters are told apart before `{…}` is filled in, so a value may hold `&`) (see `in_address` in [site.md](site.md)).
 
 ## Fields and buttons
 
@@ -173,7 +187,7 @@ On a button (or any other element) `to` sets a value when clicked and redraws.
   - in: röstningslokaler.json
   - by: LÄN, KOMMUN            # outermost first
   - name: LOKAL                # what an item is called
-  - key: LOKALID               # what tells items apart
+  - key: LÄNSKOD, KOMMUNKOD, LOKAL   # what tells items apart; several fields give 14/80/Nordstan
   - open: röstningslokaler.öppen
   - as: tabell
   - table:
@@ -193,14 +207,14 @@ On a button (or any other element) `to` sets a value when clicked and redraws.
               - l.groups[k]: …
 ```
 
-Every row has `name`, `count`, `items`, `groups` (the rows inside, the items in the last group), `open`, `toggle` and `level`; an item also has `data`. The json is loaded once, and the page is drawn when it has come. See `system/group.js`.
+Every row has `name`, `count`, `items`, `groups` (the rows inside, the items in the last group), `open`, `toggle` and `level`; an item also has `data`, and `label` with `- label: LOKAL` (e.g. a link text next to the name). The component `funneling-table` in `components.yaml` draws such a table with any number of levels (it calls `funneling-rows` for the rows inside an open one). The json is loaded once, and the page is drawn when it has come. See `system/group.js`.
 
 `- find:` gives one item, e.g. the one a link points to; null if there is none, so a form for it starts empty.
 
 ```yaml
 - find:
   - in: röstningslokaler.json
-  - key: LOKALID
+  - key: LÄNSKOD, KOMMUNKOD, LOKAL
   - value: '{lokal}'
   - as: röstningslokal
   - h1:
@@ -267,7 +281,6 @@ Written in js, used like components.
 |---|---|
 | `- page: []` | the current page, with its title as h1 if it has none |
 | `- menu:` `- structure: default` `- root: väljare` | the pages of a structure as nested lists; both entries optional |
-| `- breadcrumb:` `- text: Upp` | a link to the parent page |
 | `- search-field:` `- in: structure:väljare` `- placeholder: Sök…` | a field that filters while you type, see below; also `- search:` unless the site has a component with that name |
 | `- person:`, `- axiom:`, `- structure:` … | a record from a meta file, see [meta.md](meta.md) |
 

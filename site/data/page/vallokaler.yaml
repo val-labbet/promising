@@ -1,0 +1,17 @@
+- p:
+  - text: Vallokaler på valdagen, per län och kommun. Varje valdistrikt har en vallokal.
+- funneling-table:
+  - in: vallokaler.json
+  - by: LÄN, KOMMUN
+  - name: VALDISTRIKT
+  - label: LOKAL
+  - key: LÄNSKOD, KOMMUNKOD, VALDISTRIKTKOD
+  - open: vallokaler.öppen
+  - total: Totalt
+  - item-page: vallokal-uppgifter
+  - item-param: valdistrikt
+- button:
+  - text: + Ny vallokal
+  - to: valdistrikt
+  - value: null
+  - go: vallokal-uppgifter

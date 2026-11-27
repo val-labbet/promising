@@ -1,0 +1,16 @@
+- p:
+  - text: Ambassader och konsulat där man kan rösta från utlandet, per land.
+- funneling-table:
+  - in: utlmynd.json
+  - by: LAND
+  - name: NAMN
+  - key: LANDKOD, NAMN
+  - open: utlandsmyndigheter.öppen
+  - total: Totalt
+  - item-page: utlandsmyndighet
+  - item-param: myndighet
+- button:
+  - text: + Ny utlandsmyndighet
+  - to: myndighet
+  - value: null
+  - go: utlandsmyndighet

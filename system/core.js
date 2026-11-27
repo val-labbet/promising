@@ -26,7 +26,7 @@ Core: loads a site, keeps the model and draws it.
 
 The model is a plain object. These keys belong to the system:
 
-  page, previous_page, return_page, user_id, user, persons, structure, start_page,
+  page, previous_page, return_page, parent_page, user_id, user, persons, structure, start_page,
   time, menu_open, panel_open, fullscreen, menu_hidden, login_page, site_name, axiom, dimension,
   shared_files, shared, backend
 
@@ -306,6 +306,9 @@ window.Promising ||= {};
   {
     m.user = P.persons.find(p => String(p.id) === String(m.user_id)) || null;
     m.start_page = P.structure()[0]?.href ?? null;
+    // The page above this one, e.g. for an "up" link: { href, title }, or null at the top
+    const above = (P.locate(m.page) || []).at(-2);
+    m.parent_page = above ? { href: above.href, title: above.title ?? above.href } : null;
     // Where the login page should go afterwards: the page that asked for it, the page it was opened from, or the start page
     m.return_page = [m.page, m.previous_page].find(p => p && p !== m.login_page) ?? m.start_page;
     // shared.<name>: the entries in a shared file, as objects

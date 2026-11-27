@@ -10,7 +10,7 @@ A node is a one-key entry. The key is, in this order:
   if          the first true branch, or else
   per         one copy per item in a list: - per: [ - persons[p]: … ]
   a component from components.yaml, called with variables {vars.x}
-  a builtin   from Promising.builtins (page, menu, search, breadcrumb …)
+  a builtin   from Promising.builtins (page, menu, search-field, group, find …)
   an element  where an array value holds attributes and children
 
 Inside an element a scalar value is an attribute, an array value is a child.
@@ -47,6 +47,7 @@ Promising.render = (() => {
   const FORM_ATTRIBUTES = new Set(['action', 'method', 'target', 'formaction', 'formmethod', 'formtarget', 'formenctype']);
   const ACTIONS = ['to', 'value', 'toggle', 'go', 'store', 'call'];
   const MAX_DEPTH = 40;
+  const SVG = 'http://www.w3.org/2000/svg';
 
   const isMap = v => v !== null && typeof v === 'object' && Object.getPrototypeOf(v) === Object.prototype;
   const entry = n => (isMap(n) && Object.entries(n)[0]) || [];
@@ -303,19 +304,28 @@ Promising.render = (() => {
 
   // ── elements ────────────────────────────────────────────────────────────────
 
+  // - svg: and everything inside it are made as svg, so they show: - svg: [ - path: [ - d: … ] ]
+  let inSvg = false;
   function element (tag, entries, model)
   {
     if (!TAG.test(tag) || BLOCKED.has(tag.toLowerCase())) return null;
-    const el = document.createElement(tag);
+    const svg = inSvg || tag === 'svg';
+    const el = svg ? document.createElementNS(SVG, tag) : document.createElement(tag);
     const action = {};
 
-    for (const e of list(entries)) {
-      const [key, value] = entry(e);
-      if (!key) continue;
-      if (off(key) && !Array.isArray(value)) continue;
-      if (key === 'if' || key === 'per' || Array.isArray(value)) append(el, drawn(e, entries, model));
-      else if (ACTIONS.includes(key) && (!['store', 'call'].includes(key) || el.tagName === 'FORM')) action[key] = value;
-      else if (!FORM_ATTRIBUTES.has(key.toLowerCase())) attribute(el, key, value, model);
+    const outer = inSvg;
+    inSvg = svg && tag !== 'foreignObject';
+    try {
+      for (const e of list(entries)) {
+        const [key, value] = entry(e);
+        if (!key) continue;
+        if (off(key) && !Array.isArray(value)) continue;
+        if (key === 'if' || key === 'per' || Array.isArray(value)) append(el, drawn(e, entries, model));
+        else if (ACTIONS.includes(key) && (!['store', 'call'].includes(key) || el.tagName === 'FORM')) action[key] = value;
+        else if (!FORM_ATTRIBUTES.has(key.toLowerCase())) attribute(el, key, value, model);
+      }
+    } finally {
+      inSvg = outer;
     }
 
     const acts = 'to' in action || 'toggle' in action || 'go' in action;
@@ -342,26 +352,38 @@ Promising.render = (() => {
     if (/^on/i.test(key) || !ATTRIBUTE.test(key)) return;
     if (key === 'text') return value === null || append(el, text(value, model));
 
+    if (key === 'href' && typeof value === 'string' && value.startsWith('page:')) return pageLink(el, value, model);
+
     // - attr: null → an empty attribute; a {path} that is missing, null or false → no attribute
     let v = value === null ? true : resolve(value, model);
     if (v === undefined || v === null || v === false) return;
     if (v === true) v = '';
     v = String(v);
 
-    // page:röstningslokal?lokal=1082004 also says what else the address should have
-    if (key === 'href' && v.startsWith('page:')) {
-      const [page, extra] = v.slice(5).split(/\?(.*)/s);
-      el.dataset.page = page;
-      v = Promising.router ? Promising.router.url(page) : '?page=' + encodeURIComponent(page);
-      if (extra) {
-        const at = v.indexOf('?');
-        const params = new URLSearchParams(at < 0 ? '' : v.slice(at + 1));
-        for (const [k, x] of new URLSearchParams(extra)) params.set(k, x);
-        v = (at < 0 ? v : v.slice(0, at)) + '?' + params;
-      }
-    }
+    if (key === 'href' && v.startsWith('page:')) return pageLink(el, v, model);
     if (URL_ATTRIBUTES.has(key.toLowerCase()) && UNSAFE_URL.test(v) && !(key === 'src' && /^\s*data:image\//i.test(v))) return;
     el.setAttribute(key, v);
+  }
+
+  // page:röstningslokal?lokal={l.id} also says what else the address should have. The parameters
+  // are told apart before the values are filled in, so a value may hold & or =
+  function pageLink (el, value, model)
+  {
+    const [page, extra = ''] = value.slice(5).split(/\?(.*)/s);
+    const name = String(resolve(page, model) ?? '');
+    el.dataset.page = name;
+    let v = Promising.router ? Promising.router.url(name) : '?page=' + encodeURIComponent(name);
+    if (extra) {
+      const at = v.indexOf('?');
+      const params = new URLSearchParams(at < 0 ? '' : v.slice(at + 1));
+      for (const pair of extra.split('&')) {
+        const [k, x = ''] = pair.split(/=(.*)/s);
+        const filled = resolve(x, model);
+        if (k) params.set(String(resolve(k, model)), filled === undefined || filled === null ? '' : String(filled));
+      }
+      v = (at < 0 ? v : v.slice(0, at)) + '?' + params;
+    }
+    el.setAttribute('href', v);
   }
 
   // Text with {path}: a missing path shows itself in red, an object is shown as json

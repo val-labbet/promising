@@ -195,3 +195,82 @@
         - p:
           - class: search-empty
           - text: '{vars.empty}'
+- component:
+  - id: funneling-table
+  - group:
+    - in: '{vars.in}'
+    - by: '{vars.by}'
+    - name: '{vars.name}'
+    - label: '{vars.label}'
+    - key: '{vars.key}'
+    - open: '{vars.open}'
+    - as: tratt
+    - table:
+      - class: funneling
+      - tbody:
+        - tr:
+          - class: funneling-total
+          - th:
+            - text: '{vars.total}'
+          - td:
+            - text: '{tratt.count}'
+        - funneling-rows:
+          - rows: '{tratt.groups}'
+          - item-page: '{vars.item-page}'
+          - item-param: '{vars.item-param}'
+- component:
+  - id: funneling-rows
+  - per:
+    - vars.rows[r]:
+      - if:
+        - r.data:
+          - if:
+            - r.label:
+              - tr:
+                - class: funneling-link funneling-{r.level}
+                - th:
+                  - text: '{r.name}'
+                - td:
+                  - a:
+                    - href: page:{vars.item-page}?{vars.item-param}={r.id}
+                    - text: '{r.label}'
+            - else:
+              - tr:
+                - class: funneling-link funneling-{r.level}
+                - th:
+                  - colspan: '2'
+                  - a:
+                    - href: page:{vars.item-page}?{vars.item-param}={r.id}
+                    - text: '{r.name}'
+        - else:
+          - tr:
+            - class: funneling-row funneling-{r.level}
+            - data-open: '{r.open}'
+            - toggle: '{r.toggle}'
+            - value: '{r.name}'
+            - th:
+              - text: '{r.name}'
+            - td:
+              - text: '{r.count}'
+          - if:
+            - r.open:
+              - funneling-rows:
+                - rows: '{r.groups}'
+                - item-page: '{vars.item-page}'
+                - item-param: '{vars.item-param}'
+- component:
+  - id: breadcrumb
+  - if:
+    - parent_page:
+      - nav:
+        - class: breadcrumb
+        - aria-label: '{vars.text || parent_page.title}'
+        - a:
+          - href: page:{parent_page.href}
+          - svg:
+            - class: breadcrumb-arrow
+            - viewBox: '0 0 256 256'
+            - aria-hidden: 'true'
+            - path:
+              - d: M228,192a4,4,0,0,1-4,4H80a4,4,0,0,1-4-4V57.66L34.83,98.83a4,4,0,0,1-5.66-5.66l48-48a4,4,0,0,1,5.66,0l48,48a4,4,0,0,1-5.66,5.66L84,57.66V188H224A4,4,0,0,1,228,192Z
+          - text: '{vars.text || parent_page.title}'

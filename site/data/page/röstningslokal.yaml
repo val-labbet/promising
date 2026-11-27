@@ -1,6 +1,6 @@
 - find:
   - in: röstningslokaler.json
-  - key: LOKALID
+  - key: LÄNSKOD, KOMMUNKOD, LOKAL, GATUADRESS
   - value: '{lokal}'
   - as: röstningslokal
   - h1:
@@ -10,7 +10,7 @@
       - href: page:röstningslokaler-översikt
       - text: '< Alla röstningslokaler'
   - form:
-    - class: röstningslokal
+    - class: lokal-form
     - to: röstningslokal
     - label:
       - for: LOKAL
@@ -21,21 +21,29 @@
       - type: text
       - value: '{röstningslokal.LOKAL}'
     - label:
-      - for: ADRESS1
-      - text: Adress, rad 1
+      - for: LÄGESBESKRIVNING
+      - text: Lägesbeskrivning
     - input:
-      - id: ADRESS1
-      - name: ADRESS1
+      - id: LÄGESBESKRIVNING
+      - name: LÄGESBESKRIVNING
       - type: text
-      - value: '{röstningslokal.ADRESS1}'
+      - value: '{röstningslokal.LÄGESBESKRIVNING}'
     - label:
-      - for: ADRESS2
-      - text: Adress, rad 2
+      - for: GATUADRESS
+      - text: Gatuadress
     - input:
-      - id: ADRESS2
-      - name: ADRESS2
+      - id: GATUADRESS
+      - name: GATUADRESS
       - type: text
-      - value: '{röstningslokal.ADRESS2}'
+      - value: '{röstningslokal.GATUADRESS}'
+    - label:
+      - for: ORT
+      - text: Ort
+    - input:
+      - id: ORT
+      - name: ORT
+      - type: text
+      - value: '{röstningslokal.ORT}'
     - label:
       - for: KOMMUN
       - text: Kommun
@@ -69,14 +77,6 @@
       - type: text
       - value: '{röstningslokal.LÄNSKOD}'
     - label:
-      - for: LOKALID
-      - text: Lokal-id
-    - input:
-      - id: LOKALID
-      - name: LOKALID
-      - type: text
-      - value: '{röstningslokal.LOKALID}'
-    - label:
       - for: VALNÄMND
       - text: Valnämnd
     - input:
@@ -93,29 +93,13 @@
       - type: text
       - value: '{röstningslokal.HEMSIDA}'
     - label:
-      - for: TELNR
+      - for: TELEFONNUMMER
       - text: Telefon
     - input:
-      - id: TELNR
-      - name: TELNR
+      - id: TELEFONNUMMER
+      - name: TELEFONNUMMER
       - type: text
-      - value: '{röstningslokal.TELNR}'
-    - label:
-      - for: TILLGÄNGL
-      - text: Tillgänglighet
-    - input:
-      - id: TILLGÄNGL
-      - name: TILLGÄNGL
-      - type: text
-      - value: '{röstningslokal.TILLGÄNGL}'
-    - label:
-      - for: BEGRTILLT
-      - text: Begränsad tillgänglighet (J/N)
-    - input:
-      - id: BEGRTILLT
-      - name: BEGRTILLT
-      - type: text
-      - value: '{röstningslokal.BEGRTILLT}'
+      - value: '{röstningslokal.TELEFONNUMMER}'
     - label:
       - for: LATITUD
       - text: Latitud
@@ -132,6 +116,64 @@
       - name: LONGITUD
       - type: text
       - value: '{röstningslokal.LONGITUD}'
+    - h2:
+      - text: Tillgänglighet
+    - label:
+      - for: RULLSTOLSANPASSAD_LOKAL
+      - text: Rullstolsanpassad lokal
+    - input:
+      - id: RULLSTOLSANPASSAD_LOKAL
+      - name: RULLSTOLSANPASSAD_LOKAL
+      - type: text
+      - value: '{röstningslokal.RULLSTOLSANPASSAD_LOKAL}'
+    - label:
+      - for: PARKERING
+      - text: Parkering
+    - input:
+      - id: PARKERING
+      - name: PARKERING
+      - type: text
+      - value: '{röstningslokal.PARKERING}'
+    - label:
+      - for: EXTRABELYSNING
+      - text: Extrabelysning
+    - input:
+      - id: EXTRABELYSNING
+      - name: EXTRABELYSNING
+      - type: text
+      - value: '{röstningslokal.EXTRABELYSNING}'
+    - label:
+      - for: FÖRSTORINGSHJALPMEDEL
+      - text: Förstoringshjälpmedel
+    - input:
+      - id: FÖRSTORINGSHJALPMEDEL
+      - name: FÖRSTORINGSHJALPMEDEL
+      - type: text
+      - value: '{röstningslokal.FÖRSTORINGSHJALPMEDEL}'
+    - label:
+      - for: KONTRASTMARKERING
+      - text: Kontrastmarkering
+    - input:
+      - id: KONTRASTMARKERING
+      - name: KONTRASTMARKERING
+      - type: text
+      - value: '{röstningslokal.KONTRASTMARKERING}'
+    - label:
+      - for: STÄNGT_FÖR_ALLMÄNHETEN
+      - text: Stängt för allmänheten
+    - input:
+      - id: STÄNGT_FÖR_ALLMÄNHETEN
+      - name: STÄNGT_FÖR_ALLMÄNHETEN
+      - type: text
+      - value: '{röstningslokal.STÄNGT_FÖR_ALLMÄNHETEN}'
+    - label:
+      - for: ÖVRIG_INFO_TILLGÄNGLIGHET
+      - text: Övrig information om tillgänglighet
+    - input:
+      - id: ÖVRIG_INFO_TILLGÄNGLIGHET
+      - name: ÖVRIG_INFO_TILLGÄNGLIGHET
+      - type: text
+      - value: '{röstningslokal.ÖVRIG_INFO_TILLGÄNGLIGHET}'
     - if:
       - röstningslokal:
         - h2:

@@ -1,61 +1,10 @@
-- component:
-  - id: funneling-table
-  - group:
-    - in: '{vars.in}'
-    - by: '{vars.by}'
-    - name: '{vars.name}'
-    - key: '{vars.key}'
-    - open: '{vars.open}'
-    - as: tratt
-    - table:
-      - class: funneling
-      - tbody:
-        - tr:
-          - class: funneling-total
-          - th:
-            - text: '{vars.total}'
-          - td:
-            - text: '{tratt.count}'
-        - per:
-          - tratt.groups[a]:
-            - tr:
-              - class: funneling-row funneling-1
-              - data-open: '{a.open}'
-              - toggle: '{a.toggle}'
-              - value: '{a.name}'
-              - th:
-                - text: '{a.name}'
-              - td:
-                - text: '{a.count}'
-            - if:
-              - a.open:
-                - per:
-                  - a.groups[b]:
-                    - tr:
-                      - class: funneling-row funneling-2
-                      - data-open: '{b.open}'
-                      - toggle: '{b.toggle}'
-                      - value: '{b.name}'
-                      - th:
-                        - text: '{b.name}'
-                      - td:
-                        - text: '{b.count}'
-                    - if:
-                      - b.open:
-                        - per:
-                          - b.groups[c]:
-                            - tr:
-                              - class: funneling-link funneling-3
-                              - th:
-                                - colspan: '2'
-                                - a:
-                                  - href: page:{vars.item-page}?{vars.item-param}={c.id}
-                                  - text: '{c.name}'
+- p:
+  - text: Röstningslokaler för förtidsröstning, per län och kommun.
 - funneling-table:
   - in: röstningslokaler.json
   - by: LÄN, KOMMUN
   - name: LOKAL
-  - key: LOKALID
+  - key: LÄNSKOD, KOMMUNKOD, LOKAL, GATUADRESS
   - open: röstningslokaler.öppen
   - total: Totalt
   - item-page: röstningslokal
@@ -71,7 +20,8 @@
   - in: röstningslokaler.json
   - fields:
     - LOKAL
-    - ADRESS2
+    - GATUADRESS
+    - ORT
     - KOMMUN
   - placeholder: Sök på ort, adress eller lokal…
   - max: 20
@@ -81,12 +31,12 @@
       - search.hits[v]:
         - li:
           - a:
-            - href: page:röstningslokal?lokal={v.LOKALID}
+            - href: page:röstningslokal?lokal={v.LÄNSKOD}/{v.KOMMUNKOD}/{v.LOKAL}/{v.GATUADRESS}
             - strong:
               - text: '{v.LOKAL}'
             - br: []
             - small:
-              - text: '{v.ADRESS2}, {v.KOMMUN}'
+              - text: '{v.GATUADRESS}, {v.ORT} ({v.KOMMUN})'
   - if:
     - search.none:
       - p:

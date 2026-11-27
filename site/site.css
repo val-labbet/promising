@@ -336,12 +336,13 @@ body.dim-C .hamburger {
   text-decoration-thickness: 2px;
 }
 
-.funneling-2 {
-  background: rgb(0 0 0 / 0.03);
+.funneling-link td {
+  text-align: left;
 }
 
-.funneling-2 th {
-  padding-left: 1.8rem;
+/* Deeper levels: a little darker and further in; a link has no triangle, so it goes in by that much more */
+.funneling-2 {
+  background: rgb(0 0 0 / 0.03);
 }
 
 .funneling-3 {
@@ -349,9 +350,18 @@ body.dim-C .hamburger {
   font-size: 0.95em;
 }
 
-.funneling-3 th {
-  padding-left: 4.1rem;
+.funneling-4 {
+  background: rgb(0 0 0 / 0.09);
+  font-size: 0.95em;
 }
+
+.funneling-2 th { padding-left: 1.8rem; }
+.funneling-3 th { padding-left: 3rem; }
+.funneling-4 th { padding-left: 4.2rem; }
+.funneling-link.funneling-1 th { padding-left: calc(0.6rem + 1.1em); }
+.funneling-link.funneling-2 th { padding-left: calc(1.8rem + 1.1em); }
+.funneling-link.funneling-3 th { padding-left: calc(3rem + 1.1em); }
+.funneling-link.funneling-4 th { padding-left: calc(4.2rem + 1.1em); }
 
 /* ── Breadcrumb ── */
 

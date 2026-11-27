@@ -124,13 +124,32 @@
       - href: röstlängd
       - title: Röstlängd
 - structure:
-  - id: rlok
+  - id: lokaler
   - structure:
-    - href: röstningslokaler-översikt
-    - title: Röstningslokaler
+    - href: lokaler
+    - title: Lokaler
+    - icon: 📍
     - structure:
-      - href: röstningslokal
-      - title: Röstningslokal
+      - href: röstningslokaler-översikt
+      - title: Röstningslokaler
+      - icon: 🗳️
+      - structure:
+        - href: röstningslokal
+        - title: Röstningslokal
+    - structure:
+      - href: vallokaler
+      - title: Vallokaler
+      - icon: 🏫
+      - structure:
+        - href: vallokal-uppgifter
+        - title: Vallokal
+    - structure:
+      - href: utlandsmyndigheter
+      - title: Utlandsmyndigheter
+      - icon: 🌍
+      - structure:
+        - href: utlandsmyndighet
+        - title: Utlandsmyndighet
 - structure:
   - id: meta
   - structure:

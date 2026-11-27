@@ -49,6 +49,7 @@ Keys that belong to the system:
 | `persons` | every test person |
 | `structure` | the active structure, `default` unless told otherwise |
 | `start_page` | the first page of the active structure |
+| `parent_page` | the page above this one in the structure, `{ href, title }`, or null |
 | `return_page` | where the login page goes afterwards: the page you came from |
 | `time` | the point in time the site is shown at, now unless told otherwise |
 | `menu_open` | closed again on every page change |

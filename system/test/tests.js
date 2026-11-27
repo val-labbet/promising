@@ -109,6 +109,14 @@ test('elements, attributes and text',
     eq(render([{ p: [{ class: 'intro' }, { text: 'Hej' }, { b: [{ text: '!' }] }] }]), '<p class="intro">Hej<b>!</b></p>');
   });
 
+test('svg: drawn as svg, so it shows',
+  '- svg: and everything inside it are made in the svg namespace (an html element called svg would not show); what follows it is html again.',
+  () => {
+    const SVG = 'http://www.w3.org/2000/svg';
+    const [el, after] = Promising.render.nodes([{ svg: [{ viewBox: '0 0 10 10' }, { path: [{ d: 'M0,0L10,10' }] }] }, { p: [] }], {});
+    eq([el.namespaceURI, el.firstChild.namespaceURI, el.getAttribute('viewBox'), after.namespaceURI], [SVG, SVG, '0 0 10 10', 'http://www.w3.org/1999/xhtml']);
+  });
+
 test('null: empty attributes and empty elements',
   '- attr: null gives an attribute without value. An element without text, with text: null or as - br: [] is empty.',
   () => {

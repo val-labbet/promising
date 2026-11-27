@@ -12,6 +12,8 @@
     - incidenter
   - in_address:
     - lokal
+    - valdistrikt
+    - myndighet
   - val:
     - '2024-06-09':
       - eu: true
